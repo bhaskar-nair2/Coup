@@ -1,5 +1,7 @@
-import 'package:coup/components/move_card.dart';
+import 'package:coup/components/all_moves.dart';
+import 'package:coup/components/legal_moves.dart';
 import 'package:coup/components/power_card.dart';
+import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/role.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +13,10 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  List<CardRole> hand = [CardRole.contessa, CardRole.ambassador];
+  Hand hand = Hand([CardRole.assassin, CardRole.ambassador]);
 
   killCard(index) {
-    hand.removeAt(index);
+    // hand.removeAt(index);
     setState(() {});
   }
 
@@ -22,80 +24,46 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Coins",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  Row(
-                    children: hand.map((e) => PowerCardHolder(e)).toList(),
-                  )
-                ],
-              ),
-              Wrap(
-                children: <Widget>[
-                  AvailMovesList(),
-                  AllMovesList(),
-                ],
-              )
-            ],
+        child: Stack(children: [
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "ISK",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    Row(
+                      children:
+                          hand.cards.map((e) => PowerCardHolder(e)).toList(),
+                    )
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey,
+                          border: Border.symmetric(
+                            vertical: BorderSide(
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                        child: LegalMovesList(hand)),
+                    SizedBox(
+                      height: 30,
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class AllMovesList extends StatelessWidget {
-  const AllMovesList({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 80,
-      child: ListView.separated(
-        itemCount: 10,
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (context, index) => SizedBox(width: 5),
-        itemBuilder: (context, index) {
-          return MoveCard(
-            'Move $index',
-            active: index % 3 == 0,
-          );
-        },
-      ),
-    );
-  }
-}
-
-class AvailMovesList extends StatelessWidget {
-  const AvailMovesList({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 80,
-      child: ListView.separated(
-        itemCount: 3,
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (context, index) => SizedBox(width: 5),
-        itemBuilder: (context, index) {
-          return MoveCard(
-            'Move $index',
-            active: index % 3 == 0,
-          );
-        },
+          AllMovesList(hand),
+        ]),
       ),
     );
   }

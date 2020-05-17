@@ -1,18 +1,21 @@
-enum CardAbility { block_aid, block_assassin, block_steal, limit_steal, none }
+import 'package:coup/modals/move.dart';
+import 'package:coup/repos/ability_functions.dart';
+
+enum CardAbility { blockAid, blockAssassin, blockSteal, limitSteal, none }
 
 extension CardAbilityExtension on CardAbility {
   String get description {
     switch (this) {
-      case CardAbility.block_aid:
+      case CardAbility.blockAid:
         return "Block Foreign Aid";
 
-      case CardAbility.block_assassin:
+      case CardAbility.blockAssassin:
         return "Block Assasination";
 
-      case CardAbility.block_steal:
+      case CardAbility.blockSteal:
         return "Block Stealing";
 
-      case CardAbility.limit_steal:
+      case CardAbility.limitSteal:
         return "Limit Stealing";
 
       case CardAbility.none:
@@ -20,6 +23,28 @@ extension CardAbilityExtension on CardAbility {
 
       default:
         return 'err';
+    }
+  }
+
+  Move get instance {
+    switch (this) {
+      case CardAbility.blockAid:
+        return blockAid;
+
+      case CardAbility.blockAssassin:
+        return blockAssassin;
+
+      case CardAbility.blockSteal:
+        return blockSteal;
+
+      case CardAbility.limitSteal:
+        return limitSteal;
+
+      case CardAbility.none:
+        return Move.none();
+
+      default:
+        return Move.none();
     }
   }
 }

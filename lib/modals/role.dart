@@ -75,19 +75,19 @@ extension CardRoleExtension on CardRole {
   CardAbility get ability {
     switch (this) {
       case CardRole.duke:
-        return CardAbility.block_aid;
+        return CardAbility.blockAid;
 
       case CardRole.contessa:
-        return CardAbility.block_assassin;
+        return CardAbility.blockAssassin;
 
       case CardRole.assassin:
         return CardAbility.none;
 
       case CardRole.captain:
-        return CardAbility.block_steal;
+        return CardAbility.blockSteal;
 
       case CardRole.ambassador:
-        return CardAbility.limit_steal;
+        return CardAbility.limitSteal;
 
       default:
         return CardAbility.none;

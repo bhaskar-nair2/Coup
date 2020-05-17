@@ -1,3 +1,6 @@
+import 'package:coup/modals/move.dart';
+import 'package:coup/repos/action_functions.dart';
+
 enum CardAction { tax, assassinate, exchange, steal, none }
 
 extension CardActionExtension on CardAction {
@@ -20,6 +23,28 @@ extension CardActionExtension on CardAction {
 
       default:
         return 'err';
+    }
+  }
+
+  Move get instance {
+    switch (this) {
+      case CardAction.tax:
+        return tax;
+
+      case CardAction.assassinate:
+        return assassinate;
+
+      case CardAction.exchange:
+        return exchange;
+
+      case CardAction.steal:
+        return steal;
+
+      case CardAction.none:
+        return Move.none();
+
+      default:
+        return Move.none();
     }
   }
 }
