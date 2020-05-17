@@ -3,58 +3,84 @@ import 'package:flutter/material.dart';
 
 import 'package:coup/modals/action.dart';
 
-enum RoleName { duke, contessa, assassin, ambassador, captain }
-
 class CardRole {
   RoleName role;
   String name;
-  Color color;
   List<CardAction> actions;
 
   CardRole(this.role) {
     switch (this.role) {
       case RoleName.duke:
         this.name = "Duke";
-        this.color = CoupColors.duke;
-        this.actions = [CardAction(ActionName.tax)];
+        this.actions = [
+          CardAction(ActionName.tax, this.role),
+          CardAction(ActionName.blockAid, this.role)
+        ];
         break;
 
       case RoleName.contessa:
         this.name = "Contessa";
-        this.color = CoupColors.contessa;
         this.actions = [
-          CardAction(ActionName.blockAssassin),
-          CardAction(ActionName.treaty)
+          CardAction(ActionName.blockAssassin, this.role),
+          CardAction(ActionName.treaty, this.role)
         ];
         break;
 
       case RoleName.assassin:
         this.name = "Assassin";
-        this.color = CoupColors.assassin;
         this.actions = [
-          CardAction(ActionName.assassinate),
-          CardAction(ActionName.vengence)
+          CardAction(ActionName.assassinate, this.role),
+          CardAction(ActionName.vengence, this.role)
         ];
         break;
 
       case RoleName.ambassador:
         this.name = "Ambassador";
-        this.color = CoupColors.ambassador;
         this.actions = [
-          CardAction(ActionName.exchange),
-          CardAction(ActionName.limitSteal),
-          CardAction(ActionName.inheritance)
+          CardAction(ActionName.exchange, this.role),
+          CardAction(ActionName.limitSteal, this.role),
+          CardAction(ActionName.inheritance, this.role)
         ];
         break;
 
       case RoleName.captain:
         this.name = "Captain";
-        this.color = CoupColors.captain;
         this.actions = [
-          CardAction(ActionName.steal),
-          CardAction(ActionName.blockSteal)
+          CardAction(ActionName.steal, this.role),
+          CardAction(ActionName.blockSteal, this.role)
         ];
         break;
+    }
+  }
+
+  @override
+  bool operator ==(covariant CardRole other) => other.role == role;
+  @override
+  int get hashCode => super.hashCode;
+}
+
+enum RoleName { duke, contessa, assassin, ambassador, captain }
+
+extension RoleColorExtention on RoleName {
+  Color get color {
+    switch (this) {
+      case RoleName.duke:
+        return CoupColors.duke;
+        break;
+      case RoleName.contessa:
+        return CoupColors.contessa;
+        break;
+      case RoleName.assassin:
+        return CoupColors.assassin;
+        break;
+      case RoleName.ambassador:
+        return CoupColors.ambassador;
+        break;
+      case RoleName.captain:
+        return CoupColors.captain;
+        break;
+      default:
+        return Colors.black;
     }
   }
 }

@@ -1,35 +1,23 @@
-import 'package:coup/components/move_card.dart';
-import 'package:coup/modals/ability.dart';
-import 'package:coup/modals/action.dart';
+import 'package:coup/components/action_card.dart';
 import 'package:coup/modals/hand.dart';
-import 'package:coup/modals/move.dart';
-import 'package:coup/modals/passive.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LegalMovesList extends StatelessWidget {
-  const LegalMovesList(
-    this.hand, {
-    Key key,
-  }) : super(key: key);
-
-  final Hand hand;
+  const LegalMovesList({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<Move> moves = [
-      ...hand.actions.map((e) => e.instance),
-      ...hand.abilities.map((e) => e.instance),
-      ...hand.passive.map((e) => e.instance)
-    ];
+    final hand = Provider.of<Hand>(context);
 
     return SizedBox(
       height: 80,
       child: ListView.separated(
-        itemCount: moves.length,
+        itemCount: hand.actions.length,
         scrollDirection: Axis.horizontal,
         separatorBuilder: (context, index) => SizedBox(width: 5),
         itemBuilder: (context, index) {
-          return MoveCard(moves[index]);
+          return ActionCard(hand.actions[index]);
         },
       ),
     );

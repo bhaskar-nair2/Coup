@@ -1,37 +1,37 @@
+import 'package:coup/components/action_card.dart';
+import 'package:coup/modals/action.dart';
 import 'package:coup/modals/hand.dart';
-import 'package:coup/modals/move.dart';
+import 'package:coup/modals/role.dart';
 import 'package:flutter/material.dart';
-import 'package:coup/components/move_card.dart';
+import 'package:provider/provider.dart';
 
-class AllMovesList extends StatefulWidget {
-  const AllMovesList(this.hand, {Key key}) : super(key: key);
+class AllMovesList extends StatelessWidget {
+  const AllMovesList({Key key}) : super(key: key);
 
-  final Hand hand;
-
-  @override
-  _AllMovesListState createState() => _AllMovesListState();
-}
-
-class _AllMovesListState extends State<AllMovesList> {
   @override
   Widget build(BuildContext context) {
-    List<List<Move>> allMoves = [
-      abilityMoves
-          .where((ability) => !widget.hand.abilities.contains(ability))
-          .map((e) => e)
-          .toList()
-    ];
+    final hand = Provider.of<Hand>(context);
+    final roleList = RoleName.values.map((role) => CardRole(role)).toList();
+
+    List<List<CardAction>> allMoves = roleList
+        .where((role) => !hand.cards.contains(role))
+        .map((e) => e.actions)
+        .toList();
+
+    print(hand.cards);
+    print(roleList);
+
     return SizedBox.expand(
         child: DraggableScrollableSheet(
       initialChildSize: 0.05,
       minChildSize: 0.05,
-      maxChildSize: 0.4,
+      maxChildSize: 0.7,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           color: Colors.white54,
           child: ListView.builder(
             controller: scrollController,
-            itemCount: 1,
+            itemCount: allMoves.length,
             itemBuilder: (context, index) {
               var moveList = allMoves[index];
               return SizedBox(
@@ -41,7 +41,7 @@ class _AllMovesListState extends State<AllMovesList> {
                   scrollDirection: Axis.horizontal,
                   separatorBuilder: (context, index) => SizedBox(width: 5),
                   itemBuilder: (context, index) {
-                    return MoveCard(moveList[index]);
+                    return ActionCard(moveList[index]);
                   },
                 ),
               );

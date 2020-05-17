@@ -1,23 +1,24 @@
-import 'package:coup/modals/move.dart';
+import 'package:coup/modals/action.dart';
+import 'package:coup/modals/hand.dart';
+import 'package:coup/modals/role.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class MoveCard extends StatelessWidget {
-  const MoveCard(
-    this.move, {
-    Key key,
-  }) : super(key: key);
+class ActionCard extends StatelessWidget {
+  const ActionCard(this.action, {Key key}) : super(key: key);
 
-  final Move move;
+  final CardAction action;
 
   @override
   Widget build(BuildContext context) {
-    var active = true;
+    final hand = Provider.of<Hand>(context);
+
     return GestureDetector(
-      onTap: () => print(move),
+      onTap: () => action.caller(hand) ?? print(action),
       child: SizedBox(
         width: 120,
         child: Card(
-          color: active ? move.type.color : Colors.grey,
+          color: action.active ? action.role.color : Colors.grey,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -26,12 +27,12 @@ class MoveCard extends StatelessWidget {
                   SizedBox(
                     height: 20,
                     child: Text(
-                      move.name,
+                      action.name,
                       textAlign: TextAlign.center,
                     ),
                   ),
                   Text(
-                    move.description,
+                    action.description,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 8),
                   ),

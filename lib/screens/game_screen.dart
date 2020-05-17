@@ -1,50 +1,45 @@
+// import 'package:coup/components/all_moves.dart';
+// import 'package:coup/components/legal_moves.dart';
 import 'package:coup/components/all_moves.dart';
 import 'package:coup/components/legal_moves.dart';
 import 'package:coup/components/power_card.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/role.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class GameScreen extends StatefulWidget {
+class GameScreen extends StatelessWidget {
   GameScreen({Key key}) : super(key: key);
 
-  @override
-  _GameScreenState createState() => _GameScreenState();
-}
-
-class _GameScreenState extends State<GameScreen> {
-  Hand hand = Hand([CardRole.assassin, CardRole.ambassador]);
-
-  killCard(index) {
-    // hand.removeAt(index);
-    setState(() {});
-  }
+  final Hand hand =
+      Hand([CardRole(RoleName.assassin), CardRole(RoleName.ambassador)]);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(children: [
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "ISK",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    Row(
-                      children:
-                          hand.cards.map((e) => PowerCardHolder(e)).toList(),
-                    )
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Container(
+    return ChangeNotifierProvider<Hand>.value(
+      value: hand,
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(children: [
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  SizedBox(
+                      height: 150,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "ISK",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          PowerCardHolder(),
+                        ],
+                      )),
+                  Column(
+                    children: <Widget>[
+                      Container(
                         decoration: BoxDecoration(
                           color: Colors.blueGrey,
                           border: Border.symmetric(
@@ -53,17 +48,19 @@ class _GameScreenState extends State<GameScreen> {
                             ),
                           ),
                         ),
-                        child: LegalMovesList(hand)),
-                    SizedBox(
-                      height: 30,
-                    )
-                  ],
-                ),
-              ],
+                        child: LegalMovesList(),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          AllMovesList(hand),
-        ]),
+            AllMovesList(),
+          ]),
+        ),
       ),
     );
   }

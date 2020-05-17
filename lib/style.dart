@@ -55,9 +55,9 @@ ThemeData appTheme() {
 class CoupColors {
   CoupColors._(); // this basically makes it so you can instantiate this class
 
-  static const contessa = Color(0xffa9503b);
-  static const duke = Color(0xff234274);
-  static const captain = Color(0xff68396e);
-  static const assassin = Color(0xff424243);
+  static const contessa = Color(0xff68396e); 
+  static const duke = Color(0xff424243); 
+  static const captain = Color(0xff234274);
+  static const assassin = Color(0xffaf403b); 
   static const ambassador = Color(0xff4a8b62);
 }

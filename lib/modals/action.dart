@@ -1,4 +1,5 @@
-import 'package:coup/modals/move.dart';
+import 'package:coup/modals/hand.dart';
+import 'package:coup/modals/role.dart';
 
 enum ActionName {
   tax,
@@ -17,14 +18,16 @@ enum ActionName {
 enum ActionType { action, ability, passive }
 
 class CardAction {
+  RoleName role;
   ActionName action;
   ActionType type;
   String name;
   String description;
   bool active;
+  Function caller;
 
-  CardAction(this.action) {
-    this.active = false;
+  CardAction(this.action, this.role) {
+    this.active = true;
     switch (this.action) {
       case ActionName.tax:
         this.name = "Tax";
@@ -36,6 +39,10 @@ class CardAction {
         this.name = "Assassinate";
         this.description = "Pay 3 ISK to kill one card of any Player";
         this.type = ActionType.action;
+        this.caller = (Hand hand) {
+          hand.killCard(0);
+          print(hand.cards);
+        };
         break;
 
       case ActionName.exchange:
@@ -43,6 +50,10 @@ class CardAction {
         this.description =
             "Pick 2 cards from the pile, and keep one as an exchange";
         this.type = ActionType.action;
+        this.caller = (Hand hand) {
+          hand.exchange(1, RoleName.contessa);
+          print(hand.cards);
+        };
         break;
 
       case ActionName.steal:
