@@ -1,50 +1,98 @@
 import 'package:coup/modals/move.dart';
-import 'package:coup/repos/action_functions.dart';
 
-enum CardAction { tax, assassinate, exchange, steal, none }
+enum ActionName {
+  tax,
+  assassinate,
+  exchange,
+  steal,
+  blockAid,
+  blockAssassin,
+  blockSteal,
+  limitSteal,
+  vengence,
+  inheritance,
+  treaty
+}
 
-extension CardActionExtension on CardAction {
-  String get description {
-    switch (this) {
-      case CardAction.tax:
-        return "Take Tax";
+enum ActionType { action, ability, passive }
 
-      case CardAction.assassinate:
-        return "Assassinate";
+class CardAction {
+  ActionName action;
+  ActionType type;
+  String name;
+  String description;
+  bool active;
 
-      case CardAction.exchange:
-        return "Swap Card";
+  CardAction(this.action) {
+    this.active = false;
+    switch (this.action) {
+      case ActionName.tax:
+        this.name = "Tax";
+        this.description = "Take 3 ISK as Tax, can't be blocked";
+        this.type = ActionType.action;
+        break;
 
-      case CardAction.steal:
-        return "Steal ISK";
+      case ActionName.assassinate:
+        this.name = "Assassinate";
+        this.description = "Pay 3 ISK to kill one card of any Player";
+        this.type = ActionType.action;
+        break;
 
-      case CardAction.none:
-        return null;
+      case ActionName.exchange:
+        this.name = "Exchange";
+        this.description =
+            "Pick 2 cards from the pile, and keep one as an exchange";
+        this.type = ActionType.action;
+        break;
 
-      default:
-        return 'err';
-    }
-  }
+      case ActionName.steal:
+        this.name = "Steal";
+        this.description = "Steal 2 ISK from any Player";
+        this.type = ActionType.action;
+        break;
 
-  Move get instance {
-    switch (this) {
-      case CardAction.tax:
-        return tax;
+      case ActionName.blockAid:
+        this.name = "Block Aid";
+        this.description = "Block Foreign Aid";
+        this.type = ActionType.ability;
+        break;
 
-      case CardAction.assassinate:
-        return assassinate;
+      case ActionName.blockAssassin:
+        this.name = "Block Assasination";
+        this.description = "Block an Assassination attempt";
+        this.type = ActionType.ability;
+        break;
 
-      case CardAction.exchange:
-        return exchange;
+      case ActionName.blockSteal:
+        this.name = "Block Stealing";
+        this.description = "Block Stealing";
+        this.type = ActionType.ability;
+        break;
 
-      case CardAction.steal:
-        return steal;
+      case ActionName.limitSteal:
+        this.name = "Limit Stealing";
+        this.description = "Limit Stealing to 1 ISK";
+        this.type = ActionType.ability;
+        break;
 
-      case CardAction.none:
-        return Move.none();
+      case ActionName.vengence:
+        this.name = "Vengence";
+        this.description =
+            "Get a free Assasination when killed. Can be blocked";
+        this.type = ActionType.passive;
+        break;
 
-      default:
-        return Move.none();
+      case ActionName.inheritance:
+        this.name = "Inheritance";
+        this.description = "Get 4 ISK when killled";
+        this.type = ActionType.passive;
+        break;
+
+      case ActionName.treaty:
+        this.name = "Treaty";
+        this.description = "Foreign Aid even when blocked";
+        this.type = ActionType.passive;
+        break;
     }
   }
 }

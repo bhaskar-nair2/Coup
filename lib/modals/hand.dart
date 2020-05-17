@@ -1,29 +1,17 @@
-import 'package:coup/modals/ability.dart';
 import 'package:coup/modals/action.dart';
-import 'package:coup/modals/passive.dart';
 import 'package:coup/modals/role.dart';
 
 class Hand {
   PlayState state;
   List<CardRole> cards;
-  List<CardAction> actions;
-  List<CardAbility> abilities;
-  List<CardPassive> passive;
+  List<CardAction> actions; // All possible actions in the hand
+  // List<CardAbility> abilities; // All possible abilities in the hand
+  // List<CardPassive> passives; // All possible passives in the hand
 
   Hand(this.cards) {
     this.state = PlayState.two;
-    this.actions = cards
-        .where((e) => e.action != CardAction.none)
-        .map((e) => e.action)
-        .toList();
-    this.abilities = cards
-        .where((e) => e.ability != CardAbility.none)
-        .map((e) => e.ability)
-        .toList();
-    this.passive = cards
-        .where((e) => e.passive != CardPassive.none)
-        .map((e) => e.passive)
-        .toList();
+    this.actions = cards.expand((element) => element.actions).toList()
+      ..removeWhere((v) => v == null);
   }
 
   killCard(index) {

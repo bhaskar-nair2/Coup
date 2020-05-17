@@ -1,118 +1,60 @@
-import 'package:coup/modals/ability.dart';
-import 'package:coup/modals/action.dart';
-import 'package:coup/modals/passive.dart';
 import 'package:coup/style.dart';
 import 'package:flutter/material.dart';
 
-enum CardRole { duke, contessa, assassin, ambassador, captain }
+import 'package:coup/modals/action.dart';
 
-extension CardRoleExtension on CardRole {
-  String get name {
-    switch (this) {
-      case CardRole.duke:
-        return 'Duke';
+enum RoleName { duke, contessa, assassin, ambassador, captain }
 
-      case CardRole.contessa:
-        return "Contessa";
+class CardRole {
+  RoleName role;
+  String name;
+  Color color;
+  List<CardAction> actions;
 
-      case CardRole.assassin:
-        return "Assassin";
+  CardRole(this.role) {
+    switch (this.role) {
+      case RoleName.duke:
+        this.name = "Duke";
+        this.color = CoupColors.duke;
+        this.actions = [CardAction(ActionName.tax)];
+        break;
 
-      case CardRole.ambassador:
-        return "Ambassador";
+      case RoleName.contessa:
+        this.name = "Contessa";
+        this.color = CoupColors.contessa;
+        this.actions = [
+          CardAction(ActionName.blockAssassin),
+          CardAction(ActionName.treaty)
+        ];
+        break;
 
-      case CardRole.captain:
-        return "Captain";
-      default:
-        return "";
-    }
-  }
+      case RoleName.assassin:
+        this.name = "Assassin";
+        this.color = CoupColors.assassin;
+        this.actions = [
+          CardAction(ActionName.assassinate),
+          CardAction(ActionName.vengence)
+        ];
+        break;
 
-  Color get color {
-    switch (this) {
-      case CardRole.duke:
-        return CoupColors.duke;
+      case RoleName.ambassador:
+        this.name = "Ambassador";
+        this.color = CoupColors.ambassador;
+        this.actions = [
+          CardAction(ActionName.exchange),
+          CardAction(ActionName.limitSteal),
+          CardAction(ActionName.inheritance)
+        ];
+        break;
 
-      case CardRole.contessa:
-        return CoupColors.contessa;
-
-      case CardRole.assassin:
-        return CoupColors.assassin;
-
-      case CardRole.captain:
-        return CoupColors.captain;
-
-      case CardRole.ambassador:
-        return CoupColors.ambassador;
-
-      default:
-        return Colors.white;
-    }
-  }
-
-  CardAction get action {
-    switch (this) {
-      case CardRole.duke:
-        return CardAction.tax;
-
-      case CardRole.contessa:
-        return CardAction.none;
-
-      case CardRole.assassin:
-        return CardAction.assassinate;
-
-      case CardRole.captain:
-        return CardAction.steal;
-
-      case CardRole.ambassador:
-        return CardAction.exchange;
-
-      default:
-        return CardAction.none;
-    }
-  }
-
-  CardAbility get ability {
-    switch (this) {
-      case CardRole.duke:
-        return CardAbility.blockAid;
-
-      case CardRole.contessa:
-        return CardAbility.blockAssassin;
-
-      case CardRole.assassin:
-        return CardAbility.none;
-
-      case CardRole.captain:
-        return CardAbility.blockSteal;
-
-      case CardRole.ambassador:
-        return CardAbility.limitSteal;
-
-      default:
-        return CardAbility.none;
-    }
-  }
-
-  CardPassive get passive {
-    switch (this) {
-      case CardRole.duke:
-        return CardPassive.none;
-
-      case CardRole.contessa:
-        return CardPassive.treaty;
-
-      case CardRole.assassin:
-        return CardPassive.vengence;
-
-      case CardRole.captain:
-        return CardPassive.none;
-
-      case CardRole.ambassador:
-        return CardPassive.inheritance;
-
-      default:
-        return CardPassive.none;
+      case RoleName.captain:
+        this.name = "Captain";
+        this.color = CoupColors.captain;
+        this.actions = [
+          CardAction(ActionName.steal),
+          CardAction(ActionName.blockSteal)
+        ];
+        break;
     }
   }
 }

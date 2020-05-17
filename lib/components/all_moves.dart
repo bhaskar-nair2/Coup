@@ -13,10 +13,14 @@ class AllMovesList extends StatefulWidget {
 }
 
 class _AllMovesListState extends State<AllMovesList> {
-  List allMoves = [];
-  
   @override
   Widget build(BuildContext context) {
+    List<List<Move>> allMoves = [
+      abilityMoves
+          .where((ability) => !widget.hand.abilities.contains(ability))
+          .map((e) => e)
+          .toList()
+    ];
     return SizedBox.expand(
         child: DraggableScrollableSheet(
       initialChildSize: 0.05,
@@ -27,7 +31,7 @@ class _AllMovesListState extends State<AllMovesList> {
           color: Colors.white54,
           child: ListView.builder(
             controller: scrollController,
-            itemCount: 0,
+            itemCount: 1,
             itemBuilder: (context, index) {
               var moveList = allMoves[index];
               return SizedBox(
