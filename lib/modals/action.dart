@@ -1,4 +1,5 @@
 import 'package:coup/modals/hand.dart';
+import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
 
 enum ActionName {
@@ -33,6 +34,9 @@ class CardAction {
         this.name = "Tax";
         this.description = "Take 3 ISK as Tax, can't be blocked";
         this.type = ActionType.action;
+        this.caller = (Isk isk) {
+          isk.increment(3);
+        };
         break;
 
       case ActionName.assassinate:

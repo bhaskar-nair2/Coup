@@ -1,5 +1,6 @@
 import 'package:coup/modals/action.dart';
 import 'package:coup/modals/hand.dart';
+import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ class ActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hand = Provider.of<Hand>(context);
+    final isk = Provider.of<Isk>(context);
 
     return GestureDetector(
       onTap: () => action.caller(hand) ?? print(action),

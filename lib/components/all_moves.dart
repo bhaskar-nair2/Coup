@@ -18,17 +18,14 @@ class AllMovesList extends StatelessWidget {
         .map((e) => e.actions)
         .toList();
 
-    print(hand.cards);
-    print(roleList);
-
     return SizedBox.expand(
         child: DraggableScrollableSheet(
-      initialChildSize: 0.05,
-      minChildSize: 0.05,
-      maxChildSize: 0.7,
+      initialChildSize: 0.08,
+      minChildSize: 0.08,
+      maxChildSize: 0.6,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
-          color: Colors.white54,
+          color: Colors.white60,
           child: ListView.builder(
             controller: scrollController,
             itemCount: allMoves.length,

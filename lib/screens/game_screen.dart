@@ -1,9 +1,11 @@
 // import 'package:coup/components/all_moves.dart';
 // import 'package:coup/components/legal_moves.dart';
 import 'package:coup/components/all_moves.dart';
+import 'package:coup/components/isk_holder.dart';
 import 'package:coup/components/legal_moves.dart';
 import 'package:coup/components/power_card.dart';
 import 'package:coup/modals/hand.dart';
+import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +15,15 @@ class GameScreen extends StatelessWidget {
 
   final Hand hand =
       Hand([CardRole(RoleName.assassin), CardRole(RoleName.ambassador)]);
+  final Isk isk = Isk();
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Hand>.value(
-      value: hand,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Hand>.value(value: hand),
+        ChangeNotifierProvider.value(value: isk)
+      ],
       child: Scaffold(
         body: SafeArea(
           child: Stack(children: [
@@ -30,26 +36,23 @@ class GameScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            "ISK",
-                            style: TextStyle(color: Colors.red),
-                          ),
+                          IskHolder(),
                           PowerCardHolder(),
                         ],
                       )),
                   Column(
                     children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          border: Border.symmetric(
-                            vertical: BorderSide(
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ),
-                        child: LegalMovesList(),
-                      ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.blueGrey,
+                      //     border: Border.symmetric(
+                      //       vertical: BorderSide(
+                      //         color: Colors.black54,
+                      //       ),
+                      //     ),
+                      //   ),
+                      //   child: LegalMovesList(),
+                      // ),
                       SizedBox(
                         height: 30,
                       )
