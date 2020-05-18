@@ -33,13 +33,11 @@ ThemeData appTheme() {
       ),
       bodyText1: TextStyle(
         fontSize: 12,
-        color: Colors.white,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.7,
       ),
       bodyText2: TextStyle(
         fontSize: 12,
-        color: Colors.white,
         letterSpacing: 0.7,
       ),
       caption: TextStyle(

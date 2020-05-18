@@ -5,6 +5,7 @@ class Chance extends ChangeNotifier {
   bool active;
   int currentPos;
   int selfPos;
+  int round;
 
   static final Chance _chance = Chance._internal();
 

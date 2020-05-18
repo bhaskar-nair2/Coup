@@ -22,6 +22,6 @@ class Isk extends ChangeNotifier {
   }
 
   decrement(val) {
-    counter = counter + val;
+    counter = counter - val;
   }
 }

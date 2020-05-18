@@ -65,7 +65,7 @@ class AllMovesList extends StatelessWidget {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: <Widget>[
-                          RoleTile(moveList[0]),
+                          RoleTile(moveList[0].role),
                           ...moveList.map((move) => ActionCard(move))
                         ],
                       ),

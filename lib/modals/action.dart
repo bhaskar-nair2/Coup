@@ -2,6 +2,8 @@ import 'package:coup/modals/chance.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
+import 'package:coup/repos/activationFunctions.dart';
+import 'package:coup/repos/callerFunctions.dart';
 import 'package:provider/provider.dart';
 
 enum ActionName {
@@ -44,34 +46,25 @@ class CardAction {
         this.name = "Income";
         this.description = "Take 1 ISK as Income";
         this.type = ActionType.utility;
-        this.caller = (context) {
-          final isk = Provider.of<Isk>(context, listen: false);
-          isk.increment(1);
-        };
-        this.activator = (context) {
-          final chance = Provider.of<Chance>(context, listen: false);
-          if (chance.active == true)
-            this.setActive(true);
-          else
-            this.setActive(false);
-        };
+        this.caller = (context) => CallerFunctions.incomeCall(context);
+        this.activator = (context) =>
+            ActivationFunctions.incomeActivation(context, this.setActive);
         break;
       case ActionName.aid:
-        this.name = "Tax";
+        this.name = "Foreign Aid";
         this.description = "Take 2 ISK as foreign aid, non-blockable";
         this.type = ActionType.utility;
-        this.caller = (context) {
-          final isk = Provider.of<Isk>(context, listen: false);
-          isk.increment(2);
-        };
+        this.caller = (context) => CallerFunctions.aidCall(context);
+        this.activator = (context) =>
+            ActivationFunctions.aidActivation(context, this.setActive);
         break;
       case ActionName.coup:
-        this.name = "Coup";
+        this.name = "COUP";
         this.description = "Pay 7 ISK to kill one card of any Player";
         this.type = ActionType.utility;
-        this.caller = (Isk isk) {
-          isk.increment(3);
-        };
+        this.caller = (context) => CallerFunctions.coupCall(context);
+        this.activator = (context) =>
+            ActivationFunctions.coupActivation(context, this.setActive);
         break;
       case ActionName.tax:
         this.name = "Tax";
@@ -87,10 +80,7 @@ class CardAction {
         this.description =
             "Pay 3 ISK to kill one card of any Player, Blockable";
         this.type = ActionType.action;
-        this.caller = (Hand hand) {
-          hand.killCard(0);
-          print(hand.cards);
-        };
+        this.caller = (context) => CallerFunctions.assassinateCall(context);
         break;
 
       case ActionName.exchange:
@@ -98,10 +88,7 @@ class CardAction {
         this.description =
             "Pick 2 cards from the pile, and keep one as an exchange";
         this.type = ActionType.action;
-        this.caller = (Hand hand) {
-          hand.exchange(1, RoleName.contessa);
-          print(hand.cards);
-        };
+        this.caller = (context) => CallerFunctions.exchangeCall(context);
         break;
 
       case ActionName.steal:
