@@ -15,10 +15,13 @@ class ActionCard extends StatelessWidget {
     final hand = Provider.of<Hand>(context);
     final isk = Provider.of<Isk>(context);
 
+    if (action.activator != null) action.activator(context);
+
     return GestureDetector(
-      onTap: () => action.caller(hand) ?? print(action),
-      child: SizedBox(
-        width: 120,
+      onTap: () =>
+          action.active ? action.caller(context) ?? print(action) : () => {},
+      child: AspectRatio(
+        aspectRatio: 1.8 / 1,
         child: Card(
           color: action.active ? action.role.color : Colors.grey,
           child: Center(

@@ -1,6 +1,8 @@
+import 'package:coup/modals/chance.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
+import 'package:provider/provider.dart';
 
 enum ActionName {
   income,
@@ -29,6 +31,7 @@ class CardAction {
   String description;
   bool active;
   Function caller;
+  Function activator;
 
   setActive(bool value) {
     this.active = value;
@@ -41,16 +44,25 @@ class CardAction {
         this.name = "Income";
         this.description = "Take 1 ISK as Income";
         this.type = ActionType.utility;
-        this.caller = (Isk isk) {
-          isk.increment(3);
+        this.caller = (context) {
+          final isk = Provider.of<Isk>(context, listen: false);
+          isk.increment(1);
+        };
+        this.activator = (context) {
+          final chance = Provider.of<Chance>(context, listen: false);
+          if (chance.active == true)
+            this.setActive(true);
+          else
+            this.setActive(false);
         };
         break;
       case ActionName.aid:
         this.name = "Tax";
         this.description = "Take 2 ISK as foreign aid, non-blockable";
         this.type = ActionType.utility;
-        this.caller = (Isk isk) {
-          isk.increment(3);
+        this.caller = (context) {
+          final isk = Provider.of<Isk>(context, listen: false);
+          isk.increment(2);
         };
         break;
       case ActionName.coup:

@@ -48,7 +48,7 @@ class AllMovesList extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
+                padding: const EdgeInsets.only(top: 6, left: 8),
                 child: Text(
                   "All Moves",
                   style: TextStyle(
@@ -59,16 +59,18 @@ class AllMovesList extends StatelessWidget {
                 ),
               ),
               ...allMoves
-                  .map((moveList) => SizedBox(
-                        height: 80,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            RoleTile(moveList[0]),
-                            ...moveList.map((move) => ActionCard(move))
-                          ],
-                        ),
-                      ))
+                  .map(
+                    (moveList) => SizedBox(
+                      height: 80,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          RoleTile(moveList[0]),
+                          ...moveList.map((move) => ActionCard(move))
+                        ],
+                      ),
+                    ),
+                  )
                   .toList()
             ],
           ),

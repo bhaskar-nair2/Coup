@@ -74,7 +74,7 @@ extension RoleColorExtention on RoleName {
   Color get color {
     switch (this) {
       case RoleName.global:
-        return Colors.grey;
+        return CoupColors.global;
       case RoleName.duke:
         return CoupColors.duke;
       case RoleName.contessa:
