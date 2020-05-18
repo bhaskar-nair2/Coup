@@ -3,6 +3,9 @@ import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
 
 enum ActionName {
+  income,
+  aid,
+  coup,
   tax,
   assassinate,
   exchange,
@@ -16,7 +19,7 @@ enum ActionName {
   treaty
 }
 
-enum ActionType { action, ability, passive }
+enum ActionType { utility, action, ability, passive }
 
 class CardAction {
   RoleName role;
@@ -27,9 +30,37 @@ class CardAction {
   bool active;
   Function caller;
 
+  setActive(bool value) {
+    this.active = value;
+  }
+
   CardAction(this.action, this.role) {
     this.active = true;
     switch (this.action) {
+      case ActionName.income:
+        this.name = "Income";
+        this.description = "Take 1 ISK as Income";
+        this.type = ActionType.utility;
+        this.caller = (Isk isk) {
+          isk.increment(3);
+        };
+        break;
+      case ActionName.aid:
+        this.name = "Tax";
+        this.description = "Take 2 ISK as foreign aid, non-blockable";
+        this.type = ActionType.utility;
+        this.caller = (Isk isk) {
+          isk.increment(3);
+        };
+        break;
+      case ActionName.coup:
+        this.name = "Coup";
+        this.description = "Pay 7 ISK to kill one card of any Player";
+        this.type = ActionType.utility;
+        this.caller = (Isk isk) {
+          isk.increment(3);
+        };
+        break;
       case ActionName.tax:
         this.name = "Tax";
         this.description = "Take 3 ISK as Tax, can't be blocked";
@@ -41,7 +72,8 @@ class CardAction {
 
       case ActionName.assassinate:
         this.name = "Assassinate";
-        this.description = "Pay 3 ISK to kill one card of any Player";
+        this.description =
+            "Pay 3 ISK to kill one card of any Player, Blockable";
         this.type = ActionType.action;
         this.caller = (Hand hand) {
           hand.killCard(0);

@@ -10,6 +10,15 @@ class CardRole {
 
   CardRole(this.role) {
     switch (this.role) {
+      case RoleName.global:
+        this.name = "Global";
+        this.actions = [
+          CardAction(ActionName.income, this.role),
+          CardAction(ActionName.aid, this.role),
+          CardAction(ActionName.coup, this.role),
+        ];
+        break;
+
       case RoleName.duke:
         this.name = "Duke";
         this.actions = [
@@ -59,26 +68,23 @@ class CardRole {
   int get hashCode => super.hashCode;
 }
 
-enum RoleName { duke, contessa, assassin, ambassador, captain }
+enum RoleName { global, duke, contessa, assassin, ambassador, captain }
 
 extension RoleColorExtention on RoleName {
   Color get color {
     switch (this) {
+      case RoleName.global:
+        return Colors.grey;
       case RoleName.duke:
         return CoupColors.duke;
-        break;
       case RoleName.contessa:
         return CoupColors.contessa;
-        break;
       case RoleName.assassin:
         return CoupColors.assassin;
-        break;
       case RoleName.ambassador:
         return CoupColors.ambassador;
-        break;
       case RoleName.captain:
         return CoupColors.captain;
-        break;
       default:
         return Colors.black;
     }

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:coup/components/action_card.dart';
+import 'package:coup/components/roleTile.dart';
 import 'package:coup/modals/action.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/role.dart';
@@ -13,43 +16,64 @@ class AllMovesList extends StatelessWidget {
     final hand = Provider.of<Hand>(context);
     final roleList = RoleName.values.map((role) => CardRole(role)).toList();
 
+    List<CardAction> utilActions = CardRole(RoleName.global).actions;
+
     List<List<CardAction>> allMoves = roleList
-        .where((role) => !hand.cards.contains(role))
+        .where((role) =>
+            role.role != RoleName.global && !hand.cards.contains(role))
         .map((e) => e.actions)
         .toList();
 
+    var scrollerHeight = min((allMoves.length + 1) * 0.14, 0.8);
+
     return SizedBox.expand(
         child: DraggableScrollableSheet(
-      initialChildSize: 0.08,
-      minChildSize: 0.08,
-      maxChildSize: 0.6,
+      initialChildSize: 0.2,
+      minChildSize: 0.2,
+      maxChildSize: scrollerHeight,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
-          color: Colors.white60,
-          child: ListView.builder(
+          color: Colors.white24,
+          child: ListView(
+            shrinkWrap: true,
             controller: scrollController,
-            itemCount: allMoves.length,
-            itemBuilder: (context, index) {
-              var moveList = allMoves[index];
-              return SizedBox(
+            children: <Widget>[
+              SizedBox(
                 height: 80,
-                child: ListView.separated(
-                  itemCount: moveList.length,
+                child: ListView(
                   scrollDirection: Axis.horizontal,
-                  separatorBuilder: (context, index) => SizedBox(width: 5),
-                  itemBuilder: (context, index) {
-                    return ActionCard(moveList[index]);
-                  },
+                  children: <Widget>[
+                    ...utilActions.map((move) => ActionCard(move)).toList(),
+                  ],
                 ),
-              );
-            },
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text(
+                  "All Moves",
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              ...allMoves
+                  .map((moveList) => SizedBox(
+                        height: 80,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: <Widget>[
+                            RoleTile(moveList[0]),
+                            ...moveList.map((move) => ActionCard(move))
+                          ],
+                        ),
+                      ))
+                  .toList()
+            ],
           ),
         );
       },
     ));
   }
 }
-
-/*
-
-      */

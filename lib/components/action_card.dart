@@ -23,20 +23,24 @@ class ActionCard extends StatelessWidget {
           color: action.active ? action.role.color : Colors.grey,
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   SizedBox(
-                    height: 20,
+                    height: 25,
                     child: Text(
                       action.name,
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  Text(
-                    action.description,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 8),
+                  SizedBox(
+                    height: 25,
+                    child: Text(
+                      action.description,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 8),
+                    ),
                   ),
                 ],
               ),
