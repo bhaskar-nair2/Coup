@@ -31,8 +31,9 @@ class GameScreen extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: Stack(children: [
-            // PlayArea(),
+            PlayArea(),
             Container(
+              padding: EdgeInsets.all(5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -40,6 +41,7 @@ class GameScreen extends StatelessWidget {
                       height: 150,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           IskHolder(),
                           PowerCardHolder(),
@@ -47,18 +49,6 @@ class GameScreen extends StatelessWidget {
                       )),
                   Column(
                     children: <Widget>[
-                      // ! SET ACTIONS TO THE POWER CARDS
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.blueGrey,
-                      //     border: Border.symmetric(
-                      //       vertical: BorderSide(
-                      //         color: Colors.black54,
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   child: LegalMovesList(),
-                      // ),
                       SizedBox(
                         height: 30,
                       )

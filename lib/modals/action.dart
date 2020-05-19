@@ -40,7 +40,7 @@ class CardAction {
   }
 
   CardAction(this.action, this.role) {
-    this.active = true;
+    this.active = true; //TODO: false
     switch (this.action) {
       case ActionName.income:
         this.name = "Income";

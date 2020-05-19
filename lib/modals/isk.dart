@@ -13,7 +13,12 @@ class Isk extends ChangeNotifier {
   Isk._internal();
 
   set counter(int val) {
-    _counter = val;
+    if (val < 0)
+      _counter = 0;
+    else if (val > 99)
+      _counter = 99;
+    else
+      _counter = val;
     notifyListeners();
   }
 

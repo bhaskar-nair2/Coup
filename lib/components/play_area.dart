@@ -23,7 +23,7 @@ class PlayArea extends StatelessWidget {
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 50),
+            padding: const EdgeInsets.only(bottom: 80),
             child: ClipPolygon(
               sides: 6,
               borderRadius: 5.0, // Default 0.0 degrees

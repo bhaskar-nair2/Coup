@@ -45,12 +45,17 @@ class PowerCardHolder extends StatelessWidget {
               color: card.role.color,
               elevation: 6,
               shadowColor: Colors.white54,
-              margin: EdgeInsets.all(5),
               child: Column(
                 children: <Widget>[
                   SizedBox(
                     height: 80, //85,
-                    child: Center(child: FlutterLogo()),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/roleLogos/contessa.png',
+                        width: 50,
+                        height: 50,
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),

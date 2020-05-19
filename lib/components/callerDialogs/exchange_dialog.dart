@@ -12,6 +12,8 @@ class ExchangeDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+        backgroundColor: Color(0xff092147),
+        elevation: 10,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: Container(

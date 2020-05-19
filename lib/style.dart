@@ -14,6 +14,10 @@ ThemeData appTheme() {
     unselectedWidgetColor: Color(0xff5f6368),
     fontFamily: 'QuickSand',
     textTheme: TextTheme(
+      headline6: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w200,
+      ),
       headline4: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w600,
@@ -33,11 +37,13 @@ ThemeData appTheme() {
       ),
       bodyText1: TextStyle(
         fontSize: 12,
+        color: Colors.white,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.7,
       ),
       bodyText2: TextStyle(
         fontSize: 12,
+        color: Colors.white,
         letterSpacing: 0.7,
       ),
       caption: TextStyle(

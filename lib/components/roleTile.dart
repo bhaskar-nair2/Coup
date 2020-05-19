@@ -20,13 +20,23 @@ class RoleTile extends StatelessWidget {
                 children: <Widget>[
                   SizedBox(
                     height: 70,
-                    child: Center(child: FlutterLogo()),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/roleLogos/contessa.png',
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
                   ),
                   AbilityBox(role: card),
                 ],
               )
             : Center(
-                child: FlutterLogo(),
+                child: Image.asset(
+                  'assets/roleLogos/contessa.png',
+                  width: 30,
+                  height: 30,
+                ),
               ),
       ),
     );
