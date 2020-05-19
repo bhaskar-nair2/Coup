@@ -89,4 +89,23 @@ extension RoleColorExtention on RoleName {
         return Colors.black;
     }
   }
+
+  AssetImage get cardImage {
+    switch (this) {
+      case RoleName.global:
+        return AssetImage('assets/cardImages/blankCard.png');
+      case RoleName.duke:
+        return AssetImage('assets/cardImages/dukeCard.png');
+      case RoleName.contessa:
+        return AssetImage('assets/cardImages/contessaCard.png');
+      case RoleName.assassin:
+        return AssetImage('assets/cardImages/assassinCard.png');
+      case RoleName.ambassador:
+        return AssetImage('assets/cardImages/ambassadorCard.png');
+      case RoleName.captain:
+        return AssetImage('assets/cardImages/captainCard.png');
+      default:
+        return AssetImage('assets/cardImages/blankCard.png');
+    }
+  }
 }

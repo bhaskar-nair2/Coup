@@ -41,30 +41,29 @@ class PowerCardHolder extends StatelessWidget {
                 action.caller(context);
               }
             },
-            child: Card(
-              color: card.role.color,
-              elevation: 6,
-              shadowColor: Colors.white54,
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(image: card.role.cardImage)),
               child: Column(
                 children: <Widget>[
                   SizedBox(
                     height: 80, //85,
-                    child: Center(
-                      child: Image.asset(
-                        'assets/roleLogos/contessa.png',
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
+                    // child: Center(
+                    //   child: Image.asset(
+                    //     'assets/roleLogos/contessa.png',
+                    //     width: 50,
+                    //     height: 50,
+                    //   ),
+                    // ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      card.name.toUpperCase(),
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
+                    // child: Text(
+                    //   card.name.toUpperCase(),
+                    //   style: TextStyle(color: Colors.white, fontSize: 12),
+                    // ),
                   ),
-                  AbilityBox(role: card)
+                  // AbilityBox(role: card)
                 ],
               ),
             ),
