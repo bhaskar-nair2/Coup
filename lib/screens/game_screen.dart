@@ -16,7 +16,7 @@ class GameScreen extends StatelessWidget {
   GameScreen({Key key}) : super(key: key);
 
   final Hand hand =
-      Hand([CardRole(RoleName.contessa), CardRole(RoleName.ambassador)]);
+      Hand([CardRole(RoleName.assassin), CardRole(RoleName.ambassador)]);
   final Isk isk = Isk();
   final Chance chance = Chance(0);
 
