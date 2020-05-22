@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "457763320714",
+    "firebase_url": "https://coup-dc26b.firebaseio.com",
+    "project_id": "coup-dc26b",
+    "storage_bucket": "coup-dc26b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457763320714:android:6d2580489fe853e2bf0e73",
+        "android_client_info": {
+          "package_name": "com.bstark.coup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457763320714-3k4v79r62mk73o608rg515n7no6q373m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAewqf7DSo1FEdIn8hYOzY_W-z-DHJdQo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457763320714-3k4v79r62mk73o608rg515n7no6q373m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
