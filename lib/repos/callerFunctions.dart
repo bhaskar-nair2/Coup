@@ -1,5 +1,5 @@
 import 'package:coup/components/callerDialogs/exchange_dialog.dart';
-import 'package:coup/components/roleTile.dart';
+import 'package:coup/firebase/test.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
@@ -25,15 +25,19 @@ class CallerFunctions {
 
   static assassinateCall(BuildContext context) {
     final isk = Provider.of<Isk>(context, listen: false);
+    // show all players
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            content: Text("Which player would like to Assassinate?"),
-            actions: <Widget>[
+          return SimpleDialog(
+            title: Text("Which player would like to Assassinate?"),
+            children: <Widget>[
               FlatButton(onPressed: () => {}, child: Text("Player 1.name")),
               FlatButton(onPressed: () => {}, child: Text("Player 2.name")),
             ],
+            backgroundColor: Theme.of(context).primaryColorDark,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           );
         });
     isk.decrement(3);

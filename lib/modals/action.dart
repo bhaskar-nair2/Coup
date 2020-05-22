@@ -1,10 +1,9 @@
-import 'package:coup/modals/chance.dart';
-import 'package:coup/modals/hand.dart';
+import 'dart:convert';
+
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
 import 'package:coup/repos/activationFunctions.dart';
 import 'package:coup/repos/callerFunctions.dart';
-import 'package:provider/provider.dart';
 
 enum ActionName {
   income,
@@ -141,4 +140,36 @@ class CardAction {
         break;
     }
   }
+
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'role': role?.toMap(),
+  //     'action': action?.toMap(),
+  //     'type': type?.toMap(),
+  //     'name': name,
+  //     'description': description,
+  //     'active': active,
+  //     'caller': caller?.toMap(),
+  //     'activator': activator?.toMap(),
+  //   };
+  // }
+
+  // static CardAction fromMap(Map<String, dynamic> map) {
+  //   if (map == null) return null;
+  
+  //   return CardAction(
+  //     RoleName.fromMap(map['role']),
+  //     ActionName.fromMap(map['action']),
+  //     ActionType.fromMap(map['type']),
+  //     map['name'],
+  //     map['description'],
+  //     map['active'],
+  //     Function.fromMap(map['caller']),
+  //     Function.fromMap(map['activator']),
+  //   );
+  // }
+
+  // String toJson() => json.encode(toMap());
+
+  // static CardAction fromJson(String source) => fromMap(json.decode(source));
 }

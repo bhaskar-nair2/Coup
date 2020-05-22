@@ -8,6 +8,7 @@ class IskHolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isk = Provider.of<Isk>(context);
+
     return Container(
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
@@ -30,7 +31,7 @@ class IskHolder extends StatelessWidget {
               textAlign: TextAlign.end,
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
-          )
+          ),
         ],
       ),
     );

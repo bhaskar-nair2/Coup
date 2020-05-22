@@ -1,5 +1,7 @@
+import 'package:coup/modals/game_table.dart';
 import 'package:flutter/material.dart';
 import 'package:polygon_clipper/polygon_clipper.dart';
+import 'package:provider/provider.dart';
 
 class PlayArea extends StatelessWidget {
   const PlayArea({
@@ -8,6 +10,8 @@ class PlayArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final table = Provider.of<GameTable>(context);
+
     return SizedBox.expand(
       child: Container(
         decoration: BoxDecoration(
@@ -37,6 +41,34 @@ class PlayArea extends StatelessWidget {
                   rotate: 90.0, // Default 0.0 degrees
                   child: Container(
                     color: Color(0xff97b2de),
+                    child: Center(
+                        child: Center(
+                      child: Stack(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              table.occupied.toString(),
+                              style:
+                                  TextStyle(color: Colors.amber, fontSize: 30),
+                            ),
+                          ),
+                          ListView.builder(
+                              itemCount: table.occupied,
+                              itemBuilder: (context, index) {
+                                print('xxx');
+                                return Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    table.players[index].cards.toString(),
+                                    style: TextStyle(
+                                        color: Colors.amber, fontSize: 30),
+                                  ),
+                                );
+                              })
+                        ],
+                      ),
+                    )),
                   ),
                 ),
               ),
