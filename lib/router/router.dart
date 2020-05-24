@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:coup/router/guards.dart';
 import 'package:coup/screens/game_screen.dart';
 import 'package:coup/screens/login.dart';
 
@@ -6,6 +7,7 @@ import 'package:coup/screens/login.dart';
 class $Router {
   @initial
   LoginScreen loginScreen;
+  @GuardedBy([AuthGuard])
   GameScreen gameScreen;
 }
 // @MaterialRoute(fullscreenDialog: true)

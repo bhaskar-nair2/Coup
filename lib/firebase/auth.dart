@@ -28,7 +28,7 @@ class AuthService {
 
       return user;
     } catch (error) {
-      print(error);
+      print('Error: $error');
       return null;
     }
   }
