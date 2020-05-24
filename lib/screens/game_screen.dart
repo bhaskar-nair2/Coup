@@ -2,6 +2,8 @@ import 'package:coup/components/all_moves.dart';
 import 'package:coup/components/isk_holder.dart';
 import 'package:coup/components/play_area.dart';
 import 'package:coup/components/power_card.dart';
+import 'package:coup/firebase/auth.dart';
+import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/chance.dart';
 import 'package:coup/modals/game_table.dart';
 import 'package:coup/modals/hand.dart';
@@ -17,7 +19,8 @@ class GameScreen extends StatelessWidget {
       Hand([CardRole(RoleName.assassin), CardRole(RoleName.ambassador)]);
   final Isk isk = Isk();
   final Chance chance = Chance(0);
-  final GameTable table = GameTable("ymAmWOuxrNYwXxWDg1Mo");
+  String tableId = "ymAmWOuxrNYwXxWDg1Mo";
+  FirestoreService db = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class GameScreen extends StatelessWidget {
         ChangeNotifierProvider<Hand>.value(value: hand),
         ChangeNotifierProvider<Isk>.value(value: isk),
         ChangeNotifierProvider<Chance>.value(value: chance),
-        ChangeNotifierProvider<GameTable>.value(value: table)
+        StreamProvider<GameTable>.value(value: db.tableStream(tableId))
       ],
       child: Scaffold(
         body: SafeArea(
@@ -43,17 +46,14 @@ class GameScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          IskHolder(),
+                          // IskHolder(),
                           PowerCardHolder(),
+                          FlatButton(
+                            onPressed: () => {AuthService().signOut()},
+                            child: Text("Signout"),
+                          )
                         ],
                       )),
-                  Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 30,
-                      )
-                    ],
-                  ),
                 ],
               ),
             ),

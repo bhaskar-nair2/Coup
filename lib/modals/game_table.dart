@@ -4,26 +4,21 @@ import 'package:coup/modals/turn.dart';
 import 'package:flutter/material.dart';
 
 class GameTable extends ChangeNotifier {
-  DocumentReference ref;
-  int occupied=0;
+  int occupied = 0;
   List<Player> players;
   List<Turn> turn;
 
-  static final GameTable _table = GameTable._internal();
-
-  GameTable._internal();
-
-  factory GameTable(docId) {
-    _table.ref = Firestore.instance.document('tables/$docId');
-    _table.initGameTableData();
-    return _table;
+  GameTable({this.occupied, players, turn}) {
+    this.players =
+        List.generate(this.occupied, (index) => Player.fromMap(players[index]));
   }
 
-  initGameTableData() async* {
-    this.ref.snapshots().listen((DocumentSnapshot snap) {
-      this.occupied = snap.data['occupied'];
-      this.players = List.generate(this.occupied,
-          (index) =>  Player.fromMap(snap.data["players"][index]));
-    });
+  factory GameTable.fromMap(DocumentSnapshot doc) {
+    Map data = doc.data;
+    return GameTable(
+      occupied: doc["occupied"],
+      players: doc['players'],
+      turn: data["turn"],
+    );
   }
 }

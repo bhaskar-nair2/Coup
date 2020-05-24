@@ -48,15 +48,14 @@ class PlayArea extends StatelessWidget {
                           Align(
                             alignment: Alignment.center,
                             child: Text(
-                              table.occupied.toString(),
+                              table?.occupied?.toString() ?? "Loading..",
                               style:
                                   TextStyle(color: Colors.amber, fontSize: 30),
                             ),
                           ),
                           ListView.builder(
-                              itemCount: table.occupied,
+                              itemCount: table?.occupied ?? 0,
                               itemBuilder: (context, index) {
-                                print('xxx');
                                 return Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
