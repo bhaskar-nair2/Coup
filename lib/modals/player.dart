@@ -8,12 +8,9 @@ class Player {
   String name;
   int cards;
   int isk;
+  bool self;
 
-  Player(
-    ref, {
-    this.cards,
-    this.isk,
-  });
+  Player({this.ref, this.cards, this.isk});
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,8 +22,8 @@ class Player {
 
   static Player fromMap(Map<String, dynamic> map) {
     return Player(
-      map['player'], // playerREf
-      cards: map['cards'],
+      ref: map['player'], // playerREf
+      cards: map['hand'].length,
       isk: map['isk'],
     );
   }

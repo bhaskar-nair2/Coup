@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 class Isk extends ChangeNotifier {
   int _counter = 0;
@@ -6,7 +6,8 @@ class Isk extends ChangeNotifier {
 
   static final Isk _isk = Isk._internal();
 
-  factory Isk() {
+  factory Isk(int value) {
+    _isk.counter = value;
     return _isk;
   }
 

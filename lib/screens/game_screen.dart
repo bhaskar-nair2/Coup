@@ -1,26 +1,27 @@
 import 'package:coup/components/all_moves.dart';
 import 'package:coup/components/isk_holder.dart';
+import 'package:coup/components/logoutBtn.dart';
 import 'package:coup/components/play_area.dart';
 import 'package:coup/components/power_card.dart';
-import 'package:coup/firebase/auth.dart';
 import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/chance.dart';
 import 'package:coup/modals/game_table.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
+import 'package:coup/modals/self.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class GameScreen extends StatelessWidget {
   GameScreen({Key key}) : super(key: key);
 
-  final Hand hand =
-      Hand([CardRole(RoleName.assassin), CardRole(RoleName.ambassador)]);
-  final Isk isk = Isk();
+  final Hand hand = Hand(['contessa', 'duke']);
+  final Isk isk = Isk(0);
   final Chance chance = Chance(0);
-  String tableId = "ymAmWOuxrNYwXxWDg1Mo";
-  FirestoreService db = FirestoreService();
+  final String tableId = "ymAmWOuxrNYwXxWDg1Mo";
+  final FirestoreService db = FirestoreService();
+  final SelfPlayer self = SelfPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class GameScreen extends StatelessWidget {
         ChangeNotifierProvider<Hand>.value(value: hand),
         ChangeNotifierProvider<Isk>.value(value: isk),
         ChangeNotifierProvider<Chance>.value(value: chance),
-        StreamProvider<GameTable>.value(value: db.tableStream(tableId))
+        StreamProvider<GameTable>.value(value: db.tableStream(tableId)) // needs catch error
       ],
       child: Scaffold(
         body: SafeArea(
@@ -40,18 +41,15 @@ class GameScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  // LogoutBtn(),
                   SizedBox(
                       height: 150,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          // IskHolder(),
+                          IskHolder(),
                           PowerCardHolder(),
-                          FlatButton(
-                            onPressed: () => {AuthService().signOut()},
-                            child: Text("Signout"),
-                          )
                         ],
                       )),
                 ],

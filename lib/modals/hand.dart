@@ -4,21 +4,43 @@ import 'package:flutter/foundation.dart';
 
 class Hand extends ChangeNotifier {
   PlayState state;
-  List<CardRole> cards;
-  List<CardAction> actions; // All possible actions in the hand
+  List<CardRole> _cards;
+
+  List<CardRole> get cards => _cards;
+  List<CardAction> get actions =>
+      _hand.cards.expand((element) => element.actions).toList()
+        ..removeWhere((v) => v == null);
 
   // Singleton
   static final Hand _hand = Hand._internal();
+  Hand._internal();
 
-  factory Hand(List<CardRole> cards) {
-    _hand.cards = cards;
-    _hand.state = PlayState.two;
-    _hand.actions = cards.expand((element) => element.actions).toList()
-      ..removeWhere((v) => v == null);
+  factory Hand(List<String> cardsArr) {
+    _hand.setCardFromString = cardsArr; // setter
+    _hand.refreshHand();
     return _hand;
   }
 
-  Hand._internal();
+  set cards(List<CardRole> cards) {
+    _cards = cards;
+    notifyListeners();
+  }
+
+  set setCardFromString(List<String> cardsArr) {
+    _cards = strToRole(cardsArr);
+    notifyListeners();
+  }
+
+  static List<CardRole> strToRole(List<String> cards) {
+    List<CardRole> cardRoles = List.generate(cards.length, (index) {
+      return CardRole(RoleName.values.firstWhere(
+        (e) =>
+            e.toString() == 'RoleName.' + cards[index].toString().toLowerCase(),
+        orElse: () => RoleName.ambassador,
+      ));
+    });
+    return cardRoles;
+  }
 
   refreshHand() {
     if (this.cards.length == 2)
@@ -27,8 +49,6 @@ class Hand extends ChangeNotifier {
       this.state = PlayState.one;
     else
       this.state = PlayState.out;
-    this.actions = cards.expand((element) => element.actions).toList()
-      ..removeWhere((v) => v == null);
     notifyListeners();
   }
 

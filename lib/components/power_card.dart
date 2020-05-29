@@ -18,6 +18,8 @@ class PowerCardHolder extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       itemCount: hand.cards.length,
       itemBuilder: (BuildContext cont, index) {
+        if (hand == null) return Text("loading");
+
         final card = hand.cards[index];
         return AspectRatio(
           aspectRatio: 1 / 1.3,

@@ -7,12 +7,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  AuthService auth = AuthService();
+  AuthService _auth = AuthService();
 
   @override
   void initState() {
     super.initState();
-    auth.getUser.then(
+    _auth.user.then(
       (user) {
         if (user != null) {
           Navigator.pushReplacementNamed(context, '/game-screen');
@@ -44,9 +44,9 @@ class LoginScreenState extends State<LoginScreen> {
               text: 'LOGIN WITH GOOGLE',
               icon: FontAwesomeIcons.google,
               color: Colors.black45,
-              loginMethod: auth.googleSignIn,
+              loginMethod: _auth.googleSignIn,
             ),
-            LoginButton(text: 'Continue as Guest', loginMethod: auth.anonLogin)
+            LoginButton(text: 'Continue as Guest', loginMethod: _auth.anonLogin)
           ],
         ),
       ),

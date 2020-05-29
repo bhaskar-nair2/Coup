@@ -41,33 +41,21 @@ class PlayArea extends StatelessWidget {
                   rotate: 90.0, // Default 0.0 degrees
                   child: Container(
                     color: Color(0xff97b2de),
-                    child: Center(
-                        child: Center(
-                      child: Stack(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              table?.occupied?.toString() ?? "Loading..",
-                              style:
-                                  TextStyle(color: Colors.amber, fontSize: 30),
-                            ),
-                          ),
-                          ListView.builder(
-                              itemCount: table?.occupied ?? 0,
-                              itemBuilder: (context, index) {
-                                return Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    table.players[index].cards.toString(),
-                                    style: TextStyle(
-                                        color: Colors.amber, fontSize: 30),
-                                  ),
-                                );
-                              })
-                        ],
-                      ),
-                    )),
+                    child: Stack(
+                      children: <Widget>[
+                        ListView.builder(
+                            itemCount: table?.occupied ?? 0,
+                            itemBuilder: (context, index) {
+                              return Text(
+                                'Cards: ${table.players[index].cards}',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 30,
+                                ),
+                              );
+                            })
+                      ],
+                    ),
                   ),
                 ),
               ),
