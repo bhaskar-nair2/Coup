@@ -19,11 +19,8 @@ class SelfPlayer extends ChangeNotifier {
   }
 
   factory SelfPlayer.fromFirebase(FirebaseUser user) {
-    print("user");
-    print(user?.uid);
     _self.user = user;
     _self.uid = user.uid;
-
     return _self;
   }
 

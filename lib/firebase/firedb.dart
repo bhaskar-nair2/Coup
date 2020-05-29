@@ -9,6 +9,6 @@ class FirestoreService {
         .collection('tables')
         .document(tableId)
         .snapshots()
-        .map((snap) => GameTable.fromMap(snap));
+        .map((snap) => GameTable.fromFirestore(snap));
   }
 }

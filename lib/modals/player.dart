@@ -2,15 +2,24 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/action.dart';
+import 'package:flutter/foundation.dart';
 
 class Player {
   DocumentReference ref;
   String name;
+  String nick;
   int cards;
   int isk;
-  bool self;
+  bool active;
 
-  Player({this.ref, this.cards, this.isk});
+  Player({
+    @required this.ref,
+    this.name = '',
+    this.cards = 0,
+    this.isk = 0,
+    this.nick = '',
+    this.active = false,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -20,17 +29,28 @@ class Player {
     };
   }
 
-  static Player fromMap(Map<String, dynamic> map) {
+  static Player fromFirebase(Map<String, dynamic> map, active) {
+    var name;
+    var nick;
+
+    DocumentReference ref = map["player"];
+    ref.get().then((value) {
+      name = value.data["name"];
+      nick = value.data["nick"];
+    });
+
+
     return Player(
       ref: map['player'], // playerREf
+      name: name,
       cards: map['hand'].length,
       isk: map['isk'],
+      nick: nick,
+      active: active,
     );
   }
 
   String toJson() => json.encode(toMap());
-
-  static Player fromJson(String source) => fromMap(json.decode(source));
 }
 
 class PlayerAction {

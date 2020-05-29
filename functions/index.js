@@ -6,3 +6,5 @@ admin.initializeApp({
 })
 
 exports.userFunctions = require('./modules/userFunctions');
+exports.tableFunctions = require('./modules/tableFunctions');
+
