@@ -1,18 +1,29 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/modals/isk.dart';
+import 'package:coup/modals/self.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class IskHolder extends StatelessWidget {
-  const IskHolder({Key key}) : super(key: key);
+  IskHolder({Key key}) : super(key: key);
+
+  final SelfPlayer self = SelfPlayer();
 
   @override
   Widget build(BuildContext context) {
     final isk = Provider.of<Isk>(context);
 
-    final HttpsCallable leaveTable = CloudFunctions.instance.getHttpsCallable(
-      functionName: 'tableFunctions-leaveTable',
-    );
+    final HttpsCallable leaveTableFunction = CloudFunctions.instance
+        .getHttpsCallable(functionName: 'tableFunctions-leaveTable');
+
+    leaveTable() async {
+      var resp = await leaveTableFunction.call(<String, dynamic>{
+        'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
+        'userId': self.uid,
+      });
+      print('$resp');
+      Navigator.of(context).pushReplacementNamed('/home-screen');
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,12 +59,10 @@ class IskHolder extends StatelessWidget {
           height: 20,
           width: 60,
           child: FlatButton(
+            splashColor: Colors.cyan,
             color: Colors.blue,
             child: Text("Exit", style: TextStyle()),
-            onPressed: () async {
-              var resp = await leaveTable();
-              Navigator.of(context).pushReplacementNamed('/home-screen');
-            },
+            onPressed: leaveTable,
           ),
         )
       ],

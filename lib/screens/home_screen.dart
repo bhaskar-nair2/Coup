@@ -55,10 +55,8 @@ class OptionButtons extends StatefulWidget {
 class _OptionButtonsState extends State<OptionButtons> {
   SelfPlayer self = SelfPlayer();
 
-  final HttpsCallable joinTableFunction =
-      CloudFunctions.instance.getHttpsCallable(
-    functionName: 'tableFunctions-joinTable',
-  );
+  final HttpsCallable joinTableFunction = CloudFunctions.instance
+      .getHttpsCallable(functionName: 'tableFunctions-joinTable');
 
   joinTable() async {
     var resp = await joinTableFunction.call(<String, dynamic>{
