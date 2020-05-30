@@ -1,6 +1,8 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coup/components/logoutBtn.dart';
 import 'package:coup/modals/self.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -59,12 +61,26 @@ class _OptionButtonsState extends State<OptionButtons> {
       .getHttpsCallable(functionName: 'tableFunctions-joinTable');
 
   joinTable() async {
-    var resp = await joinTableFunction.call(<String, dynamic>{
-      'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
-      'userId': self.uid,
-    });
-    print('$resp');
-    Navigator.of(context).pushReplacementNamed('/game-screen');
+    try {
+      Fluttertoast.showToast(
+        msg: "Joining Table",
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 12.0,
+      );
+      var resp = await joinTableFunction.call(<String, dynamic>{
+        'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
+        'userId': self.uid,
+      });
+      print('$resp');
+      Navigator.of(context).pushReplacementNamed('/game-screen');
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: "Error Joining Table $error",
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.red,
+        fontSize: 12.0,
+      );
+    }
   }
 
   @override
@@ -82,7 +98,8 @@ class _OptionButtonsState extends State<OptionButtons> {
           FlatButton(
             onPressed: () => {},
             child: Text("Create new Table"),
-          )
+          ),
+          LogoutBtn(),
         ],
       ),
     );
