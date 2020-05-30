@@ -54,7 +54,7 @@ exports.leaveTable =
 
       var player = tableData.players.find(pl => pl.id === data.userId)
       if (player === undefined) {
-        throw new functions.https.HttpsError('aborted', 'Player Not in Table');
+        return { status: 200, data: "Not in table" }
       }
 
       var newOccupied = tableData.players.length + 1
