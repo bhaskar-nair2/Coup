@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/game_table.dart';
 import 'package:flutter/material.dart';
 import 'package:polygon_clipper/polygon_clipper.dart';
@@ -12,7 +11,7 @@ class PlayArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final table = Provider.of<GameTable>(context);
-    double tableSize = 350;
+    double tableSize = MediaQuery.of(context).size.width - 50;
     return SizedBox.expand(
       child: Container(
         height: MediaQuery.of(context).size.height,
@@ -27,31 +26,33 @@ class PlayArea extends StatelessWidget {
             ],
           ),
         ),
-        child: Stack(
-          overflow: Overflow.clip,
-          children: [
-            Positioned(
-              top: (MediaQuery.of(context).size.height - tableSize) / 2,
-              left: (MediaQuery.of(context).size.width - tableSize) / 2,
-              child: SizedBox(
-                height: tableSize,
-                width: tableSize,
-                child: ClipPolygon(
-                  sides: 6,
-                  borderRadius: 5.0,
-                  rotate: 90.0,
-                  child: Container(
-                    color: Color(0xff092147),
-                    padding: EdgeInsets.all(40),
-                    child: Center(
-                      child: ClipPolygon(
-                        sides: 6,
-                        borderRadius: 5.0,
-                        rotate: 90.0,
-                        child: Container(
-                          color: Color(0xff97b2de),
-                          child: Center(
-                            child: PlayersData(table: table),
+        child: SafeArea(
+          child: Stack(
+            overflow: Overflow.clip,
+            children: [
+              Positioned(
+                top: (MediaQuery.of(context).size.height - tableSize) / 2,
+                left: (MediaQuery.of(context).size.width - tableSize) / 2,
+                child: SizedBox(
+                  height: tableSize,
+                  width: tableSize,
+                  child: ClipPolygon(
+                    sides: 6,
+                    borderRadius: 5.0,
+                    rotate: 90.0,
+                    child: Container(
+                      color: Color(0xff092147),
+                      padding: EdgeInsets.all(40),
+                      child: Center(
+                        child: ClipPolygon(
+                          sides: 6,
+                          borderRadius: 5.0,
+                          rotate: 90.0,
+                          child: Container(
+                            color: Color(0xff97b2de),
+                            child: Center(
+                              child: PlayersData(table: table),
+                            ),
                           ),
                         ),
                       ),
@@ -59,8 +60,8 @@ class PlayArea extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
