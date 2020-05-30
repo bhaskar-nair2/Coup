@@ -15,7 +15,7 @@ class LoginScreenState extends State<LoginScreen> {
     _auth.user.then(
       (user) {
         if (user != null) {
-          Navigator.pushReplacementNamed(context, '/game-screen');
+          Navigator.pushReplacementNamed(context, '/home-screen');
         }
       },
     );
