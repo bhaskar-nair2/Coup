@@ -64,7 +64,7 @@ class _OptionButtonsState extends State<OptionButtons> {
       'userId': self.uid,
     });
     print('$resp');
-    Navigator.of(context).pushNamed('/game-screen');
+    Navigator.of(context).pushReplacementNamed('/game-screen');
   }
 
   @override

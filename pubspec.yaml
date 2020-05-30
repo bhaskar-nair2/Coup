@@ -60,8 +60,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/roleLogos/contessa.png
-    - assets/cardImagesImp/ambassadorCard.png
-    - assets/cardImagesImp/assassinCard.png
+    - assets/cardImages/ambassadorCard.png
+    - assets/cardImages/assassinCard.png
     - assets/cardImages/blankCard.png
     - assets/cardImages/captainCard.png
     - assets/cardImages/contessaCard.png

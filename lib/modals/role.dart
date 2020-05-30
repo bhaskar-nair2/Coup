@@ -99,9 +99,9 @@ extension RoleColorExtention on RoleName {
       case RoleName.contessa:
         return AssetImage('assets/cardImages/contessaCard.png');
       case RoleName.assassin:
-        return AssetImage('assets/cardImagesImp/assassinCard.png');
+        return AssetImage('assets/cardImages/assassinCard.png');
       case RoleName.ambassador:
-        return AssetImage('assets/cardImagesImp/ambassadorCard.png');
+        return AssetImage('assets/cardImages/ambassadorCard.png');
       case RoleName.captain:
         return AssetImage('assets/cardImages/captainCard.png');
       default:
