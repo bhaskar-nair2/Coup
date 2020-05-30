@@ -84,17 +84,8 @@ class PlayersData extends StatelessWidget {
                 color: Colors.grey,
               ),
               children: table.players.map((player) {
-                DocumentReference ref = player.ref;
                 return TableRow(decoration: BoxDecoration(), children: [
-                  FutureBuilder(
-                    future: ref.get(),
-                    builder: (context, AsyncSnapshot value) {
-                      if (value.hasData)
-                        return Text(value?.data["nick"] ?? '');
-                      else
-                        return Text('');
-                    },
-                  ),
+                  Text(player.nick.toString() ?? ''),
                   Text(player.cards.toString() ?? ''),
                   Text(player.isk.toString() ?? '')
                 ]);

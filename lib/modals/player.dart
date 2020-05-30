@@ -30,22 +30,12 @@ class Player {
   }
 
   static Player fromFirebase(Map<String, dynamic> map, active) {
-    var name;
-    var nick;
-
-    DocumentReference ref = map["player"];
-    ref.get().then((value) {
-      name = value.data["name"];
-      nick = value.data["nick"];
-    });
-
-
     return Player(
       ref: map['player'], // playerREf
-      name: name,
+      name: map["name"],
       cards: map['hand'].length,
       isk: map['isk'],
-      nick: nick,
+      nick: map["nick"],
       active: active,
     );
   }
