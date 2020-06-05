@@ -2,10 +2,7 @@ import 'package:coup/components/all_moves.dart';
 import 'package:coup/components/play_area.dart';
 import 'package:coup/components/self_area.dart';
 import 'package:coup/firebase/firedb.dart';
-import 'package:coup/modals/chance.dart';
 import 'package:coup/modals/game_table.dart';
-import 'package:coup/modals/hand.dart';
-import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/self.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +43,7 @@ class GameScreen extends StatelessWidget {
       child: Scaffold(
         body: Stack(children: [
           PlayArea(),
-          // SelfArea(),
+          SelfArea(),
           AllMovesList(),
         ]),
       ),
@@ -54,8 +51,3 @@ class GameScreen extends StatelessWidget {
   }
 }
 
-// providers: [
-//   ChangeNotifierProvider<Hand>.value(value: _player.hand),
-//   ChangeNotifierProvider<Isk>.value(value: _player.isk)
-//   ChangeNotifierProvider<Isk>.value(value: _player.chance)
-// ],
