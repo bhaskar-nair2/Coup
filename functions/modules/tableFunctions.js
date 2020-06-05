@@ -95,6 +95,10 @@ exports.correctOccupied =
     return
   })
 
+exports.setChance =
+  functions.https.onCall(async (data, context) => {
+    // update table chance to next user
+  })
 
 function dealCards() {
   // TODO: need a way to deal only 4 of each type in a table

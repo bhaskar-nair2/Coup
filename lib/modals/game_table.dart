@@ -5,6 +5,7 @@ import 'package:coup/modals/turn.dart';
 import 'package:flutter/material.dart';
 
 class GameTable extends ChangeNotifier {
+  String tableId;
   int occupied = 0; // Exact number, index from 1
   List<Player> players = [];
   List<Turn> turn;
@@ -21,8 +22,8 @@ class GameTable extends ChangeNotifier {
   factory GameTable.fromFirestore(DocumentSnapshot snap) {
     List<DocumentReference> _players = List.castFrom(snap.data['players']);
 
+    _table.tableId = snap.documentID;
     _table.active = snap.data["active"];
-
     _table.players = List.generate(_players.length, (index) {
       Player player = Player(playerId: _players[index].documentID);
       return player;
