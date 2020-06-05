@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/game_table.dart';
 import 'package:flutter/material.dart';
 import 'package:polygon_clipper/polygon_clipper.dart';
@@ -10,7 +11,6 @@ class PlayArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final table = Provider.of<GameTable>(context);
     double tableSize = MediaQuery.of(context).size.width - 50;
     return SizedBox.expand(
       child: Container(
@@ -51,7 +51,7 @@ class PlayArea extends StatelessWidget {
                           child: Container(
                             color: Color(0xff97b2de),
                             child: Center(
-                              child: PlayersData(table: table),
+                              child: PlayersData(),
                             ),
                           ),
                         ),
@@ -69,28 +69,36 @@ class PlayArea extends StatelessWidget {
 }
 
 class PlayersData extends StatelessWidget {
-  const PlayersData({Key key, this.table}) : super(key: key);
+  PlayersData({Key key}) : super(key: key);
 
-  final GameTable table;
+  final Firestore _db = Firestore.instance;
 
   @override
   Widget build(BuildContext context) {
+    final _table = Provider.of<GameTable>(context);
+
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.all(40),
-      child: table != null
-          ? Table(
-              border: TableBorder.all(
-                width: 1,
-                color: Colors.grey,
+      child: _table != null
+          ? Container(
+              child: Column(
+                children: _table.players.map((player) {
+                  return StreamBuilder(
+                    stream: _db
+                        .collection('players')
+                        .document(player.playerId)
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData)
+                        return Text(
+                            "${snapshot.data["nick"]}, ${snapshot.data["cards"]}, ${snapshot.data["isk"]}");
+                      else
+                        return Text("Loading..");
+                    },
+                  );
+                }).toList(),
               ),
-              children: table.players.map((player) {
-                return TableRow(decoration: BoxDecoration(), children: [
-                  Text(player.nick.toString() ?? ''),
-                  Text(player.cards.toString() ?? ''),
-                  Text(player.isk.toString() ?? '')
-                ]);
-              }).toList(),
             )
           : Text("Loading"),
     );

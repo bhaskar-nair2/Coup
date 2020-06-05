@@ -3,8 +3,8 @@ import 'package:coup/modals/role.dart';
 import 'package:flutter/foundation.dart';
 
 class Hand extends ChangeNotifier {
-  PlayState state;
-  List<CardRole> _cards;
+  PlayState state = PlayState.out;
+  List<CardRole> _cards = [];
 
   List<CardRole> get cards => _cards;
   List<CardAction> get actions =>
@@ -15,7 +15,11 @@ class Hand extends ChangeNotifier {
   static final Hand _hand = Hand._internal();
   Hand._internal();
 
-  factory Hand(List<String> cardsArr) {
+  factory Hand() {
+    return _hand;
+  }
+
+  factory Hand.fromList(List<String> cardsArr) {
     _hand.setCardFromString = cardsArr; // setter
     _hand.refreshHand();
     return _hand;

@@ -6,34 +6,28 @@ import 'package:flutter/material.dart';
 
 class GameTable extends ChangeNotifier {
   int occupied = 0; // Exact number, index from 1
-  List<Player> players;
+  List<Player> players = [];
   List<Turn> turn;
-  DocumentReference active;
+  DocumentReference active; // ! change later
   static SelfPlayer self = SelfPlayer();
 
-  GameTable({this.occupied, List players, turn, DocumentReference active}) {
-    this.active = active;
-    this.players = List.generate(players.length, (index) {
-      var playerData = players[index];
-      bool isActive = playerData["player"] == active;
+  static final GameTable _table = GameTable._internal();
+  GameTable._internal();
 
-      var player = Player.fromFirebase(playerData,isActive);
-
-      if (player.ref.documentID == self.uid) {
-        // user data
-        List<String> cards = List.castFrom(playerData["hand"]);
-        self.setTableData(iskVal: player.isk, cards: cards);
-      }
-      return player;
-    });
+  factory GameTable() {
+    return _table;
   }
 
-  factory GameTable.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data;
-    return GameTable(
-        occupied: data["occupied"],
-        players: data['players'],
-        turn: data["turn"],
-        active: data["active"]);
+  factory GameTable.fromFirestore(DocumentSnapshot snap) {
+    List<DocumentReference> _players = List.castFrom(snap.data['players']);
+
+    _table.active = snap.data["active"];
+
+    _table.players = List.generate(_players.length, (index) {
+      Player player = Player(playerId: _players[index].documentID);
+      return player;
+    });
+
+    return _table;
   }
 }

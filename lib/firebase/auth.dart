@@ -9,17 +9,10 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
 
-  Future<SelfPlayer> get user async {
-    FirebaseUser user = await _auth.currentUser();
-    if (user != null)
-      return createSelfUser(user);
-    else
-      return null;
-  }
-
+  Future<FirebaseUser> get user => _auth.currentUser();
   Stream<FirebaseUser> get authState => _auth.onAuthStateChanged;
 
-  Future<SelfPlayer> googleSignIn() async {
+  void googleSignIn() async {
     try {
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
       GoogleSignInAuthentication googleAuth =
@@ -30,27 +23,19 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
 
-      FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-      SelfPlayer player = createSelfUser(user);
-      return player;
+      await _auth.signInWithCredential(credential);
     } catch (error) {
       print('Error: $error');
       return null;
     }
   }
 
-  Future<SelfPlayer> anonLogin() async {
-    FirebaseUser user = (await _auth.signInAnonymously()).user;
-    createSelfUser(user);
-    SelfPlayer player = createSelfUser(user);
-    return player;
-  }
-
-  SelfPlayer createSelfUser(FirebaseUser user) {
-    // Sets the singleton to this user
-    print(user);
-    SelfPlayer _player = SelfPlayer.fromFirebase(user);
-    return _player;
+  void anonLogin() async {
+    try {
+      await _auth.signInAnonymously();
+    } catch (error) {
+      print("$error");
+    }
   }
 
   Future<void> signOut() {

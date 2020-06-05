@@ -12,3 +12,13 @@ exports.createUserRecord =
       nick: "PUTA",
     });
   })
+
+// only for updating details like name and all
+exports.updateUserRecord =
+  functions.https.onCall(async (data, context) => {
+    var user = db.collection('players').doc(data.userId);
+    return user.update({
+      name: data.name,
+      nick: data.nick
+    })
+  })

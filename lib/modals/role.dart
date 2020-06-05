@@ -8,6 +8,11 @@ class CardRole {
   String name;
   List<CardAction> actions;
 
+  @override
+  bool operator ==(covariant CardRole other) => other.name == name;
+  @override
+  int get hashCode => super.hashCode;
+
   CardRole(this.role) {
     switch (this.role) {
       case RoleName.global:
@@ -61,11 +66,6 @@ class CardRole {
         break;
     }
   }
-
-  @override
-  bool operator ==(covariant CardRole other) => other.role == role;
-  @override
-  int get hashCode => super.hashCode;
 }
 
 enum RoleName { global, duke, contessa, assassin, ambassador, captain }

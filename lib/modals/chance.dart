@@ -2,16 +2,20 @@ import 'package:flutter/foundation.dart';
 
 class Chance extends ChangeNotifier {
   String id;
-  bool active;
-  int currentPos;
-  int selfPos;
-  int round;
+  bool active = false;
+  int currentPos = 0;
+  int selfPos = 0;
+  int round = 0;
 
   static final Chance _chance = Chance._internal();
 
   Chance._internal();
 
-  factory Chance(pos) {
+  factory Chance() {
+    return _chance;
+  }
+
+  factory Chance.withPos(pos) {
     _chance.selfPos = pos;
     return _chance;
   }

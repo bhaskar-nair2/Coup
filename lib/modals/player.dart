@@ -1,46 +1,28 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/action.dart';
 import 'package:flutter/foundation.dart';
 
 class Player {
-  DocumentReference ref;
-  String name;
-  String nick;
-  int cards;
-  int isk;
-  bool active;
+  String playerId;
+  String name = '';
+  String nick = '';
+  int cards = 0;
+  int isk = 0;
+  bool active = false;
 
-  Player({
-    @required this.ref,
-    this.name = '',
-    this.cards = 0,
-    this.isk = 0,
-    this.nick = '',
-    this.active = false,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'cards': cards,
-      'isk': isk,
-    };
-  }
+  Player({@required this.playerId});
 
   static Player fromFirebase(Map<String, dynamic> map, active) {
     return Player(
-      ref: map['player'], // playerREf
-      name: map["name"],
-      cards: map['hand'].length,
-      isk: map['isk'],
-      nick: map["nick"],
-      active: active,
+      playerId: map['player'], // playerREf
+      // name: map["name"],
+      // cards: map['hand'].length,
+      // isk: map['isk'],
+      // nick: map["nick"],
+      // active: active,
     );
   }
 
-  String toJson() => json.encode(toMap());
+  // String toJson() => json.encode(toMap());
 }
 
 class PlayerAction {

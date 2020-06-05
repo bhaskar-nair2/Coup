@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
 import 'package:coup/repos/activationFunctions.dart';

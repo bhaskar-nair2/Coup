@@ -1,6 +1,6 @@
-# coup
+# Coup
 
-A new Flutter project.
+The strategic card game Coup a an App. 
 
 ## Getting Started
 

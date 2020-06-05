@@ -75,7 +75,7 @@ class LoginButton extends StatelessWidget {
         onPressed: () async {
           var user = await loginMethod();
           if (user != null) {
-            Navigator.pushReplacementNamed(context, '/game-screen');
+            Navigator.pushReplacementNamed(context, '/home-screen');
           }
         },
         label: Expanded(

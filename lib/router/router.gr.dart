@@ -59,7 +59,10 @@ class Router extends RouterBase {
         }
         final typedArgs = args as GameScreenArguments ?? GameScreenArguments();
         return MaterialPageRoute<dynamic>(
-          builder: (context) => GameScreen(key: typedArgs.key),
+          builder: (context) => GameScreen(
+              key: typedArgs.key,
+              userId: typedArgs.userId,
+              tableId: typedArgs.tableId),
           settings: settings,
         );
       default:
@@ -81,5 +84,7 @@ class HomeScreenArguments {
 //GameScreen arguments holder class
 class GameScreenArguments {
   final Key key;
-  GameScreenArguments({this.key});
+  final String userId;
+  final String tableId;
+  GameScreenArguments({this.key, this.userId, this.tableId});
 }

@@ -10,32 +10,24 @@ exports.joinTable =
       var user = db.collection("players").doc(data.userId);
       var tableData = (await table.get()).data()
 
-      var playerList = tableData.players.map(data => data.id)
-
       // table is open
       if (tableData.isOpen === true) {
         // no duplicate player
-        if (playerList.includes(data.userId)) {
-          throw new functions.https.HttpsError('aborted', 'Player already present');
-        }
-
-        var userData = (await user.get()).data()
         var newOccupied = tableData.players.length + 1
 
-        table.update(
-          {
-            occupied: newOccupied,
-            isOpen: newOccupied < 6 ? true : false,
-            players: admin.firestore.FieldValue.arrayUnion({
-              id: data.userId,
-              isk: 0,
-              hand: dealCards(),
-              name: userData.name,
-              nick: userData.nick,
-              player: user
-            })
-          }
-        )
+        table.update({
+          occupied: newOccupied,
+          isOpen: newOccupied < 6 ? true : false,
+          players: admin.firestore.FieldValue.arrayUnion(user)
+        })
+
+        user.update({
+          isk: 0,
+          hand: dealCards(),
+          chance: false,
+          table: table
+        })
+
         return { status: 200, data: "Added to table" }
       }
       else {
@@ -46,26 +38,35 @@ exports.joinTable =
       throw new functions.https.HttpsError('invalid-argument', 'Error in data');
   })
 
+// todo: Correct this
 exports.leaveTable =
   functions.https.onCall(async (data, context) => {
     if (data.tableId !== null && data.userId !== null) {
       var table = db.collection("tables").doc(data.tableId);
+      var user = db.collection("players").doc(data.userId);
       var tableData = (await table.get()).data()
 
-      var player = tableData.players.find(pl => pl.id === data.userId)
-      if (player === undefined) {
-        return { status: 200, data: "Not in table" }
-      }
+      // var player = tableData.players.find(pl => pl === user)
 
-      var newOccupied = tableData.players.length + 1
+      // if (player === undefined) {
+      //   return { status: 200, data: "Not in table" }
+      // }
 
-      table.update(
-        {
-          occupied: newOccupied,
-          isOpen: newOccupied < 6 ? true : false,
-          players: admin.firestore.FieldValue.arrayRemove(player)
-        }
-      )
+      var newOccupied = tableData.players.length - 1
+
+      table.update({
+        occupied: newOccupied,
+        isOpen: newOccupied < 6 ? true : false,
+        players: admin.firestore.FieldValue.arrayRemove(user)
+      })
+
+      user.update({
+        isk: null,
+        hand: null,
+        chance: false,
+        table: null
+      })
+
       return { status: 200, data: "Removed from table" }
     }
     else
