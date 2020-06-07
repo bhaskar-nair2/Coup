@@ -20,4 +20,12 @@ class FirestoreService {
         .snapshots()
         .map((snap) => SelfPlayer.fromFirestore(snap));
   }
+
+  Stream<SelfPlayer> turnStream(String turnId) {
+    return _db
+        .collection('turns')
+        .document(turnId)
+        .snapshots()
+        .map((snap) => SelfPlayer.fromFirestore(snap));
+  }
 }
