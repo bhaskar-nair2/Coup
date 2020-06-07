@@ -33,6 +33,6 @@ class ActivationFunctions {
     else
       cb(false);
     // TODO: Remove
-    cb(true);
+    // cb(true);
   }
 }

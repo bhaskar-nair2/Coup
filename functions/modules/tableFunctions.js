@@ -57,7 +57,7 @@ exports.leaveTable =
       table.update({
         occupied: newOccupied,
         isOpen: newOccupied < 6 ? true : false,
-        players: admin.firestore.FieldValue.arrayRemove(user)
+        players: db.FieldValue.arrayRemove(user)
       })
 
       user.update({

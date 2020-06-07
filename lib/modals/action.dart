@@ -32,6 +32,8 @@ class CardAction {
   Function caller;
   Function activator;
 
+  final CallerFunctions _callerFns = CallerFunctions();
+
   setActive(bool value) {
     this.active = value;
   }
@@ -43,7 +45,7 @@ class CardAction {
         this.name = "Income";
         this.description = "Take 1 ISK as Income";
         this.type = ActionType.utility;
-        this.caller = (context) => CallerFunctions.incomeCall(context);
+        this.caller = (context) => _callerFns.incomeCall(context);
         this.activator = (context) =>
             ActivationFunctions.incomeActivation(context, this.setActive);
         break;
@@ -51,7 +53,7 @@ class CardAction {
         this.name = "Foreign Aid";
         this.description = "Take 2 ISK as foreign aid, non-blockable";
         this.type = ActionType.utility;
-        this.caller = (context) => CallerFunctions.aidCall(context);
+        this.caller = (context) => _callerFns.aidCall(context);
         this.activator = (context) =>
             ActivationFunctions.aidActivation(context, this.setActive);
         break;

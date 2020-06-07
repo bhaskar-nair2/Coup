@@ -6,6 +6,7 @@ import 'package:coup/modals/isk.dart';
 import 'package:flutter/foundation.dart';
 
 class SelfPlayer extends ChangeNotifier {
+  DocumentReference ref;
   Hand hand = Hand();
   Isk isk = Isk(0);
   Chance chance = Chance();
@@ -25,6 +26,7 @@ class SelfPlayer extends ChangeNotifier {
 
   factory SelfPlayer.fromFirestore(DocumentSnapshot snap) {
     List<String> handList = List.castFrom(snap.data['hand']);
+    _self.ref = snap.reference;
     _self.isk = Isk(snap.data['isk']);
     _self.hand = Hand.fromList(handList);
     _self.uid = snap.documentID;

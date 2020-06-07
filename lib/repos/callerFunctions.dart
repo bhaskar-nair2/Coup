@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/components/callerDialogs/exchange_dialog.dart';
 import 'package:coup/modals/game_table.dart';
@@ -5,36 +6,27 @@ import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
 import 'package:coup/modals/self.dart';
+import 'package:coup/repos/globalFbFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class CallerFunctions {
-  static incomeCall(BuildContext context) async {
-    final _table = Provider.of<GameTable>(context, listen: false);
-    final SelfPlayer _self = Provider.of<SelfPlayer>(context, listen: false);
+  var _fbFns = FbFunctions();
+  final SelfPlayer _self = SelfPlayer();
+  final GameTable _table = GameTable();
 
-    Fluttertoast.showToast(
-      msg: "Taking Income",
-      gravity: ToastGravity.BOTTOM,
-      textColor: Colors.white,
-      backgroundColor: Colors.black54,
-    );
-
-    final HttpsCallable updateIskFunc = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'playerFunctions-updateIsk');
-
-    var resp = await updateIskFunc.call(<String, dynamic>{
-      'tableId': _table.tableId,
-      'userId': _self.uid,
-      "isk": _self.isk.counter + 1
-    });
+  incomeCall(BuildContext context) async {
+    await _fbFns.addActionTurn({"action": "income", "player": _self.uid});
+    Fluttertoast.showToast(msg: "Taking Income");
+    await _fbFns.updateIsk(1);
   }
 
-  static aidCall(BuildContext context) {
-    final isk = Provider.of<Isk>(context, listen: false);
-    isk.increment(2);
+  aidCall(BuildContext context) async {
+    await _fbFns.addActionTurn({"action": "aid", "player": _self.uid});
+    Fluttertoast.showToast(msg: "Taking Aid");
+    await _fbFns.updateIsk(2);
   }
 
   static coupCall(BuildContext context) {

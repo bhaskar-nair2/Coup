@@ -6,12 +6,13 @@ const db = admin.firestore();
 // add action (player,table,data)
 
 // * isk change (user, table, value)
-exports.iskChange =
-  functions.https.onCall(async (data, context) => {
-    var table = db.collection("tables").doc(data.tableId);
-    var user = db.collection("players").doc(data.userId);
-    var tableData = (await table.get()).data()
+exports.addTurn =
+  functions.https.onCall((data, context) => {
+    var user = db.collection('players').doc(data.userId);
+    var turn = db.collection('turns').doc(data.tableId);
 
-    var player = tableData.players.find(pl => pl.id === data.userId)
-
-  })
+    turn.update({
+      actions: db.FieldValue.arrayUnion
+    })
+    
+  });
