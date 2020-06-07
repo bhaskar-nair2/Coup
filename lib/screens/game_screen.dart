@@ -11,9 +11,6 @@ class GameScreen extends StatelessWidget {
   GameScreen({Key key, this.userId, this.tableId}) : super(key: key);
 
   final FirestoreService db = FirestoreService();
-  // final Hand hand = Hand(['contessa', 'duke']);
-  // final Isk isk = Isk(0);
-  // final Chance chance = Chance(0);
   final String userId;
   final String tableId;
 
@@ -26,7 +23,7 @@ class GameScreen extends StatelessWidget {
           initialData: SelfPlayer(),
           updateShouldNotify: (_, __) => true,
           catchError: (context, error) {
-            print(error);
+            print("SelfPlayer $error");
             return SelfPlayer();
           },
         ),
@@ -35,7 +32,7 @@ class GameScreen extends StatelessWidget {
           initialData: GameTable(),
           updateShouldNotify: (_, __) => true,
           catchError: (context, error) {
-            print("GameTableError: $context $error");
+            print("GameTableError: $error");
             return GameTable();
           },
         ) // needs catch error
@@ -50,4 +47,3 @@ class GameScreen extends StatelessWidget {
     );
   }
 }
-

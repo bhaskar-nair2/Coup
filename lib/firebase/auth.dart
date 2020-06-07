@@ -30,12 +30,8 @@ class AuthService {
     }
   }
 
-  void anonLogin() async {
-    try {
-      await _auth.signInAnonymously();
-    } catch (error) {
-      print("$error");
-    }
+  anonLogin() async {
+    await _auth.signInAnonymously();
   }
 
   Future<void> signOut() {

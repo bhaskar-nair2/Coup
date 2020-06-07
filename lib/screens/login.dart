@@ -1,5 +1,6 @@
 import 'package:coup/firebase/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,10 +14,9 @@ class LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _auth.user.then(
-      (user) {
-        if (user != null) {
-          Navigator.pushReplacementNamed(context, '/home-screen');
-        }
+      (user) => {
+        if (user != null)
+          {Navigator.pushReplacementNamed(context, '/home-screen')}
       },
     );
   }
@@ -73,9 +73,18 @@ class LoginButton extends StatelessWidget {
         icon: Icon(icon, color: Colors.white),
         color: color,
         onPressed: () async {
-          var user = await loginMethod();
-          if (user != null) {
+          try {
+            await loginMethod();
             Navigator.pushReplacementNamed(context, '/home-screen');
+          } catch (error) {
+            Fluttertoast.showToast(
+              msg: "Login Failed",
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 12.0,
+            );
           }
         },
         label: Expanded(

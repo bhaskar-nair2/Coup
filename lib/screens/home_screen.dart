@@ -62,7 +62,7 @@ class OptionButtons extends StatefulWidget {
 }
 
 class _OptionButtonsState extends State<OptionButtons> {
-  final HttpsCallable _callable = CloudFunctions.instance
+  final HttpsCallable _joinFnCallable = CloudFunctions.instance
       .getHttpsCallable(functionName: 'tableFunctions-joinTable');
 
   void joinTable(String userId) async {
@@ -74,7 +74,7 @@ class _OptionButtonsState extends State<OptionButtons> {
         gravity: ToastGravity.BOTTOM,
         fontSize: 12.0,
       );
-      var resp = await _callable.call(<String, dynamic>{
+     await _joinFnCallable.call(<String, dynamic>{
         'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
         'userId': userId,
       });
