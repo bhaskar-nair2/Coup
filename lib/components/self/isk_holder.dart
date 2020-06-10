@@ -7,11 +7,10 @@ import 'package:provider/provider.dart';
 class IskHolder extends StatelessWidget {
   IskHolder({Key key}) : super(key: key);
 
-  final SelfPlayer self = SelfPlayer();
-
   @override
   Widget build(BuildContext context) {
-    final isk = Provider.of<Isk>(context);
+    final _self = Provider.of<SelfPlayer>(context);
+    final isk = _self.isk;
 
     final HttpsCallable leaveTableFunction = CloudFunctions.instance
         .getHttpsCallable(functionName: 'tableFunctions-leaveTable');
@@ -19,7 +18,7 @@ class IskHolder extends StatelessWidget {
     leaveTable() async {
       var resp = await leaveTableFunction.call(<String, dynamic>{
         'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
-        'userId': self.uid,
+        'userId': _self.uid,
       });
       print('$resp');
       Navigator.of(context).pushReplacementNamed('/home-screen');

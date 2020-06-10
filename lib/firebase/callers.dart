@@ -26,3 +26,6 @@ class FirebaseCallers {
     }
   }
 }
+
+// final HttpsCallable leaveTableFunction = CloudFunctions.instance
+      // .getHttpsCallable(functionName: 'tableFunctions-leaveTable');

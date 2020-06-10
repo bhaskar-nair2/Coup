@@ -11,7 +11,10 @@ class FbFunctions {
   final Turn _turn = Turn();
 
   updateIsk(num incValue) async {
-    return await _self.ref.updateData(<String, dynamic>{
+    return await _db
+        .collection('players')
+        .document(_self.uid)
+        .updateData(<String, dynamic>{
       "isk": FieldValue.increment(incValue),
     });
   }

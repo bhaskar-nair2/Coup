@@ -8,31 +8,18 @@ class Hand extends ChangeNotifier {
 
   List<CardRole> get cards => _cards;
   List<CardAction> get actions =>
-      _hand.cards.expand((element) => element.actions).toList()
+      this.cards.expand((element) => element.actions).toList()
         ..removeWhere((v) => v == null);
 
-  // Singleton
-  static final Hand _hand = Hand._internal();
-  Hand._internal();
+  Hand();
 
-  factory Hand() {
-    return _hand;
-  }
-
-  factory Hand.fromList(List<String> cardsArr) {
-    _hand.setCardFromString = cardsArr; // setter
-    _hand.refreshHand();
-    return _hand;
+  Hand.fromList(List<String> cardsArr) {
+    this.cards = strToRole(cardsArr); // setter
   }
 
   set cards(List<CardRole> cards) {
     _cards = cards;
-    notifyListeners();
-  }
-
-  set setCardFromString(List<String> cardsArr) {
-    _cards = strToRole(cardsArr);
-    notifyListeners();
+    this.refreshHand();
   }
 
   static List<CardRole> strToRole(List<String> cards) {

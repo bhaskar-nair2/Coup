@@ -1,8 +1,9 @@
-// import 'package:coup/components/self/self_area.dart';
+import 'package:coup/components/self/self_area.dart';
 import 'package:coup/components/table/table_area.dart';
 // import 'package:coup/components/turn/turn.dart';
 import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/self.dart';
 // import 'package:coup/modals/firebase/self.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,13 @@ class GameScreen extends StatelessWidget {
             return GameTable();
           },
         ),
-        // ChangeNotifierProvider<SelfPlayer>.value(value: _self),
+        StreamProvider<SelfPlayer>.value(
+          value: FirestoreService.selfStream(userId),
+          catchError: (context, error) {
+            print(error);
+            return SelfPlayer();
+          },
+        ),
       ],
       child: SafeArea(
         child: Scaffold(
@@ -32,7 +39,7 @@ class GameScreen extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               TableArea(),
-              // SelfArea(),
+              SelfArea(),
               // TurnArea(),
             ],
           ),

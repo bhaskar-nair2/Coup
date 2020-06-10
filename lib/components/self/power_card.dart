@@ -1,5 +1,5 @@
+import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/game/action.dart';
-import 'package:coup/modals/game/hand.dart';
 import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,7 +10,8 @@ class PowerCardHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hand = Provider.of<Hand>(context);
+    final _self = Provider.of<SelfPlayer>(context);
+    final hand = _self.hand;
 
     return Row(
       children: List.generate(

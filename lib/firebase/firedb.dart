@@ -16,11 +16,12 @@ class FirestoreService {
   }
 
   static Stream<SelfPlayer> selfStream(String userId) {
-    return _db
-        .collection('players')
-        .document(userId)
-        .snapshots()
-        .map((snap) => SelfPlayer.fromFirestore(snap));
+    return _db.collection('players').document(userId).snapshots().map((snap) {
+      if (snap.exists)
+        return SelfPlayer.fromFirestore(snap);
+      else
+        return SelfPlayer();
+    });
   }
 
   static Stream<Turn> turnStream(String turnId) {
