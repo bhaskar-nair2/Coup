@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/game/action.dart';
 import 'package:flutter/foundation.dart';
 
-class Player {
+class Player extends ChangeNotifier {
   String playerId;
   String name = '';
   String nick = '';
@@ -9,20 +10,14 @@ class Player {
   int isk = 0;
   bool active = false;
 
-  Player({@required this.playerId});
+  Player();
 
-  static Player fromFirebase(Map<String, dynamic> map, active) {
-    return Player(
-      playerId: map['player'], // playerREf
-      // name: map["name"],
-      // cards: map['hand'].length,
-      // isk: map['isk'],
-      // nick: map["nick"],
-      // active: active,
-    );
+  // Stream<Player> get playerData = 
+
+  Player.fromRef(DocumentReference ref) {
+    this.playerId = ref.documentID;
   }
 
-  // String toJson() => json.encode(toMap());
 }
 
 class PlayerAction {

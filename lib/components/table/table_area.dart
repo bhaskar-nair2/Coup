@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/player.dart';
 import 'package:flutter/material.dart';
 import 'package:polygon_clipper/polygon_clipper.dart';
 import 'package:provider/provider.dart';
@@ -60,8 +61,6 @@ class TableArea extends StatelessWidget {
 class PlayersData extends StatelessWidget {
   PlayersData({Key key}) : super(key: key);
 
-  final Firestore _db = Firestore.instance;
-
   @override
   Widget build(BuildContext context) {
     final _table = Provider.of<GameTable>(context);
@@ -73,23 +72,32 @@ class PlayersData extends StatelessWidget {
           ? Container(
               child: Column(
                 children: _table.players.map((player) {
-                  return StreamBuilder(
-                    stream: _db
-                        .collection('players')
-                        .document(player.playerId)
-                        .snapshots(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData)
-                        return Text(
-                            "${snapshot.data["nick"]}, ${snapshot.data["cards"]}, ${snapshot.data["isk"]}");
-                      else
-                        return Text("Loading..");
-                    },
-                  );
+                  return PLayerDataMaker(player);
                 }).toList(),
               ),
             )
           : Text("Loading"),
+    );
+  }
+}
+
+class PLayerDataMaker extends StatelessWidget {
+  const PLayerDataMaker(this.player, {Key key}) : super(key: key);
+
+  static Firestore _db = Firestore.instance;
+  final Player player;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: _db.collection('players').document(player.playerId).snapshots(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData)
+          return Text(
+              "${snapshot.data["nick"]}, ${snapshot.data["cards"]}, ${snapshot.data["isk"]}");
+        else
+          return Text("Loading..");
+      },
     );
   }
 }

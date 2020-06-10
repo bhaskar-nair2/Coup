@@ -4,17 +4,18 @@ import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
 
 class FirestoreService {
-  final Firestore _db = Firestore.instance;
+  static final Firestore _db = Firestore.instance;
 
-  Stream<GameTable> tableStream(String tableId) {
-    return _db
-        .collection('tables')
-        .document(tableId)
-        .snapshots()
-        .map((snap) => GameTable.fromFirestore(snap));
+  static Stream<GameTable> tableStream(String tableId) {
+    return _db.collection('tables').document(tableId).snapshots().map((snap) {
+      if (snap.exists)
+        return GameTable.fromFirestore(snap);
+      else
+        return GameTable();
+    });
   }
 
-  Stream<SelfPlayer> selfStream(String userId) {
+  static Stream<SelfPlayer> selfStream(String userId) {
     return _db
         .collection('players')
         .document(userId)
@@ -22,7 +23,7 @@ class FirestoreService {
         .map((snap) => SelfPlayer.fromFirestore(snap));
   }
 
-  Stream<Turn> turnStream(String turnId) {
+  static Stream<Turn> turnStream(String turnId) {
     print('xxxxxxxxxxxxxxxxxxxx $turnId');
     return _db
         .collection('turns')

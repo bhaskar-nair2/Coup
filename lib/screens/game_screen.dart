@@ -1,43 +1,30 @@
-import 'package:coup/components/self/self_area.dart';
+// import 'package:coup/components/self/self_area.dart';
 import 'package:coup/components/table/table_area.dart';
-import 'package:coup/components/turn/all_moves.dart';
-import 'package:coup/components/turn/turn.dart';
+// import 'package:coup/components/turn/turn.dart';
+import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
-import 'package:coup/modals/firebase/self.dart';
+// import 'package:coup/modals/firebase/self.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GameScreen extends StatefulWidget {
+class GameScreen extends StatelessWidget {
   GameScreen({Key key, this.userId, this.tableId}) : super(key: key);
 
   final String userId;
   final String tableId;
 
   @override
-  _GameScreenState createState() => _GameScreenState();
-}
-
-class _GameScreenState extends State<GameScreen> {
-  GameTable _table = GameTable();
-  SelfPlayer _self = SelfPlayer();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<GameTable>.value(value: _table),
-        ChangeNotifierProvider<SelfPlayer>.value(value: _self),
+        StreamProvider<GameTable>.value(
+          value: FirestoreService.tableStream(tableId),
+          catchError: (context, error) {
+            print(error);
+            return GameTable();
+          },
+        ),
+        // ChangeNotifierProvider<SelfPlayer>.value(value: _self),
       ],
       child: SafeArea(
         child: Scaffold(
@@ -45,8 +32,8 @@ class _GameScreenState extends State<GameScreen> {
             fit: StackFit.expand,
             children: [
               TableArea(),
-              SelfArea(),
-              TurnArea(),
+              // SelfArea(),
+              // TurnArea(),
             ],
           ),
         ),

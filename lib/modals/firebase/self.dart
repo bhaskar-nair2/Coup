@@ -10,16 +10,11 @@ class SelfPlayer extends ChangeNotifier {
   Isk isk = Isk(0);
   String uid;
 
-  static final FirestoreService _fs = FirestoreService();
-
 // final task = task();
 
   static final SelfPlayer _self = SelfPlayer._internal();
   SelfPlayer._internal();
 
-  static startStream(String userId){
-    _fs.selfStream(userId).listen((event) { });
-  }
 
   factory SelfPlayer() {
     return _self;
