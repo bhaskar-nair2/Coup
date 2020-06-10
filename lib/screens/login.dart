@@ -25,31 +25,47 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.all(30),
-        decoration: BoxDecoration(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FlutterLogo(
-              size: 150,
-            ),
-            Text(
-              'Login to Start',
-              style: Theme.of(context).textTheme.headline5,
-              textAlign: TextAlign.center,
-            ),
-            Text('Your Tagline'),
-            LoginButton(
-              text: 'LOGIN WITH GOOGLE',
-              icon: FontAwesomeIcons.google,
-              color: Colors.black45,
-              loginMethod: _auth.googleSignIn,
-            ),
-            LoginButton(text: 'Continue as Guest', loginMethod: _auth.anonLogin)
-          ],
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/paintCardImg/base.jpg'),
+              fit: BoxFit.cover),
         ),
+        child: LoginBtnHolder(auth: _auth),
       ),
+    );
+  }
+}
+
+class LoginBtnHolder extends StatelessWidget {
+  const LoginBtnHolder({
+    Key key,
+    @required AuthService auth,
+  })  : _auth = auth,
+        super(key: key);
+
+  final AuthService _auth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        LoginButton(
+          text: 'Login with Google',
+          icon: FontAwesomeIcons.google,
+          color: Colors.blueAccent.shade100,
+          loginMethod: _auth.googleSignIn,
+        ),
+        LoginButton(
+          text: 'Continue as Guest',
+          color: Colors.blueGrey.shade300,
+          icon: FontAwesomeIcons.personBooth,
+          loginMethod: _auth.anonLogin,
+        )
+      ],
     );
   }
 }
@@ -67,15 +83,22 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      width: 250,
+      margin: EdgeInsets.only(bottom: 20),
       child: FlatButton.icon(
-        padding: EdgeInsets.all(30),
+        padding: EdgeInsets.all(15),
         icon: Icon(icon, color: Colors.white),
         color: color,
         onPressed: () async {
           try {
             await loginMethod();
             Navigator.pushReplacementNamed(context, '/home-screen');
+            Fluttertoast.showToast(
+              msg: "User Logged In",
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              fontSize: 12.0,
+            );
           } catch (error) {
             Fluttertoast.showToast(
               msg: "Login Failed",

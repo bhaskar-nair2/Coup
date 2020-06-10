@@ -27,25 +27,14 @@ class HomeScreen extends StatelessWidget {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: Colors.deepPurple,
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Coup",
-                    style: TextStyle(
-                      fontSize: 82,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.deepOrangeAccent,
-                    ),
-                  ),
-                  Text('"the game"'),
-                  SizedBox(height: 30),
-                  OptionButtons()
-                ],
-              ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/paintCardImg/base.jpg'),
+                  fit: BoxFit.fill),
+            ),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: OptionButtons(),
             ),
           ),
         ),
@@ -74,7 +63,7 @@ class _OptionButtonsState extends State<OptionButtons> {
         gravity: ToastGravity.BOTTOM,
         fontSize: 12.0,
       );
-     await _joinFnCallable.call(<String, dynamic>{
+      await _joinFnCallable.call(<String, dynamic>{
         'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
         'userId': userId,
       });
