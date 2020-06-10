@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coup/modals/game_table.dart';
-import 'package:coup/modals/self.dart';
-import 'package:coup/modals/turn.dart';
+import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/self.dart';
+import 'package:coup/modals/firebase/turn.dart';
 
 class FbFunctions {
   final _db = Firestore.instance;

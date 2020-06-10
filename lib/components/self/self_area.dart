@@ -1,9 +1,9 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/components/self/isk_holder.dart';
 import 'package:coup/components/self/power_card.dart';
+import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/game/hand.dart';
 import 'package:coup/modals/game/isk.dart';
-import 'package:coup/modals/self.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

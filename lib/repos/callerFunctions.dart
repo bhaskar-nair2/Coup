@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/components/callerDialogs/exchange_dialog.dart';
-import 'package:coup/modals/game_table.dart';
+import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/self.dart';
 // import 'package:coup/modals/hand.dart'; NONONOONONO
 // import 'package:coup/modals/isk.dart'; NONONOONONO
 // import 'package:coup/modals/role.dart'; NONONOONONO
-import 'package:coup/modals/self.dart';
 import 'package:coup/repos/globalFbFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

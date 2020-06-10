@@ -1,8 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/components/table/logoutBtn.dart';
 import 'package:coup/firebase/auth.dart';
-import 'package:coup/modals/game_table.dart';
-import 'package:coup/modals/self.dart';
 import 'package:coup/router/router.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

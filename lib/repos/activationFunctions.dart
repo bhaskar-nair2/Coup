@@ -1,9 +1,6 @@
-import 'package:coup/modals/turn.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 class ActivationFunctions {
-  final Turn _turn = Turn();
 
   static bool incomeActivation(BuildContext context) {
     // if (chance.active == true)

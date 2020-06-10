@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:coup/components/turn/action_card.dart';
 import 'package:coup/components/turn/roleTile.dart';
+import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/game/action.dart';
 import 'package:coup/modals/game/isk.dart';
 import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:coup/modals/self.dart';
 
 class AllMovesList extends StatelessWidget {
   const AllMovesList({Key key}) : super(key: key);

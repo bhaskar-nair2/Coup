@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/firebase/firedb.dart';
-import 'package:coup/modals/player.dart';
-import 'package:coup/modals/turn.dart';
+import 'package:coup/modals/firebase/player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
@@ -33,7 +32,6 @@ class GameTable extends ChangeNotifier {
     _table.tableId = snap.documentID;
     if (_table.turnId == null) {
       _table.turnId = snap.data["turn"].documentID;
-      Turn.startStrem(_table.turnId);
     }
     // move this to players bc
     _table.players = List.generate(_players.length, (index) {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coup/modals/game_table.dart';
-import 'package:coup/modals/self.dart';
-import 'package:coup/modals/turn.dart';
+import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/self.dart';
+import 'package:coup/modals/firebase/turn.dart';
 
 class FirestoreService {
   final Firestore _db = Firestore.instance;

@@ -2,8 +2,8 @@ import 'package:coup/components/self/self_area.dart';
 import 'package:coup/components/table/table_area.dart';
 import 'package:coup/components/turn/all_moves.dart';
 import 'package:coup/components/turn/turn.dart';
-import 'package:coup/modals/game_table.dart';
-import 'package:coup/modals/self.dart';
+import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/self.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,8 +23,6 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void initState() {
-    SelfPlayer.startStream(widget.userId);
-    GameTable.startStream(widget.tableId);
     super.initState();
   }
 
