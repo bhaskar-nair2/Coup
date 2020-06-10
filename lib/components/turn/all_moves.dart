@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:coup/components/turn/action_card.dart';
+import 'package:coup/components/turn/roleTile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:coup/components/roleTile.dart';
 import 'package:coup/modals/action.dart';
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
@@ -39,9 +39,7 @@ class AllMovesList extends StatelessWidget {
         maxChildSize: scrollerHeight, // ! needs to be dynamic
         builder: (BuildContext context, ScrollController scrollController) {
           return MultiProvider(
-              providers: [
-                ChangeNotifierProvider<Isk>.value(value: _self.isk)
-              ],
+              providers: [ChangeNotifierProvider<Isk>.value(value: _self.isk)],
               child: MovesHolder(
                 globalActionList: globalActionList,
                 allMoves: allMoves,
