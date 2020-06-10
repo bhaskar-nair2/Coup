@@ -1,7 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/components/self/isk_holder.dart';
 import 'package:coup/components/self/power_card.dart';
-import 'package:coup/modals/chance.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/self.dart';
@@ -38,24 +37,19 @@ class _SelfAreaState extends State<SelfArea> {
         ChangeNotifierProvider<Hand>.value(value: _self.hand),
         ChangeNotifierProvider<Isk>.value(value: _self.isk),
       ],
-      child: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              SizedBox(
-                  height: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      IskHolder(),
-                      PowerCardHolder(),
-                    ],
-                  )),
-            ],
-          ),
+      child: Container(
+        padding: EdgeInsets.all(15),
+        child: Stack(
+          overflow: Overflow.clip,
+          alignment: Alignment.topLeft,
+          children: <Widget>[
+            IskHolder(),
+            Positioned.directional(
+              textDirection: TextDirection.ltr,
+              bottom: 60,
+              child: PowerCardHolder(),
+            ),
+          ],
         ),
       ),
     );

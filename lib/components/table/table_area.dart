@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:polygon_clipper/polygon_clipper.dart';
 import 'package:provider/provider.dart';
 
-class PlayArea extends StatelessWidget {
-  const PlayArea({
+class TableArea extends StatelessWidget {
+  const TableArea({
     Key key,
   }) : super(key: key);
 

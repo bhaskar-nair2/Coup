@@ -12,80 +12,70 @@ class PowerCardHolder extends StatelessWidget {
   Widget build(BuildContext context) {
     final hand = Provider.of<Hand>(context);
 
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: hand.cards.length,
-      itemBuilder: (BuildContext cont, index) {
-        if (hand == null) return Text("loading");
-
-        final card = hand.cards[index];
-        return AspectRatio(
-          aspectRatio: 1 / 1.3,
-          child: GestureDetector(
-            onTap: () {
-              print("tap Tap");
-              List<CardAction> availActions = card.actions
-                  .where((action) => action.active == true)
-                  .toList();
-              if (availActions.length == 0)
-                Fluttertoast.showToast(
-                  msg: "No Actions Available",
-                  gravity: ToastGravity.CENTER,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 12.0,
-                );
-              else {
-                CardAction action = availActions[0];
-                action.caller(context);
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(image: card.role.cardImage)),
-            ),
-          ),
-        );
-      },
+    return Row(
+      children: List.generate(
+        hand.cards.length,
+        (index) => PowerCard(
+          card: hand.cards[index],
+          index: index,
+          single: hand.cards.length == 1,
+        ),
+      ),
     );
   }
 }
 
-class AbilityBox extends StatelessWidget {
-  const AbilityBox({
-    Key key,
-    @required this.role,
-    this.isActivated = false,
-  }) : super(key: key);
+class PowerCard extends StatelessWidget {
+  const PowerCard(
+      {Key key, @required this.card, @required this.index, this.single = false})
+      : super(key: key);
 
-  final CardRole role;
-  final bool isActivated; // Passive is activated
+  final CardRole card;
+  final int index;
+  final bool single;
+
+  double rotateAngle(index) {
+    if (single) return 0;
+    if (index % 2 == 0)
+      return -15;
+    else
+      return 15;
+  }
+
+  doAction(card, context) {
+    print("tap Tap");
+    List<CardAction> availActions =
+        card.actions.where((action) => action.active == true).toList();
+    if (availActions.length == 0) {
+      Fluttertoast.showToast(
+        msg: "No Actions Available",
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 12.0,
+      );
+    } else {
+      CardAction action = availActions[0];
+      action.caller(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3),
-      child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: role.actions.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 3),
-            child: Text(
-              role.actions[index].name,
-              style: TextStyle(
-                fontSize: 8,
-                color:
-                    role.actions[index].active ? Colors.white : Colors.white24,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          );
-        },
+    return GestureDetector(
+      onTap: () {
+        doAction(card, context);
+      },
+      child: Transform.rotate(
+        angle: 3.14 / rotateAngle(index),
+        child: Container(
+          width: 190,
+          height: 320,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: card.role.cardImage),
+          ),
+        ),
       ),
     );
   }
