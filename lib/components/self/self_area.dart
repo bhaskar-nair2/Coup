@@ -47,6 +47,7 @@ class _SelfAreaState extends State<SelfArea> {
             Positioned.directional(
               textDirection: TextDirection.ltr,
               bottom: 60,
+              start: -20,
               child: PowerCardHolder(),
             ),
           ],

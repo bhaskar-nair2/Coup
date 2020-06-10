@@ -70,7 +70,7 @@ class PowerCard extends StatelessWidget {
       child: Transform.rotate(
         angle: 3.14 / rotateAngle(index),
         child: Container(
-          width: 190,
+          width: 180,
           height: 320,
           decoration: BoxDecoration(
             image: DecorationImage(image: card.role.cardImage),
