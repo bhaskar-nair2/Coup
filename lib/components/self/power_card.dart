@@ -37,9 +37,9 @@ class PowerCard extends StatelessWidget {
   double rotateAngle(index) {
     if (single) return 0;
     if (index % 2 == 0)
-      return -15;
+      return -3.14 / 15;
     else
-      return 15;
+      return 3.14 / 15;
   }
 
   doAction(card, context) {
@@ -68,12 +68,15 @@ class PowerCard extends StatelessWidget {
         doAction(card, context);
       },
       child: Transform.rotate(
-        angle: 3.14 / rotateAngle(index),
-        child: Container(
-          width: 180,
-          height: 320,
-          decoration: BoxDecoration(
-            image: DecorationImage(image: card.role.cardImage),
+        angle: rotateAngle(index),
+        child: Opacity(
+          opacity: 1,
+          child: Container(
+            width: 180,
+            height: 330,
+            decoration: BoxDecoration(
+              image: DecorationImage(image: card.role.cardImage),
+            ),
           ),
         ),
       ),

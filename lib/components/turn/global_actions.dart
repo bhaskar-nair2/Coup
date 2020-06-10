@@ -7,9 +7,9 @@ class GlobalActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Wrap(
-        runSpacing: 40,
+        runSpacing: 20,
         alignment: WrapAlignment.center,
         children: <Widget>[
           Container(

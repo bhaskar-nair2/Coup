@@ -18,9 +18,11 @@ class TurnArea extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Container(
               width: 80,
-              height: 300,
-              color: Colors.black26,
               child: GlobalActions(),
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10)),
+              ),
             ),
           ),
           Align(
