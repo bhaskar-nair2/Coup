@@ -1,6 +1,6 @@
-import 'package:coup/modals/action.dart';
-import 'package:coup/modals/hand.dart';
-import 'package:coup/modals/role.dart';
+import 'package:coup/modals/game/action.dart';
+import 'package:coup/modals/game/hand.dart';
+import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';

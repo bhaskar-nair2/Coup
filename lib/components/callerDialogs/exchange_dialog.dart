@@ -1,6 +1,6 @@
 import 'package:coup/components/turn/roleTile.dart';
-import 'package:coup/modals/hand.dart';
-import 'package:coup/modals/role.dart';
+import 'package:coup/modals/game/hand.dart';
+import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 
 class ExchangeDialog extends StatelessWidget {

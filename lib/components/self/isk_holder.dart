@@ -1,5 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coup/modals/isk.dart';
+import 'package:coup/modals/game/isk.dart';
 import 'package:coup/modals/self.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:coup/components/turn/action_card.dart';
 import 'package:coup/components/turn/roleTile.dart';
+import 'package:coup/modals/game/action.dart';
+import 'package:coup/modals/game/isk.dart';
+import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:coup/modals/action.dart';
-import 'package:coup/modals/isk.dart';
-import 'package:coup/modals/role.dart';
 import 'package:coup/modals/self.dart';
 
 class AllMovesList extends StatelessWidget {
@@ -20,12 +20,8 @@ class AllMovesList extends StatelessWidget {
     // List of all roles
     final roleList = RoleName.values.map((role) => CardRole(role)).toList();
 
-    final List<CardAction> globalActionList =
-        CardRole(RoleName.global).actions; // GlobalActions
-
     List<List<CardAction>> allMoves = roleList
-        .where((role) =>
-            role.role != RoleName.global && !_self.hand.cards.contains(role))
+        .where((role) => !_self.hand.cards.contains(role))
         .map((e) => e.actions)
         .toList();
 
@@ -41,7 +37,6 @@ class AllMovesList extends StatelessWidget {
           return MultiProvider(
               providers: [ChangeNotifierProvider<Isk>.value(value: _self.isk)],
               child: MovesHolder(
-                globalActionList: globalActionList,
                 allMoves: allMoves,
                 scrollController: scrollController,
               ));
@@ -58,12 +53,10 @@ class AllMovesList extends StatelessWidget {
 class MovesHolder extends StatelessWidget {
   MovesHolder({
     Key key,
-    @required this.globalActionList,
     @required this.allMoves,
     @required this.scrollController,
   }) : super(key: key);
 
-  final List<CardAction> globalActionList;
   final List<List<CardAction>> allMoves;
   final ScrollController scrollController;
 
@@ -75,15 +68,6 @@ class MovesHolder extends StatelessWidget {
         shrinkWrap: true,
         controller: scrollController,
         children: <Widget>[
-          SizedBox(
-            height: 80,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                ...globalActionList.map((move) => ActionCard(move)).toList(),
-              ],
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.only(top: 6, left: 8),
             child: Text(

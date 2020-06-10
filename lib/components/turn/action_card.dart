@@ -1,5 +1,4 @@
-import 'package:coup/modals/action.dart';
-import 'package:coup/modals/role.dart';
+import 'package:coup/modals/game/action.dart';
 import 'package:flutter/material.dart';
 
 class ActionCard extends StatelessWidget {
@@ -17,7 +16,7 @@ class ActionCard extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1.8 / 1,
         child: Card(
-          color: action.active ? action.role.color : Colors.grey,
+          color: action.active ? Colors.blue : Colors.grey,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),

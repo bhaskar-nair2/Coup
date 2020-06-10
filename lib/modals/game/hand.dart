@@ -1,5 +1,5 @@
-import 'package:coup/modals/action.dart';
-import 'package:coup/modals/role.dart';
+import 'package:coup/modals/game/action.dart';
+import 'package:coup/modals/game/role.dart';
 import 'package:flutter/foundation.dart';
 
 class Hand extends ChangeNotifier {

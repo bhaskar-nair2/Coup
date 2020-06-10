@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/firebase/firedb.dart';
-import 'package:coup/modals/chance.dart';
-import 'package:coup/modals/self.dart';
+import 'package:coup/modals/game/chance.dart';
 
 class Turn {
   // used for global turn system, the chance is diffrent
   DocumentReference ref;
   String id;
-  Chance chance;
+  Chance chance; // NONONO
   var action;
   var block;
   var challenge;

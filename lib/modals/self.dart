@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/firebase/firedb.dart';
+import 'package:coup/modals/game/hand.dart';
+import 'package:coup/modals/game/isk.dart';
 import 'package:coup/modals/game_table.dart';
-import 'package:coup/modals/hand.dart';
-import 'package:coup/modals/isk.dart';
 import 'package:flutter/foundation.dart';
 
 class SelfPlayer extends ChangeNotifier {

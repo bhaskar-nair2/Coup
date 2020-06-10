@@ -1,4 +1,4 @@
-import 'package:coup/modals/role.dart';
+import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 
 class RoleTile extends StatelessWidget {

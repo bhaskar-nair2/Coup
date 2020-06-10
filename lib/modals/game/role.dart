@@ -1,7 +1,7 @@
+import 'package:coup/modals/game/action.dart';
+import 'package:coup/modals/game/actionData/role_card_actions.dart';
 import 'package:coup/style.dart';
 import 'package:flutter/material.dart';
-
-import 'package:coup/modals/action.dart';
 
 class CardRole {
   RoleName role;
@@ -15,66 +15,55 @@ class CardRole {
 
   CardRole(this.role) {
     switch (this.role) {
-      case RoleName.global:
-        this.name = "Global";
-        this.actions = [
-          CardAction(ActionName.income, this.role),
-          CardAction(ActionName.aid, this.role),
-          CardAction(ActionName.coup, this.role),
-        ];
-        break;
-
       case RoleName.duke:
         this.name = "Duke";
         this.actions = [
-          CardAction(ActionName.tax, this.role),
-          CardAction(ActionName.blockAid, this.role)
+          RoleCardActions.tax,
+          // CardAction(ActionName.blockAid, this.role)
         ];
         break;
 
       case RoleName.contessa:
         this.name = "Contessa";
         this.actions = [
-          CardAction(ActionName.blockAssassin, this.role),
-          CardAction(ActionName.treaty, this.role)
+          // CardAction(ActionName.blockAssassin, this.role),
+          // CardAction(ActionName.treaty, this.role)
         ];
         break;
 
       case RoleName.assassin:
         this.name = "Assassin";
         this.actions = [
-          CardAction(ActionName.assassinate, this.role),
-          CardAction(ActionName.vengence, this.role)
+          RoleCardActions.assassinate,
+          // CardAction(ActionName.vengence, this.role)
         ];
         break;
 
       case RoleName.ambassador:
         this.name = "Ambassador";
         this.actions = [
-          CardAction(ActionName.exchange, this.role),
-          CardAction(ActionName.limitSteal, this.role),
-          CardAction(ActionName.inheritance, this.role)
+          RoleCardActions.exchange,
+          // CardAction(ActionName.limitSteal, this.role),
+          // CardAction(ActionName.inheritance, this.role)
         ];
         break;
 
       case RoleName.captain:
         this.name = "Captain";
         this.actions = [
-          CardAction(ActionName.steal, this.role),
-          CardAction(ActionName.blockSteal, this.role)
+          RoleCardActions.steal,
+          // CardAction(ActionName.blockSteal, this.role)
         ];
         break;
     }
   }
 }
 
-enum RoleName { global, duke, contessa, assassin, ambassador, captain }
+enum RoleName { duke, contessa, assassin, ambassador, captain }
 
 extension RoleColorExtention on RoleName {
   Color get color {
     switch (this) {
-      case RoleName.global:
-        return CoupColors.global;
       case RoleName.duke:
         return CoupColors.duke;
       case RoleName.contessa:
