@@ -178,3 +178,7 @@ class CardAction {
 
   // static CardAction fromJson(String source) => fromMap(json.decode(source));
 }
+
+class CardActions {
+  static final income = 10;
+}
