@@ -21,8 +21,8 @@ class PlayArea extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xff092147),
-              Color(0xff1a488e),
+              Color(0xffffff),
+              Color(0xffffff),
             ],
           ),
         ),
@@ -31,7 +31,7 @@ class PlayArea extends StatelessWidget {
             overflow: Overflow.clip,
             children: [
               Positioned(
-                top: (MediaQuery.of(context).size.height - tableSize) / 2,
+                bottom: (MediaQuery.of(context).size.height - tableSize) - 50,
                 left: (MediaQuery.of(context).size.width - tableSize) / 2,
                 child: SizedBox(
                   height: tableSize,
@@ -41,20 +41,9 @@ class PlayArea extends StatelessWidget {
                     borderRadius: 5.0,
                     rotate: 90.0,
                     child: Container(
-                      color: Color(0xff092147),
-                      padding: EdgeInsets.all(40),
+                      color: Color(0xffFFB2B2),
                       child: Center(
-                        child: ClipPolygon(
-                          sides: 6,
-                          borderRadius: 5.0,
-                          rotate: 90.0,
-                          child: Container(
-                            color: Color(0xff97b2de),
-                            child: Center(
-                              child: PlayersData(),
-                            ),
-                          ),
-                        ),
+                        child: PlayersData(),
                       ),
                     ),
                   ),
