@@ -71,10 +71,10 @@ class PlayersData extends StatelessWidget {
       child: _table != null
           ? Container(
               child: Column(
-                children: _table.players.map((player) {
-                  return PLayerDataMaker(player);
-                }).toList(),
-              ),
+                  children: List.generate(
+                _table.players.length,
+                (index) => PLayerDataMaker(_table.players[index]),
+              )),
             )
           : Text("Loading"),
     );
@@ -90,11 +90,18 @@ class PLayerDataMaker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
+      // chnage this to a player builder stream
       stream: _db.collection('players').document(player.playerId).snapshots(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.hasData)
-          return Text(
-              "${snapshot.data["nick"]}, ${snapshot.data["cards"]}, ${snapshot.data["isk"]}");
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("${snapshot.data["nick"]}"),
+              Text("${snapshot.data["hand"].length}"),
+              Text("${snapshot.data["isk"]}"),
+            ],
+          );
         else
           return Text("Loading..");
       },
