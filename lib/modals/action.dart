@@ -28,7 +28,10 @@ class CardAction {
   ActionType type;
   String name;
   String description;
-  bool active;
+
+  bool blockable;
+  bool challengeable;
+  bool active; // Prolly suits more in abilities and passives
   Function caller;
   Function activator;
 
@@ -44,6 +47,8 @@ class CardAction {
       case ActionName.income:
         this.name = "Income";
         this.description = "Take 1 ISK as Income";
+        this.blockable = false;
+        this.challengeable = false;
         this.type = ActionType.utility;
         this.caller = (context) => _callerFns.incomeCall(context);
         this.activator = (context) =>
@@ -156,7 +161,7 @@ class CardAction {
 
   // static CardAction fromMap(Map<String, dynamic> map) {
   //   if (map == null) return null;
-  
+
   //   return CardAction(
   //     RoleName.fromMap(map['role']),
   //     ActionName.fromMap(map['action']),

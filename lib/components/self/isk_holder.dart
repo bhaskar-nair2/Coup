@@ -35,12 +35,14 @@ class IskHolder extends StatelessWidget {
           width: 70,
           height: 35,
           decoration: BoxDecoration(
-              color: Colors.blueGrey, borderRadius: BorderRadius.circular(20)),
+            color: Colors.black45,
+            borderRadius: BorderRadius.circular(5),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Image.asset(
-                'assets/roleLogos/contessa.png',
+                'assets/paintCardImg/iskImg.png',
                 width: 25,
                 height: 25,
               ),

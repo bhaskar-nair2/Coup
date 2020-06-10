@@ -1,6 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coup/components/isk_holder.dart';
-import 'package:coup/components/power_card.dart';
+import 'package:coup/components/self/isk_holder.dart';
+import 'package:coup/components/self/power_card.dart';
 import 'package:coup/modals/chance.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/isk.dart';
@@ -18,7 +18,7 @@ class SelfArea extends StatefulWidget {
 }
 
 class _SelfAreaState extends State<SelfArea> {
-  final SelfPlayer self = SelfPlayer();
+  final SelfPlayer _self = SelfPlayer();
   final HttpsCallable leaveTableFunction = CloudFunctions.instance
       .getHttpsCallable(functionName: 'tableFunctions-leaveTable');
 
@@ -26,19 +26,17 @@ class _SelfAreaState extends State<SelfArea> {
   void dispose() {
     leaveTableFunction.call(<String, dynamic>{
       'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
-      'userId': self.uid,
+      'userId': _self.uid,
     });
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    SelfPlayer _player = Provider.of<SelfPlayer>(context);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<Hand>.value(value: _player.hand),
-        ChangeNotifierProvider<Isk>.value(value: _player.isk),
-        ChangeNotifierProvider<Chance>.value(value: _player.chance)
+        ChangeNotifierProvider<Hand>.value(value: _self.hand),
+        ChangeNotifierProvider<Isk>.value(value: _self.isk),
       ],
       child: SafeArea(
         child: Container(

@@ -22,7 +22,7 @@ class RoleTile extends StatelessWidget {
                     height: 70,
                     child: Center(
                       child: Image.asset(
-                        'assets/roleLogos/contessa.png',
+                        'assets/paintCardImg/iskImg.png',
                         width: 40,
                         height: 40,
                       ),
@@ -33,7 +33,7 @@ class RoleTile extends StatelessWidget {
               )
             : Center(
                 child: Image.asset(
-                  'assets/roleLogos/contessa.png',
+                  'assets/paintCardImg/iskImg.png',
                   width: 30,
                   height: 30,
                 ),

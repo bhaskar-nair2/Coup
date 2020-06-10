@@ -13,7 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class CallerFunctions {
-  var _fbFns = FbFunctions();
+  var _fbFns = FbFunctions();// maybe move to firebase fns later?
   final SelfPlayer _self = SelfPlayer();
   final GameTable _table = GameTable();
 

@@ -4,39 +4,80 @@ const admin = require('firebase-admin')
 const db = admin.firestore();
 
 exports.joinTable =
-  functions.https.onCall(async (data, context) => {
+  functions.https.onCall((data, context) => {
     if (data.tableId !== null && data.userId !== null) {
-      var table = db.collection("tables").doc(data.tableId);
-      var user = db.collection("players").doc(data.userId);
-      var tableData = (await table.get()).data()
+      db.runTransaction(async () => {
+        var table = db.collection("tables").doc(data.tableId);
+        var user = db.collection("players").doc(data.userId);
 
-      // table is open
-      if (tableData.isOpen === true) {
-        // no duplicate player
-        var newOccupied = tableData.players.length + 1
+        var tableData = (await table.get()).data()
 
-        table.update({
-          occupied: newOccupied,
-          isOpen: newOccupied < 6 ? true : false,
-          players: admin.firestore.FieldValue.arrayUnion(user)
-        })
-
-        user.update({
-          isk: 0,
-          hand: dealCards(),
-          chance: false,
-          table: table
-        })
-
+        // table is open
+        if (tableData.isOpen === true) {
+          // no duplicate player
+          var newOccupied = tableData.players.length + 1
+          user.update({
+            isk: 0,
+            hand: dealCards(),
+            chance: false,
+            table: table
+          })
+          return table.update({
+            occupied: newOccupied,
+            isOpen: newOccupied < 6 ? true : false,
+            players: admin.firestore.FieldValue.arrayUnion(user)
+          })
+        }
+        else {
+          throw new functions.https.HttpsError('aborted', 'Table already full');
+        }
+      }).then(() => {
         return { status: 200, data: "Added to table" }
-      }
-      else {
-        throw new functions.https.HttpsError('aborted', 'Table already full');
-      }
+      }).catch(error => {
+        throw new functions.https.HttpsError('invalid-argument', 'Some error occoured');
+      })
     }
     else
       throw new functions.https.HttpsError('invalid-argument', 'Error in data');
   })
+
+// exports.continueGame =
+//   functions.https.onCall((data, context) => {
+//     if (data.tableId !== null && data.userId !== null) {
+//       db.runTransaction(async () => {
+//         var table = db.collection("tables").doc(data.tableId);
+//         var user = db.collection("players").doc(data.userId);
+
+//         var tableData = (await table.get()).data()
+
+//         // table is open
+//         if (tableData.isOpen === true) {
+//           // no duplicate player
+//           var newOccupied = tableData.players.length + 1
+//           user.update({
+//             isk: 0,
+//             hand: dealCards(),
+//             chance: false,
+//             table: table
+//           })
+//           return table.update({
+//             occupied: newOccupied,
+//             isOpen: newOccupied < 6 ? true : false,
+//             players: admin.firestore.FieldValue.arrayUnion(user)
+//           })
+//         }
+//         else {
+//           throw new functions.https.HttpsError('aborted', 'Table already full');
+//         }
+//       }).then(() => {
+//         return { status: 200, data: "Added to table" }
+//       }).catch(error => {
+//         throw new functions.https.HttpsError('invalid-argument', 'Some error occoured');
+//       })
+//     }
+//     else
+//       throw new functions.https.HttpsError('invalid-argument', 'Error in data');
+//   })
 
 // todo: Correct this
 exports.leaveTable =

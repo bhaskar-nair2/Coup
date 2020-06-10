@@ -1,4 +1,4 @@
-import 'package:coup/components/action_card.dart';
+import 'package:coup/components/turn/action_card.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coup/modals/chance.dart';
+import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/game_table.dart';
 import 'package:coup/modals/hand.dart';
 import 'package:coup/modals/isk.dart';
@@ -9,16 +9,19 @@ class SelfPlayer extends ChangeNotifier {
   DocumentReference ref;
   Hand hand = Hand();
   Isk isk = Isk(0);
-  Chance chance = Chance();
   String uid;
-  bool playing; // TODO:
-  bool spectator; // TODO:
 
   final GameTable table = GameTable();
+  static final FirestoreService _fs = FirestoreService();
+
 // final task = task();
 
   static final SelfPlayer _self = SelfPlayer._internal();
   SelfPlayer._internal();
+
+  static startStream(String userId){
+    _fs.selfStream(userId).listen((event) { });
+  }
 
   factory SelfPlayer() {
     return _self;

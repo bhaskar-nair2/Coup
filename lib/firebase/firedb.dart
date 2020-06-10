@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/game_table.dart';
 import 'package:coup/modals/self.dart';
+import 'package:coup/modals/turn.dart';
 
 class FirestoreService {
   final Firestore _db = Firestore.instance;
@@ -21,11 +22,12 @@ class FirestoreService {
         .map((snap) => SelfPlayer.fromFirestore(snap));
   }
 
-  Stream<SelfPlayer> turnStream(String turnId) {
+  Stream<Turn> turnStream(String turnId) {
+    print('xxxxxxxxxxxxxxxxxxxx $turnId');
     return _db
         .collection('turns')
         .document(turnId)
         .snapshots()
-        .map((snap) => SelfPlayer.fromFirestore(snap));
+        .map((snap) => Turn.fromFirestore(snap));
   }
 }

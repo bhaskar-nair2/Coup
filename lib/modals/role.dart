@@ -92,20 +92,18 @@ extension RoleColorExtention on RoleName {
 
   AssetImage get cardImage {
     switch (this) {
-      case RoleName.global:
-        return AssetImage('assets/cardImages/blankCard.png');
       case RoleName.duke:
-        return AssetImage('assets/cardImages/dukeCard.png');
+        return AssetImage('assets/paintCardImg/duke.jpg');
       case RoleName.contessa:
-        return AssetImage('assets/cardImages/contessaCard.png');
+        return AssetImage('assets/paintCardImg/contessa.jpg');
       case RoleName.assassin:
-        return AssetImage('assets/cardImages/assassinCard.png');
+        return AssetImage('assets/paintCardImg/assassin.jpg');
       case RoleName.ambassador:
-        return AssetImage('assets/cardImages/ambassadorCard.png');
+        return AssetImage('assets/paintCardImg/ambassador.jpg');
       case RoleName.captain:
-        return AssetImage('assets/cardImages/captainCard.png');
+        return AssetImage('assets/paintCardImg/captain.jpg');
       default:
-        return AssetImage('assets/cardImages/blankCard.png');
+        return AssetImage('assets/paintCardImg/base.jpg');
     }
   }
 }

@@ -1,12 +1,11 @@
 import 'dart:math';
 
+import 'package:coup/components/turn/action_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:coup/components/action_card.dart';
 import 'package:coup/components/roleTile.dart';
 import 'package:coup/modals/action.dart';
-import 'package:coup/modals/chance.dart';
 import 'package:coup/modals/isk.dart';
 import 'package:coup/modals/role.dart';
 import 'package:coup/modals/self.dart';
@@ -14,10 +13,10 @@ import 'package:coup/modals/self.dart';
 class AllMovesList extends StatelessWidget {
   const AllMovesList({Key key}) : super(key: key);
 
+  static final SelfPlayer _self = SelfPlayer();
+
   @override
   Widget build(BuildContext context) {
-    final _player = Provider.of<SelfPlayer>(context);
-
     // List of all roles
     final roleList = RoleName.values.map((role) => CardRole(role)).toList();
 
@@ -26,13 +25,13 @@ class AllMovesList extends StatelessWidget {
 
     List<List<CardAction>> allMoves = roleList
         .where((role) =>
-            role.role != RoleName.global && !_player.hand.cards.contains(role))
+            role.role != RoleName.global && !_self.hand.cards.contains(role))
         .map((e) => e.actions)
         .toList();
 
     var scrollerHeight = min((allMoves.length + 1) * 0.14, 0.8);
 
-    if (_player != null)
+    if (_self != null)
       return SizedBox.expand(
           child: DraggableScrollableSheet(
         initialChildSize: 0.2,
@@ -41,8 +40,7 @@ class AllMovesList extends StatelessWidget {
         builder: (BuildContext context, ScrollController scrollController) {
           return MultiProvider(
               providers: [
-                ChangeNotifierProvider<Chance>.value(value: _player.chance),
-                ChangeNotifierProvider<Isk>.value(value: _player.isk)
+                ChangeNotifierProvider<Isk>.value(value: _self.isk)
               ],
               child: MovesHolder(
                 globalActionList: globalActionList,

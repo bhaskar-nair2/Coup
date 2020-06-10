@@ -1,5 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coup/components/logoutBtn.dart';
+import 'package:coup/components/table/logoutBtn.dart';
 import 'package:coup/firebase/auth.dart';
 import 'package:coup/modals/game_table.dart';
 import 'package:coup/modals/self.dart';
