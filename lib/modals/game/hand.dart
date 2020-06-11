@@ -27,7 +27,7 @@ class Hand extends ChangeNotifier {
       return CardRole(RoleName.values.firstWhere(
         (e) =>
             e.toString() == 'RoleName.' + cards[index].toString().toLowerCase(),
-        orElse: () => RoleName.ambassador,
+        orElse: () => null,
       ));
     });
     return cardRoles;

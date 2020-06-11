@@ -5,9 +5,9 @@ import 'package:coup/modals/game/isk.dart';
 import 'package:flutter/foundation.dart';
 
 class SelfPlayer extends ChangeNotifier {
+  String uid;
   Hand hand = Hand();
   Isk isk = Isk(0);
-  String uid;
 
 // final task = task();
 

@@ -1,7 +1,8 @@
+import 'package:coup/modals/firebase/self.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ActivationFunctions {
-
   static bool incomeActivation(BuildContext context) {
     // if (chance.active == true)
     //   cb(true);
@@ -11,22 +12,22 @@ class ActivationFunctions {
     return true;
   }
 
-  static aidActivation(BuildContext context, Function cb) {
+  static bool aidActivation(BuildContext context) {
     // if (chance.active == true)
     //   cb(true);
     // else
     //   cb(false);
     // // TODO: Remove
-    cb(false);
+    return true;
   }
 
-  static coupActivation(BuildContext context, Function cb) {
+  static bool coupActivation(BuildContext context) {
+    var _self = Provider.of<SelfPlayer>(context, listen: false);
+    var iskCount = _self?.isk?.counter ?? 0;
 
-    // if (chance.active == true && chance.round >= 1 && isk.counter >= 7)
-    //   cb(true);
-    // else
-    //   cb(false);
-    // // TODO: Remove
-    cb(false);
+    if (iskCount >= 7)
+      return true;
+    else
+      return false;
   }
 }

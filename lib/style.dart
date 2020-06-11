@@ -43,7 +43,6 @@ ThemeData appTheme() {
       ),
       bodyText2: TextStyle(
         fontSize: 12,
-        color: Colors.white,
         letterSpacing: 0.7,
       ),
       caption: TextStyle(

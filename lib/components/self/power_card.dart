@@ -1,5 +1,6 @@
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/game/action.dart';
+import 'package:coup/modals/game/hand.dart';
 import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,15 +12,21 @@ class PowerCardHolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _self = Provider.of<SelfPlayer>(context);
-    final hand = _self.hand;
+    final Hand hand = _self?.hand ?? Hand();
+    bool single = hand.cards.length == 1;
 
-    return Row(
-      children: List.generate(
-        hand.cards.length,
-        (index) => PowerCard(
-          card: hand.cards[index],
-          index: index,
-          single: hand.cards.length == 1,
+    return Positioned.directional(
+      textDirection: TextDirection.ltr,
+      bottom: 100,
+      start: single ? (MediaQuery.of(context).size.width - 180) / 4 : 0,
+      child: Row(
+        children: List.generate(
+          hand.cards.length,
+          (index) => PowerCard(
+            card: hand.cards[index],
+            index: index,
+            single: single,
+          ),
         ),
       ),
     );
@@ -66,18 +73,29 @@ class PowerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        doAction(card, context);
+        if (card.role != null) doAction(card, context);
       },
       child: Transform.rotate(
         angle: rotateAngle(index),
         child: Opacity(
           opacity: 1,
-          child: Container(
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 10),
             width: 180,
             height: 330,
-            decoration: BoxDecoration(
-              image: DecorationImage(image: card.role.cardImage),
-            ),
+            decoration: card.role != null
+                ? BoxDecoration(
+                    image: DecorationImage(image: card.role.cardImage),
+                  )
+                : BoxDecoration(
+                    border: Border.all(width: 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+            child: card.role == null
+                ? Center(
+                    child: Text('Loading..'),
+                  )
+                : SizedBox.shrink(),
           ),
         ),
       ),

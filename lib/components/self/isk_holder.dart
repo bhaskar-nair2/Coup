@@ -10,7 +10,7 @@ class IskHolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _self = Provider.of<SelfPlayer>(context);
-    final isk = _self.isk;
+    final isk = _self?.isk ?? Isk(0);
 
     final HttpsCallable leaveTableFunction = CloudFunctions.instance
         .getHttpsCallable(functionName: 'tableFunctions-leaveTable');

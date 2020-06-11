@@ -17,7 +17,8 @@ class TurnArea extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Container(
-              width: 80,
+             width: MediaQuery.of(context).size.width,
+              height: 80,
               child: GlobalActions(),
               decoration: BoxDecoration(
                 color: Colors.black26,

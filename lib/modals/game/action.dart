@@ -34,7 +34,7 @@ class CardAction {
 
   bool blockable;
   bool challengeable;
-  bool active; // Prolly suits more in abilities and passives
+  bool active = false; // Prolly suits more in abilities and passives
   Function caller;
   Function activator;
 

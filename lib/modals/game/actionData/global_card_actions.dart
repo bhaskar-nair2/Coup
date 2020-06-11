@@ -13,8 +13,6 @@ class GlobalCardActions {
     challengeable: false,
     caller: (context) => CallerFunctions.incomeCall(context),
     activator: (context) => ActivationFunctions.incomeActivation(context),
-
-    // if act.activator set action.active=true
   );
 
   static final CardAction aid = CardAction(
@@ -24,7 +22,7 @@ class GlobalCardActions {
     blockable: true,
     challengeable: false,
     caller: (context) => CallerFunctions.aidCall(context),
-    // activator: ActivationFunctions.aidActivation,
+     activator: (context) => ActivationFunctions.aidActivation(context),
   );
 
   static final CardAction coup = CardAction(
@@ -34,8 +32,6 @@ class GlobalCardActions {
     blockable: false,
     challengeable: false,
     caller: (context) => CallerFunctions.coupCall(context),
-    // activator: ActivationFunctions.aidActivation,
+     activator: (context) => ActivationFunctions.coupActivation(context),
   );
-
-  
 }
