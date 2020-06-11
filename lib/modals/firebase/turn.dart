@@ -1,26 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coup/firebase/firedb.dart';
+import 'package:coup/modals/firebase/chance.dart';
 import 'package:flutter/foundation.dart';
 
 class Turn extends ChangeNotifier {
-  String id; // id of turn from table
-  String active; // id of active player
+  String id = ''; // id of turn from table
   var action;
   var block;
   var challenge;
+  Chance chance = Chance();
 
-  // singleton
-  static final Turn _turn = Turn._internal();
-  Turn._internal();
+  Turn();
 
-  factory Turn() {
-    return _turn;
+  set turnId(String turnId) {
+    this.id = turnId;
   }
 
-  factory Turn.fromFirestore(DocumentSnapshot snap) {
-    _turn.action = snap["action"] ?? null;
-    _turn.block = snap["block"] ?? null;
-    _turn.challenge = snap["challenge"] ?? null;
-    return _turn;
+  Turn.fromFirestore(DocumentSnapshot snap) {
+    this.action = snap["action"] ?? null;
+    this.block = snap["block"] ?? null;
+    this.challenge = snap["challenge"] ?? null;
+    this.chance.setActive((snap['active'] as DocumentReference).documentID);
   }
 }

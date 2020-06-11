@@ -1,6 +1,6 @@
 import 'package:coup/components/self/self_area.dart';
 import 'package:coup/components/table/table_area.dart';
-import 'package:coup/components/turn/turn.dart';
+import 'package:coup/components/turn/turn_area.dart';
 import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/self.dart';

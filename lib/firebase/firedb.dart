@@ -25,11 +25,11 @@ class FirestoreService {
   }
 
   static Stream<Turn> turnStream(String turnId) {
-    print('xxxxxxxxxxxxxxxxxxxx $turnId');
-    return _db
-        .collection('turns')
-        .document(turnId)
-        .snapshots()
-        .map((snap) => Turn.fromFirestore(snap));
+    return _db.collection('turns').document(turnId).snapshots().map((snap) {
+      if (snap.exists)
+        return Turn.fromFirestore(snap);
+      else
+        return Turn();
+    });
   }
 }
