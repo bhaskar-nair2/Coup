@@ -26,11 +26,11 @@ class LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(30),
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/paintCardImg/base.jpg'),
-              fit: BoxFit.cover),
+            image: AssetImage('assets/paintCardImg/base.jpg'),
+            fit: BoxFit.fill,
+          ),
         ),
         child: LoginBtnHolder(auth: _auth),
       ),
@@ -49,23 +49,40 @@ class LoginBtnHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        LoginButton(
-          text: 'Login with Google',
-          icon: FontAwesomeIcons.google,
-          color: Colors.blueAccent.shade100,
-          loginMethod: _auth.googleSignIn,
-        ),
-        LoginButton(
-          text: 'Continue as Guest',
-          color: Colors.blueGrey.shade300,
-          icon: FontAwesomeIcons.personBooth,
-          loginMethod: _auth.anonLogin,
-        )
-      ],
+    return LoginHolder(auth: _auth);
+  }
+}
+
+class LoginHolder extends StatelessWidget {
+  const LoginHolder({
+    Key key,
+    @required AuthService auth,
+  }) : _auth = auth, super(key: key);
+
+  final AuthService _auth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          LoginButton(
+            text: 'Login with Google',
+            icon: FontAwesomeIcons.google,
+            color: Colors.blueAccent.shade100,
+            loginMethod: _auth.googleSignIn,
+          ),
+          LoginButton(
+            text: 'Continue as Guest',
+            color: Colors.blueGrey.shade300,
+            icon: FontAwesomeIcons.personBooth,
+            loginMethod: _auth.anonLogin,
+          )
+        ],
+      ),
     );
   }
 }

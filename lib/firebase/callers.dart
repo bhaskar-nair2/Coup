@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coup/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -16,6 +18,11 @@ class FirebaseCallers {
         'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
         'userId': userId,
       });
+      ExtendedNavigator.rootNavigator.pushReplacementNamed('/game-screen',
+          arguments: GameScreenArguments(
+            tableId: tableId,
+            userId: userId,
+          ));
     } catch (error) {
       Fluttertoast.showToast(
         msg: "Error Joining Table $error",
@@ -28,4 +35,4 @@ class FirebaseCallers {
 }
 
 // final HttpsCallable leaveTableFunction = CloudFunctions.instance
-      // .getHttpsCallable(functionName: 'tableFunctions-leaveTable');
+// .getHttpsCallable(functionName: 'tableFunctions-leaveTable');

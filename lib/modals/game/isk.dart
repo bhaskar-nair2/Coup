@@ -7,7 +7,7 @@ class Isk extends ChangeNotifier {
   static final Isk _isk = Isk._internal();
 
   factory Isk(int value) {
-    _isk.counter = value;
+    _isk.counter = value ?? 0;
     return _isk;
   }
 
