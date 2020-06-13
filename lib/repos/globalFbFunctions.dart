@@ -1,19 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
 
 class FbFunctions {
   final _db = Firestore.instance;
-  final SelfPlayer _self = SelfPlayer();
-  final GameTable _table = GameTable();
-  final Turn _turn = Turn();
 
   updateIsk(num incValue) async {
     return await _db
         .collection('players')
-        .document(_self.uid)
+        .document(IDManager.selfId)
         .updateData(<String, dynamic>{
       "isk": FieldValue.increment(incValue),
     });
@@ -23,13 +21,15 @@ class FbFunctions {
     final HttpsCallable _addTurnActionCall = CloudFunctions.instance
         .getHttpsCallable(functionName: 'turnFunctions-addTurn');
 
+    print("TurnId: ${IDManager.turnId}");
+
     return await _addTurnActionCall.call({
-      "turnId": _turn.id,
-      "tableId": _table.tableId,
-      "userId": _self.uid,
+      "turnId": IDManager.turnId,
+      "tableId": IDManager.tableId,
+      "playerId": IDManager.selfId,
       "action": {
         "type": data["action"],
-        "player": _self.uid,
+        "player": IDManager.selfId,
       }
     });
   }

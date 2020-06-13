@@ -13,7 +13,7 @@ class TurnArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _table = Provider.of<GameTable>(context);
-    var turnId = _table?.turn?.id ?? '';
+    var turnId = _table?.turnId ?? '';
 
     return MultiProvider(
       providers: [

@@ -1,3 +1,4 @@
+import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:flutter/foundation.dart';
 
@@ -15,7 +16,7 @@ class Chance extends ChangeNotifier {
 
   setActive(String playerId) {
     this.activeId = playerId;
-    if (playerId == _self.uid) {
+    if (playerId == IDManager.selfId) {
       this.active = true;
     } else
       this.active = false;

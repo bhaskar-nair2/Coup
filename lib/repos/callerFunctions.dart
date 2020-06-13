@@ -16,18 +16,16 @@ class CallerFunctions {
   static final FbFunctions _fbFns =
       FbFunctions(); // maybe move to firebase fns later?
   static final SelfPlayer _self = SelfPlayer();
-  static final GameTable _table = GameTable();
-
   //global
 
   static incomeCall(BuildContext context) async {
-    await _fbFns.addActionTurn({"action": "income", "player": _self.uid});
     Fluttertoast.showToast(msg: "Taking Income");
+    await _fbFns.addActionTurn({"action": "income"});
     await _fbFns.updateIsk(1);
   }
 
   static aidCall(BuildContext context) async {
-    await _fbFns.addActionTurn({"action": "aid", "player": _self.uid});
+    await _fbFns.addActionTurn({"action": "aid"});
     Fluttertoast.showToast(msg: "Taking Aid");
     await _fbFns.updateIsk(2);
   }
@@ -44,7 +42,7 @@ class CallerFunctions {
 
   static assassinateCall(BuildContext context) {
     final table = Provider.of<GameTable>(context, listen: false);
-    _table.players.map((e) => e.name);
+    // _table.players.map((e) => e.name);
     // show all players
     showDialog(
         context: context,

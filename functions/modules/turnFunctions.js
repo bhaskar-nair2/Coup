@@ -27,9 +27,11 @@ const changeActive =  // change active
   async (data) => {
     var playerId = data.playerId
     var tableId = data.tableId
+    var turnId = data.turnId
     var jump = data.jump || 0
 
     var table = db.collection("tables").doc(tableId);
+    var turn = db.collection("turns").doc(turnId);
 
     var tableData = (await table.get()).data()
 
@@ -46,12 +48,8 @@ const changeActive =  // change active
       else
         return playersList[0 + jump]
     }
-
-    console.log(curPlIndex)
-    console.log(nextPlayer())
-
-
-    return await table.update({
+    
+    return await turn.update({
       active: nextPlayer()
     })
   }

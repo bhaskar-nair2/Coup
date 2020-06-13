@@ -1,4 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/game/isk.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class IskHolder extends StatelessWidget {
     leaveTable() async {
       var resp = await leaveTableFunction.call(<String, dynamic>{
         'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
-        'userId': _self.uid,
+        'userId': IDManager.selfId,
       });
       print('$resp');
       Navigator.of(context).pushReplacementNamed('/home-screen');
