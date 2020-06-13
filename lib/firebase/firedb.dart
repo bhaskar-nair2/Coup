@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/player.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
 
@@ -30,6 +31,15 @@ class FirestoreService {
         return Turn.fromFirestore(snap);
       else
         return Turn();
+    });
+  }
+
+  static Stream<Player> playerStream(String playerId) {
+    return _db.collection('players').document(playerId).snapshots().map((snap){
+      if (snap.exists)
+        return Player.fromFirestore(snap);
+      else
+        return Player();
     });
   }
 }

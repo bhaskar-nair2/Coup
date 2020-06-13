@@ -18,7 +18,7 @@ class SelfPlayer extends ChangeNotifier {
   }
 
   SelfPlayer.fromFirestore(DocumentSnapshot snap) {
-    List<String> handList = List.castFrom(snap.data['hand']);
+    List<String> handList = List.castFrom(snap.data['hand'] as List ?? []);
     this.isk = Isk(snap.data['isk']);
     this.hand = Hand.fromList(handList);
     this._uid = snap.documentID;

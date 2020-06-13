@@ -1,5 +1,7 @@
 const functions = require('firebase-functions')
-const admin = require('firebase-admin')
+const admin = require('firebase-admin');
+
+var tableFunctions = require('./tableFunctions');
 
 const db = admin.firestore();
 
@@ -21,4 +23,21 @@ exports.updateUserRecord =
       name: data.name,
       nick: data.nick
     })
+  })
+
+exports.presenceWriter =
+  functions.firestore.document('players/{playerId}').onUpdate(async (snap, context) => {
+    const before = snap.before.data();
+    const after = snap.after.data();
+
+    if (!before || !after)
+      return;
+
+    if (after.presence === false) {
+      db.firestore.collection('tables').doc(after.table)
+      tableFunctions.leaveTable({
+        tableId: after.table,
+        userId: playerId
+      })
+    }
   })

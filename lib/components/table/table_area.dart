@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/player.dart';
 import 'package:flutter/material.dart';
@@ -84,22 +85,21 @@ class PlayersData extends StatelessWidget {
 class PLayerDataMaker extends StatelessWidget {
   const PLayerDataMaker(this.player, {Key key}) : super(key: key);
 
-  static Firestore _db = Firestore.instance;
   final Player player;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       // chnage this to a player builder stream
-      stream: _db.collection('players').document(player.playerId).snapshots(),
-      builder: (context, AsyncSnapshot snapshot) {
+      stream: FirestoreService.playerStream(player.playerId),
+      builder: (context, AsyncSnapshot<Player> snapshot) {
         if (snapshot.hasData)
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text("${snapshot.data["nick"]}"),
-              Text("${snapshot.data["hand"].length}"),
-              Text("${snapshot.data["isk"]}"),
+              Text("${snapshot.data.name}"),
+              Text("${snapshot.data.cards}"),
+              Text("${snapshot.data.isk}"),
             ],
           );
         else

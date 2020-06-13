@@ -12,12 +12,17 @@ class Player extends ChangeNotifier {
 
   Player();
 
-  // Stream<Player> get playerData = 
+  // Stream<Player> get playerData =
 
   Player.fromRef(DocumentReference ref) {
     this.playerId = ref.documentID;
   }
 
+  Player.fromFirestore(DocumentSnapshot snap) {
+    this.name = snap.data["nick"];
+    this.cards = snap.data["hand"].length;
+    this.isk = snap.data["isk"];
+  }
 }
 
 class PlayerAction {

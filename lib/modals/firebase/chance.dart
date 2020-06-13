@@ -9,14 +9,9 @@ class Chance extends ChangeNotifier {
   int selfPos = 0; // not useful
   int round = 0;
 
-  static final Chance _chance = Chance._internal();
-  Chance._internal();
-
   final SelfPlayer _self = SelfPlayer();
 
-  factory Chance() {
-    return _chance;
-  }
+  Chance();
 
   setActive(String playerId) {
     this.activeId = playerId;

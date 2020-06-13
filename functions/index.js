@@ -5,9 +5,15 @@ admin.initializeApp({
   credential: admin.credential.cert(require('./service-account-key.json'))
 })
 
-exports.userFunctions = require('./modules/userFunctions');
-exports.tableFunctions = require('./modules/tableFunctions');
-exports.playerFunctions = require('./modules/playerFunctions');
-exports.turnFunctions = require('./modules/turnFunctions');
-// exports.globalActionFunctions = require('./modules/globalActionFunctions')
+try {
+  exports.userFunctions = require('./modules/userFunctions');
+  exports.tableFunctions = require('./modules/tableFunctions');
+  exports.playerFunctions = require('./modules/playerFunctions');
+  exports.turnFunctions = require('./modules/turnFunctions');
+}
+catch (error) {
+  console.log(error)
+}
+
+
 
