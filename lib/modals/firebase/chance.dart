@@ -10,8 +10,6 @@ class Chance extends ChangeNotifier {
   int selfPos = 0; // not useful
   int round = 0;
 
-  final SelfPlayer _self = SelfPlayer();
-
   Chance();
 
   setActive(String playerId) {
