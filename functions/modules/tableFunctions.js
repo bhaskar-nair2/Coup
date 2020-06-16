@@ -30,7 +30,6 @@ exports.joinTable =
           players: admin.firestore.FieldValue.arrayUnion(user)
         })
 
-
         if (newOccupied === 1) {
           // update active in turn
           tableData.turn.update({

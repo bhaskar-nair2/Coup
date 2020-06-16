@@ -35,7 +35,7 @@ class FirestoreService {
   }
 
   static Stream<Player> playerStream(String playerId) {
-    return _db.collection('players').document(playerId).snapshots().map((snap){
+    return _db.collection('players').document(playerId).snapshots().map((snap) {
       if (snap.exists)
         return Player.fromFirestore(snap);
       else

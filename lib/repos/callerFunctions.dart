@@ -1,33 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coup/components/callerDialogs/exchange_dialog.dart';
+import 'package:coup/firebase/actions.dart';
 import 'package:coup/modals/firebase/game_table.dart';
-import 'package:coup/modals/firebase/self.dart';
-// import 'package:coup/modals/hand.dart'; NONONOONONO
-// import 'package:coup/modals/isk.dart'; NONONOONONO
-// import 'package:coup/modals/role.dart'; NONONOONONO
-import 'package:coup/repos/globalFbFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class CallerFunctions {
-  static final FbFunctions _fbFns =
-      FbFunctions(); // maybe move to firebase fns later?
-  static final SelfPlayer _self = SelfPlayer();
-  //global
-
   static incomeCall(BuildContext context) async {
     Fluttertoast.showToast(msg: "Taking Income");
-    await _fbFns.addActionTurn({"action": "income"});
-    await _fbFns.updateIsk(1);
+    await FbTurnFunctions.addActionTurn({"action": "income"});
+    await FbTurnFunctions.updateIsk(1);
   }
 
   static aidCall(BuildContext context) async {
-    await _fbFns.addActionTurn({"action": "aid"});
+    await FbTurnFunctions.addActionTurn({"action": "aid"});
     Fluttertoast.showToast(msg: "Taking Aid");
-    await _fbFns.updateIsk(2);
+    await FbTurnFunctions.updateIsk(2);
   }
 
   static coupCall(BuildContext context) {
@@ -36,9 +24,7 @@ class CallerFunctions {
   }
 
   // role based
-  static taxCall(BuildContext context) {
-    
-  }
+  static taxCall(BuildContext context) {}
 
   static assassinateCall(BuildContext context) {
     final table = Provider.of<GameTable>(context, listen: false);
@@ -75,9 +61,5 @@ class CallerFunctions {
     //     });
   }
 
-  static stealCall(BuildContext context) {
-    
-  }
-
-
+  static stealCall(BuildContext context) {}
 }

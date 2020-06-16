@@ -4,8 +4,10 @@ import 'package:coup/router/router.gr.dart';
 import 'package:coup/screens/home_screen.dart';
 import 'package:coup/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
 

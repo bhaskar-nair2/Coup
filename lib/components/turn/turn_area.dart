@@ -2,7 +2,7 @@ import 'package:coup/components/turn/avail_actions.dart';
 import 'package:coup/components/turn/global_actions.dart';
 import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/firebase/chance.dart';
-import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/turn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,29 +12,28 @@ class TurnArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _table = Provider.of<GameTable>(context);
-    var turnId = _table?.turnId ?? '';
-
-    return MultiProvider(
-      providers: [
-        StreamProvider<Turn>.value(
-          value: FirestoreService.turnStream(turnId),
-          catchError: (context, error) {
-            print(error);
-            return Turn();
-          },
-        )
-      ],
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.bottomCenter,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[GlobalHolder(), ActionHolder()],
-        ),
-      ),
-    );
+    return IDManager.turnId != null
+        ? MultiProvider(
+            providers: [
+              StreamProvider<Turn>.value(
+                value: FirestoreService.turnStream(IDManager.turnId),
+                catchError: (context, error) {
+                  print(error);
+                  return Turn();
+                },
+              )
+            ],
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[GlobalHolder(), ActionHolder()],
+              ),
+            ),
+          )
+        : SizedBox.shrink();
   }
 }
 

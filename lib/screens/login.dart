@@ -1,4 +1,5 @@
 import 'package:coup/firebase/auth.dart';
+import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,7 +17,10 @@ class LoginScreenState extends State<LoginScreen> {
     _auth.user.then(
       (user) => {
         if (user != null)
-          {Navigator.pushReplacementNamed(context, '/home-screen')}
+          {
+            IDManager.selfId = user.uid,
+            Navigator.pushReplacementNamed(context, '/home-screen')
+          }
       },
     );
   }
@@ -57,7 +61,8 @@ class LoginHolder extends StatelessWidget {
   const LoginHolder({
     Key key,
     @required AuthService auth,
-  }) : _auth = auth, super(key: key);
+  })  : _auth = auth,
+        super(key: key);
 
   final AuthService _auth;
 

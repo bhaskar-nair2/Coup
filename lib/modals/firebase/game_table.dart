@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/player.dart';
-import 'package:coup/modals/firebase/turn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+
+enum GameState { waiting, play, counter, block, challenge }
 
 class GameTable extends ChangeNotifier {
   String tableId;
   int occupied = 0; // Exact number, index from 1
   String turnId = '';
   List<Player> players = [];
+  GameState state;
 
   GameTable();
 
@@ -24,4 +26,3 @@ class GameTable extends ChangeNotifier {
   }
 }
 
-enum GameState { play, counter, block, challenge }

@@ -1,6 +1,4 @@
 import 'package:coup/modals/game/role.dart';
-import 'package:coup/repos/activationFunctions.dart';
-import 'package:coup/repos/callerFunctions.dart';
 
 enum ActionName {
   income,
@@ -38,7 +36,6 @@ class CardAction {
   Function caller;
   Function activator;
 
-  final CallerFunctions _callerFns = CallerFunctions();
 
   setActive(bool value) {
     this.active = value;

@@ -1,9 +1,14 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:coup/components/table/createTableDialog.dart';
+import 'package:coup/components/table/joinTableDialog.dart';
 import 'package:coup/components/table/logoutBtn.dart';
 import 'package:coup/firebase/auth.dart';
 import 'package:coup/firebase/callers.dart';
+import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/router/router.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:coup/firebase/firedb.dart';
 
@@ -47,9 +52,6 @@ class OptionButtons extends StatefulWidget {
 class _OptionButtonsState extends State<OptionButtons> {
   @override
   Widget build(BuildContext context) {
-    FirebaseUser user = Provider.of<FirebaseUser>(context);
-    String tableId = 'ymAmWOuxrNYwXxWDg1Mo';
-
     return Positioned.directional(
       textDirection: TextDirection.ltr,
       bottom: 20,
@@ -67,13 +69,47 @@ class _OptionButtonsState extends State<OptionButtons> {
               ),
               child: FlatButton(
                 onPressed: () async {
-                  await FirebaseCallers.joinTable(user.uid, tableId);
+                  var resp = await showDialog(
+                    context: context,
+                    builder: (context) => JoinTableDialog(),
+                  );
+                  if (resp == true)
+                    ExtendedNavigator.rootNavigator.pushReplacementNamed(
+                      '/game-screen',
+                      arguments: GameScreenArguments(
+                        tableId: IDManager.tableId,
+                        userId: IDManager.selfId,
+                      ),
+                    );
+                  else
+                    Fluttertoast.showToast(
+                      msg: 'No Such Table',
+                      backgroundColor: Colors.redAccent,
+                    );
                 },
                 child: Text("Join a Table"),
               ),
             ),
             FlatButton(
-              onPressed: () => {},
+              onPressed: () async {
+                var resp = await showDialog(
+                  context: context,
+                  builder: (context) => CreateTableDialog(),
+                );
+                if (resp == true)
+                  ExtendedNavigator.rootNavigator.pushReplacementNamed(
+                    '/game-screen',
+                    arguments: GameScreenArguments(
+                      tableId: IDManager.tableId,
+                      userId: IDManager.selfId,
+                    ),
+                  );
+                else
+                  Fluttertoast.showToast(
+                    msg: 'Table Creation Failed',
+                    backgroundColor: Colors.redAccent,
+                  );
+              },
               child: Text("Create new Table"),
             ),
             LogoutBtn(),

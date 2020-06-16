@@ -5,10 +5,10 @@ import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
 
-class FbFunctions {
-  final _db = Firestore.instance;
+class FbTurnFunctions {
+  static final _db = Firestore.instance;
 
-  updateIsk(num incValue) async {
+  static updateIsk(num incValue) async {
     return await _db
         .collection('players')
         .document(IDManager.selfId)
@@ -17,11 +17,9 @@ class FbFunctions {
     });
   }
 
-  addActionTurn(Map data) async {
+  static addActionTurn(Map data) async {
     final HttpsCallable _addTurnActionCall = CloudFunctions.instance
         .getHttpsCallable(functionName: 'turnFunctions-addTurn');
-
-    print("TurnId: ${IDManager.turnId}");
 
     return await _addTurnActionCall.call({
       "turnId": IDManager.turnId,

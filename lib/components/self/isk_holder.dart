@@ -1,8 +1,9 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coup/firebase/callers.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/game/isk.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class IskHolder extends StatelessWidget {
@@ -11,17 +12,17 @@ class IskHolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _self = Provider.of<SelfPlayer>(context);
+
     final isk = _self?.isk ?? Isk(0);
 
-    final HttpsCallable leaveTableFunction = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'tableFunctions-leaveTable');
-
-    leaveTable() async {
-      var resp = await leaveTableFunction.call(<String, dynamic>{
-        'tableId': 'ymAmWOuxrNYwXxWDg1Mo',
-        'userId': IDManager.selfId,
-      });
-      print('$resp');
+    leave() async {
+      Fluttertoast.showToast(
+        msg: "Leaving Table",
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.green,
+        fontSize: 12.0,
+      );
+      await FirebaseCallers.leaveTable(IDManager.selfId, IDManager.tableId);
       Navigator.of(context).pushReplacementNamed('/home-screen');
     }
 
@@ -64,7 +65,7 @@ class IskHolder extends StatelessWidget {
             splashColor: Colors.cyan,
             color: Colors.blue,
             child: Text("Exit", style: TextStyle()),
-            onPressed: leaveTable,
+            onPressed: leave,
           ),
         )
       ],
