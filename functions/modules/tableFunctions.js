@@ -32,9 +32,9 @@ exports.joinTable =
 
         if (newOccupied === 1) {
           // update active in turn
-          tableData.turn.update({
+          tableData.turn.set({
             active: user
-          });
+          }, { merge: true });
         }
 
       }

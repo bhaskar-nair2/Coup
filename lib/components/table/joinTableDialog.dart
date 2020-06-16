@@ -62,11 +62,9 @@ class _JoinTableDialogState extends State<JoinTableDialog> {
               height: 40,
             ),
             TextField(
-              textCapitalization: TextCapitalization.characters,
               inputFormatters: [UpperCaseTextFormatter()],
               textAlign: TextAlign.center,
               controller: tableId,
-              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),

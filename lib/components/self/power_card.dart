@@ -14,10 +14,11 @@ class PowerCardHolder extends StatelessWidget {
     final _self = Provider.of<SelfPlayer>(context);
     final Hand hand = _self?.hand ?? Hand();
     bool single = hand.cards.length == 1;
+    double botPos = MediaQuery.of(context).size.height * 0.1;
 
     return Positioned.directional(
       textDirection: TextDirection.ltr,
-      bottom: 100,
+      bottom: botPos,
       start: single ? (MediaQuery.of(context).size.width - 180) / 4 : 0,
       child: Row(
         children: List.generate(
@@ -71,6 +72,8 @@ class PowerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double cardWidth = MediaQuery.of(context).size.width / 2 - 20;
+
     return GestureDetector(
       onTap: () {
         if (card.role != null) doAction(card, context);
@@ -81,8 +84,8 @@ class PowerCard extends StatelessWidget {
           opacity: 1,
           child: AnimatedContainer(
             duration: Duration(milliseconds: 10),
-            width: 180,
-            height: 330,
+            width: cardWidth,
+            height: cardWidth / 0.54,
             decoration: card.role != null
                 ? BoxDecoration(
                     image: DecorationImage(image: card.role.cardImage),
