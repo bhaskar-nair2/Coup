@@ -6,15 +6,24 @@ const db = admin.firestore();
 
 exports.joinTable =
   functions.https.onCall(async (data, context) => {
+    
+    function tableHasPLayer(id, arr) {
+      if (arr.includes(id))
+        return true
+      else
+        return false
+    }
+
     if (data.tableId !== null && data.userId !== null) {
       var table = db.collection("tables").doc(data.tableId);
       var user = db.collection("players").doc(data.userId);
 
       var tableData = (await table.get()).data()
+      var playerList = tableData.players.map(p => p)
 
       // table is open
       // round is not in progress
-      if (tableData.isOpen === true && tableData.inProgress === false) {
+      if (tableData.isOpen === true || tableData.inProgress === false || tableHasPLayer(data.userId,playerList)) {
         // no duplicate player
         var newOccupied = tableData.players.length + 1
 
@@ -37,7 +46,7 @@ exports.joinTable =
 
       }
       else {
-        throw new functions.https.HttpsError('aborted', 'Table already full');
+        throw new functions.https.HttpsError('aborted', 'Table is Closed');
       }
       return { status: 200, data: "Added to table" }
     }
@@ -107,7 +116,7 @@ exports.correctSetup =
     }
 
     if (after.occupied === 1) {
-      tbRef.update({status:'waiting', inProgress:false})
+      tbRef.update({ status: 'waiting', inProgress: false })
       upData.active = after.players[0]
       tnRef.update(upData)
       return
