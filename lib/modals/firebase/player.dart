@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/game/action.dart';
 import 'package:flutter/foundation.dart';
 
@@ -16,11 +17,17 @@ class Player extends ChangeNotifier {
 
   Player.fromRef(DocumentReference ref) {
     this.playerId = ref.documentID;
+    this.setPlayerData();
+  }
+
+  setPlayerData() async {
+    var snap = (await FirestoreService.getPlayer(playerId) as DocumentSnapshot);
+    this.nick = snap['nick'];
   }
 
   Player.fromFirestore(DocumentSnapshot snap) {
-    this.name = snap.data["nick"];
-    this.cards = snap.data["hand"].length;
+    this.nick = snap.data["nick"];
+    this.cards = snap.data["hand"]?.length ?? 0;
     this.isk = snap.data["isk"];
   }
 }

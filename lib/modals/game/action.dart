@@ -36,9 +36,14 @@ class CardAction {
   Function caller;
   Function activator;
 
-
   setActive(bool value) {
     this.active = value;
+  }
+
+  static ActionName actionFromStr(String str) {
+    ActionName action = ActionName.values.firstWhere(
+        (e) => e.toString() == 'ActionName.' + str.toString().toLowerCase());
+    return action;
   }
 
   CardAction(

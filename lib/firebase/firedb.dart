@@ -42,4 +42,8 @@ class FirestoreService {
         return Player();
     });
   }
+
+  static Future getPlayer(String playerId) {
+    return _db.collection('players').document(playerId).get();
+  }
 }

@@ -13,6 +13,7 @@ class GameTable extends ChangeNotifier {
   List<Player> players = [];
   GameState state = GameState.loading;
   String owner;
+  String pin;
 
   GameTable();
 
@@ -20,18 +21,21 @@ class GameTable extends ChangeNotifier {
     List<Player> _players = (snap.data['players'] as List ?? [])
         .map((p) => Player.fromRef(p))
         .toList();
-    this.tableId = snap.documentID;
-    this.turnId = (snap.data["turn"] as DocumentReference).documentID;
     this.players = _players;
     this.owner = (snap.data['owner'] as DocumentReference).documentID;
     this.state = stateFromStr((snap.data['state'] as String));
-    IDManager.tableId = snap.documentID;
+
+    if (this.tableId != snap.documentID) {
+      this.tableId = snap.documentID;
+      this.pin = snap.data['pin'];
+      IDManager.tableId = snap.documentID;
+      this.turnId = (snap.data["turn"] as DocumentReference).documentID;
+    }
   }
 
   static GameState stateFromStr(String str) {
     GameState state = GameState.values.firstWhere(
         (e) => e.toString() == 'GameState.' + str.toString().toLowerCase());
-
     return state;
   }
 }

@@ -11,7 +11,7 @@ class FirebaseCallers {
       String tablePin, String userId, String total) async {
     try {
       var turn = _db.collection('turns').document();
-      var user = _db.collection('users').document(userId);
+      var user = _db.collection('players').document(userId);
 
       var table = await _db.collection('tables').add({
         "pin": tablePin,

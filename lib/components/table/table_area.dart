@@ -96,7 +96,7 @@ class PLayerDataMaker extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text("${snapshot.data.name}"),
+              Text("${snapshot.data.nick}"),
               Text("${snapshot.data.cards}"),
               Text("${snapshot.data.isk}"),
             ],

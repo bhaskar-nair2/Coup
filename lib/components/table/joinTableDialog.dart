@@ -21,12 +21,15 @@ class _JoinTableDialogState extends State<JoinTableDialog> {
     bool state = false;
     try {
       toggleLoading();
+      Fluttertoast.showToast(msg: "Joining Table");
       await FirebaseCallers.joinTableWithId(
         IDManager.selfId,
         tableId.text,
       );
-      Fluttertoast.showToast(msg: "Joining Table");
       state = true;
+    } on PlatformException catch (error) {
+      Fluttertoast.showToast(msg: error.details['message']);
+      state = false;
     } catch (error) {
       print(error);
       state = false;

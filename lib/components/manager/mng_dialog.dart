@@ -17,6 +17,7 @@ class TableManagerDialog extends StatelessWidget {
     var _table = Provider.of<GameTable>(context);
     var isOwner = _table.owner == IDManager.selfId;
     var hasMin = _table.players.length < minPlayers;
+    var _players = _table.players;
 
     leave() async {
       Fluttertoast.showToast(
@@ -35,30 +36,31 @@ class TableManagerDialog extends StatelessWidget {
         height: 400,
         child: Column(
           children: <Widget>[
-            _table.players.length < minPlayers
+            Text('Table Pin: ${_table.pin}'),
+            _players.length < minPlayers
                 ? Text('Waiting for More Players...')
-                : Text("Players Joined ${_table.players.length}/6"),
+                : Text("Players Joined ${_players.length}/6"),
             Container(
               margin: EdgeInsets.only(top: 20),
               height: 200,
               child: Container(
                 child: Column(
                   children: List.generate(
-                    _table.players.length,
-                    (index) => PLayerDataMaker(_table.players[index]),
+                    _players.length,
+                    (index) => PLayerDataMaker(_players[index]),
                   ),
                 ),
               ),
             ),
-            Container(
-              height: 30,
-              width: 250,
-              decoration: BoxDecoration(
-                color: isOwner ? Colors.greenAccent : Colors.redAccent,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: isOwner
-                  ? FlatButton(
+            isOwner
+                ? Container(
+                    height: 30,
+                    width: 250,
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: FlatButton(
                       disabledColor: Colors.grey,
                       onPressed: hasMin
                           ? null
@@ -70,11 +72,20 @@ class TableManagerDialog extends StatelessWidget {
                                   .updateData({"state": 'play'});
                             },
                       child: Text('Start Game'),
-                    )
-                  : FlatButton(
-                      onPressed: leave,
-                      child: Text('Leave Table'),
-                    ),
+                    ))
+                : null,
+            Container(
+              height: 30,
+              width: 250,
+              margin: EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: FlatButton(
+                onPressed: leave,
+                child: Text('Leave Table'),
+              ),
             )
           ],
         ),
