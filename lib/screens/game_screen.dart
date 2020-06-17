@@ -1,3 +1,4 @@
+import 'package:coup/components/manager/mng_dialog.dart';
 import 'package:coup/components/self/self_area.dart';
 import 'package:coup/components/table/table_area.dart';
 import 'package:coup/components/turn/turn_area.dart';
@@ -25,7 +26,7 @@ class _GameScreenState extends State<GameScreen> {
     FirebaseCallers.leaveTable(IDManager.selfId, IDManager.tableId);
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -45,17 +46,37 @@ class _GameScreenState extends State<GameScreen> {
           },
         ),
       ],
-      child: SafeArea(
-        child: Scaffold(
-          body: Stack(
-            fit: StackFit.expand,
-            children: [
-              TableArea(),
-              SelfArea(),
-              TurnArea(),
-            ],
-          ),
-        ),
+      child: GameStateScreenManager(),
+    );
+  }
+}
+
+class GameStateScreenManager extends StatelessWidget {
+  const GameStateScreenManager({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var table = Provider.of<GameTable>(context);
+
+    return SafeArea(
+      child: Scaffold(
+        body: table != null
+            ? Stack(
+                fit: StackFit.expand,
+                children: table.state == GameState.waiting
+                    ? [TableManagerDialog()]
+                    : [
+                        TableArea(),
+                        SelfArea(),
+                        TurnArea(),
+                      ])
+            : Container(
+                child: Center(
+                  child: CircularProgressIndicator(strokeWidth: 3),
+                ),
+              ),
       ),
     );
   }

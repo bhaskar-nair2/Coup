@@ -11,16 +11,21 @@ class FirebaseCallers {
       String tablePin, String userId, String total) async {
     try {
       var turn = _db.collection('turns').document();
+      var user = _db.collection('users').document(userId);
+
       var table = await _db.collection('tables').add({
         "pin": tablePin,
-        "owner": userId,
+        "owner": user,
         "isOpen": true,
         "inProgress": false,
-        "limit": total,
+        "limit": int.parse(total),
         "players": [],
         "state": 'waiting',
         "turn": turn
       });
+
+      await user.updateData({"table": table});
+
       IDManager.turnId = turn.documentID;
       IDManager.tableId = table.documentID;
     } catch (error) {
@@ -58,8 +63,13 @@ class FirebaseCallers {
     }
   }
 
+  static startGame(tableId) async {
+    final HttpsCallable startGameFunction = CloudFunctions.instance
+        .getHttpsCallable(functionName: 'tableFunctions-startGame');
+    await startGameFunction.call({"tableId": tableId});
+  }
+
   static leaveTable(String userId, String tableId) async {
-    print("$tableId, $userId");
     final HttpsCallable leaveTableFunction = CloudFunctions.instance
         .getHttpsCallable(functionName: 'tableFunctions-leaveTable');
     try {

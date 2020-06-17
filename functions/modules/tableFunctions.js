@@ -1,5 +1,6 @@
 const functions = require('firebase-functions')
-const admin = require('firebase-admin')
+const admin = require('firebase-admin');
+const { user } = require('firebase-functions/lib/providers/auth');
 
 const db = admin.firestore();
 
@@ -18,9 +19,6 @@ exports.joinTable =
         var newOccupied = tableData.players.length + 1
 
         await user.update({
-          isk: 0,
-          hand: dealCards(),
-          chance: false,
           table: table
         })
 
@@ -109,37 +107,64 @@ exports.correctSetup =
     }
 
     if (after.occupied === 1) {
+      tbRef.update({status:'waiting', inProgress:false})
       upData.active = after.players[0]
       tnRef.update(upData)
       return
-    }
-    else {
-      console.log('Occupied: ', after.occupied)
     }
 
     return
   })
 
-function dealCards() {
-  // TODO: need a way to deal only 4 of each type in a table
-  const cards = ['contessa', 'duke', 'assassin', 'ambassador', 'captain']
-  var deal = getRandom(cards, 2);
+exports.startGame =
+  functions.https.onCall(async (data, context) => {
+    const table = db.collection('tables').doc(data.tableId)
+    const tableData = (await table.get()).data()
+    const playerList = tableData.players.map(p => p)
+    const playerCount = playerList.length
+    const cards = dealCards(playerCount)
+
+    playerList.forEach((player, index) => {
+      player.update({
+        isk: 0,
+        hand: cards[index],
+      })
+    })
+
+    table.update({ state: 'play', inProgress: true })
+
+    return { status: 200, data: "Game Started" }
+  })
+
+
+
+function dealCards(playerCount) {
+  // will return [[],[],[],[]]
+  var count = 3
+  const cards = [
+    { name: 'contessa', count: count },
+    { name: 'duke', count: count },
+    { name: 'assassin', count: count },
+    { name: 'ambassador', count: count },
+    { name: 'captain', count: count }
+  ]
+  var deal = [];
+  var res = [];
+
+  while (playerCount--) {
+    for (var n = 0; n < 2; n++) {
+      var x = Math.floor(Math.random() * cards.length);
+      res.push(cards[x].name)
+      cards[x].count -= 1
+      if (cards[x].count === 0) cards.splice(x, 1);
+    }
+    deal.push(res)
+    res = []
+  }
+  console.log(cards)
   return deal;
 }
 
-function getRandom(arr, n) {
-  var result = new Array(n),
-    len = arr.length,
-    taken = new Array(len);
-  if (n > len)
-    throw new RangeError("getRandom: more elements taken than available");
-  while (n--) {
-    var x = Math.floor(Math.random() * len);
-    result[n] = arr[x in taken ? taken[x] : x];
-    taken[x] = --len in taken ? taken[len] : len;
-  }
-  return result;
-}
 
 
 
