@@ -12,6 +12,7 @@ class Turn extends ChangeNotifier {
   var block;
   var challenge;
   Chance chance = Chance();
+  String pin;
 
   Turn();
 
@@ -26,6 +27,7 @@ class Turn extends ChangeNotifier {
     this.block = snap["block"] ?? null;
     this.challenge = snap["challenge"] ?? null;
     this.chance.setActive((snap['active'] as DocumentReference).documentID);
+    // this.pin = snap['pin'];
     TurnReader.readTurn(this);
     IDManager.turnId = snap.documentID;
   }
@@ -33,10 +35,10 @@ class Turn extends ChangeNotifier {
 
 class TurnAction {
   var player;
-  ActionName type;
+  ActionName action;
 
   TurnAction(data) {
     this.player = data['player'];
-    this.type = CardAction.actionFromStr(data['type']);
+    this.action = CardAction.actionFromStr(data['action']);
   }
 }

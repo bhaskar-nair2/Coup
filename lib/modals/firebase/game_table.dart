@@ -14,6 +14,7 @@ class GameTable extends ChangeNotifier {
   GameState state = GameState.loading;
   String owner;
   String pin;
+  bool inProgress;
 
   GameTable();
 
@@ -24,8 +25,9 @@ class GameTable extends ChangeNotifier {
     this.players = _players;
     this.owner = (snap.data['owner'] as DocumentReference).documentID;
     this.state = stateFromStr((snap.data['state'] as String));
+    // this.inProgress = snap['inProgress'];
 
-    if (this.tableId != snap.documentID) {
+    if (this.inProgress == false) {
       this.tableId = snap.documentID;
       this.pin = snap.data['pin'];
       IDManager.tableId = snap.documentID;

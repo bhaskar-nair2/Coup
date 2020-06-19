@@ -2,7 +2,9 @@ import 'package:coup/modals/game/action.dart';
 import 'package:coup/repos/activationFunctions.dart';
 import 'package:coup/repos/callerFunctions.dart';
 
-class GlobalCardActions {
+class GlobalCardActions extends CardAction {
+  GlobalCardActions(ActionName action) : super(action);
+
   static List<CardAction> get list => [income, aid, coup];
 
   static final CardAction income = CardAction(

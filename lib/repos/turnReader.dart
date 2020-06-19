@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class TurnReader {
   static readTurn(Turn turn) {
-    var type = turn.action.type;
+    var type = turn.action.action;
     // PlayersList plList = PlayersList();
     // var player = plList.getById(turn.action.player);
 

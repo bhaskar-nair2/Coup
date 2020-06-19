@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:coup/modals/game/actionData/global_card_actions.dart';
 import 'package:coup/modals/game/role.dart';
 
 enum ActionName {
@@ -23,6 +26,27 @@ enum ActionName {
 
 enum ActionType { utility, action, ability, passive }
 
+extension ActionNameExt on ActionName {
+  CardAction getAssociatedAction() {
+    switch (this) {
+      case ActionName.income:
+        return GlobalCardActions.income;
+      case ActionName.aid:
+        return GlobalCardActions.aid;
+      case ActionName.coup:
+        return GlobalCardActions.coup;
+      // case ActionName.tax:
+      //   break;
+      // case ActionName.assassinate:
+      //   break;
+      // case ActionName.exchange:
+      //   break;
+      default:
+        return GlobalCardActions.income;
+    }
+  }
+}
+
 class CardAction {
   RoleName role;
   ActionName action;
@@ -44,6 +68,11 @@ class CardAction {
     ActionName action = ActionName.values.firstWhere(
         (e) => e.toString() == 'ActionName.' + str.toString().toLowerCase());
     return action;
+  }
+
+  static String actionToStr(ActionName act) {
+    var val = act.toString().split('.')[1];
+    return val;
   }
 
   CardAction(
@@ -125,35 +154,14 @@ class CardAction {
     }
   }
 
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'role': role?.toMap(),
-  //     'action': action?.toMap(),
-  //     'type': type?.toMap(),
-  //     'name': name,
-  //     'description': description,
-  //     'active': active,
-  //     'caller': caller?.toMap(),
-  //     'activator': activator?.toMap(),
-  //   };
-  // }
+  Map<String, dynamic> toMap() {
+    return {
+      'action': actionToStr(action),
+      'name': name,
+      'blockable': blockable,
+      'challengeable': challengeable,
+    };
+  }
 
-  // static CardAction fromMap(Map<String, dynamic> map) {
-  //   if (map == null) return null;
-
-  //   return CardAction(
-  //     RoleName.fromMap(map['role']),
-  //     ActionName.fromMap(map['action']),
-  //     ActionType.fromMap(map['type']),
-  //     map['name'],
-  //     map['description'],
-  //     map['active'],
-  //     Function.fromMap(map['caller']),
-  //     Function.fromMap(map['activator']),
-  //   );
-  // }
-
-  // String toJson() => json.encode(toMap());
-
-  // static CardAction fromJson(String source) => fromMap(json.decode(source));
+  String toJson() => json.encode(toMap());
 }

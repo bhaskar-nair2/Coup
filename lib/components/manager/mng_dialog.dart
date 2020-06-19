@@ -16,7 +16,7 @@ class TableManagerDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var _table = Provider.of<GameTable>(context);
     var isOwner = _table.owner == IDManager.selfId;
-    var hasMin = _table.players.length < minPlayers;
+    var hasMin = _table.players.length <= minPlayers;
     var _players = _table.players;
 
     leave() async {
@@ -52,28 +52,27 @@ class TableManagerDialog extends StatelessWidget {
                 ),
               ),
             ),
-            isOwner
-                ? Container(
-                    height: 30,
-                    width: 250,
-                    decoration: BoxDecoration(
-                      color: Colors.greenAccent,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: FlatButton(
-                      disabledColor: Colors.grey,
-                      onPressed: hasMin
-                          ? null
-                          : () {
-                              // Start Game
-                              Firestore.instance
-                                  .collection('tables')
-                                  .document(_table.tableId)
-                                  .updateData({"state": 'play'});
-                            },
-                      child: Text('Start Game'),
-                    ))
-                : null,
+            Container(
+                height: 30,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.greenAccent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: FlatButton(
+                  disabledColor: Colors.grey,
+                  onPressed: isOwner
+                      ? () {
+                          if (!hasMin)
+                            Fluttertoast.showToast(
+                                msg: '$minPlayers Required to start game');
+                          else
+                            FirebaseCallers.startGame(_table.tableId);
+                        }
+                      : null,
+                  child:
+                      isOwner ? Text('Start Game') : Text("Waiting to Start"),
+                )),
             Container(
               height: 30,
               width: 250,

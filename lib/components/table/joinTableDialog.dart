@@ -29,9 +29,10 @@ class _JoinTableDialogState extends State<JoinTableDialog> {
       state = true;
     } on PlatformException catch (error) {
       Fluttertoast.showToast(msg: error.details['message']);
+      print("Join Table 1: $error");
       state = false;
     } catch (error) {
-      print(error);
+      print("Join Table 2: $error");
       state = false;
     } finally {
       toggleLoading();

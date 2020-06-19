@@ -4,9 +4,12 @@ const { user } = require('firebase-functions/lib/providers/auth');
 
 const db = admin.firestore();
 
+const MIN_PLAYERS = 2;
+
 exports.joinTable =
   functions.https.onCall(async (data, context) => {
-    
+    var pin = "up" + Math.random() * 100
+
     function tableHasPLayer(id, arr) {
       if (arr.includes(id))
         return true
@@ -17,25 +20,29 @@ exports.joinTable =
     if (data.tableId !== null && data.userId !== null) {
       var table = db.collection("tables").doc(data.tableId);
       var user = db.collection("players").doc(data.userId);
+      var upData = { updatePin: pin }
 
       var tableData = (await table.get()).data()
       var playerList = tableData.players.map(p => p)
 
       // table is open
       // round is not in progress
-      if (tableData.isOpen === true || tableData.inProgress === false || tableHasPLayer(data.userId,playerList)) {
+      if (
+        tableData.isOpen === true ||
+        tableData.inProgress === false ||
+        tableHasPLayer(data.userId, playerList)
+      ) {
         // no duplicate player
         var newOccupied = tableData.players.length + 1
+        upData.table = table
+        upData.occupied = newOccupied
+        upData.players = admin.firestore.FieldValue.arrayUnion(user)
 
         await user.update({
           table: table
         })
 
-        await table.update({
-          occupied: newOccupied,
-          isOpen: newOccupied < 6 ? true : false,
-          players: admin.firestore.FieldValue.arrayUnion(user)
-        })
+        await table.update(upData)
 
         if (newOccupied === 1) {
           // update active in turn
@@ -95,30 +102,34 @@ exports.correctSetup =
   functions.firestore.document('tables/{tableId}').onUpdate(async (snap, context) => {
     const before = snap.before.data();
     const after = snap.after.data();
+    var tbRef = snap.after.ref
+    var tnRef = after.turn
+    var pin = "up" + Math.random() * 100
 
-    var upData = {}
-
-    // * Do not Delete table on empty as it will cost extra
+    var upData = {
+      updatePin: pin
+    }
 
     if (!before || !after)
       return;
 
-    var tbRef = snap.after.ref
-    var tnRef = after.turn
-
-    if (after.occupied !== after.players.length) {
-      upData = {
-        occupied: after.players.length,
-        isOpen: after.players.length < 6 ? true : false
-      }
-      tbRef.update(upData)
+    else if (before.updatePin === after.updatePin)
       return
-    }
 
-    if (after.occupied === 1) {
-      tbRef.update({ status: 'waiting', inProgress: false })
-      upData.active = after.players[0]
-      tnRef.update(upData)
+    else if (after.occupied !== after.players.length) {
+      if (after.occupied <= 1) {
+        upData.active = after.players[0]
+        tnRef.update({
+          active: after.players[0]
+        })
+      }
+      if (after.occupied <= MIN_PLAYERS) {
+        upData.state = 'waiting'
+        upData.inProgress = false
+      }
+      upData.occupied = after.players.length
+      upData.isOpen = after.players.length < 6 ? true : false
+      tbRef.update(upData)
       return
     }
 
@@ -170,7 +181,6 @@ function dealCards(playerCount) {
     deal.push(res)
     res = []
   }
-  console.log(cards)
   return deal;
 }
 
