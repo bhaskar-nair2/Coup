@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/game/action.dart';
 import 'package:flutter/foundation.dart';
 

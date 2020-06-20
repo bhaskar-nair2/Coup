@@ -20,15 +20,6 @@ class FireDB {
   }
 
   static Stream<SelfPlayer> selfStream(String userId) {
-    // return _service.user.switchMap((user)=>{
-    //   if (user != null) {
-    //     var self = SelfPlayer.fromFirestore(user);
-    //     return self;
-    //   }
-    //   else{
-    //     SelfPlayer();
-    //   }
-    // });
     return _db.collection('players').document(userId).snapshots().map((snap) {
       if (snap.exists)
         return SelfPlayer.fromFirestore(snap);

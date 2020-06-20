@@ -5,5 +5,4 @@ class IDManager {
 
   static final _idm = IDManager._internal();
   IDManager._internal();
-
 }
