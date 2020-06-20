@@ -32,14 +32,14 @@ class _GameScreenState extends State<GameScreen> {
     return MultiProvider(
       providers: [
         StreamProvider<GameTable>.value(
-          value: FirestoreService.tableStream(widget.tableId),
+          value: FireDB.tableStream(widget.tableId),
           catchError: (context, error) {
             print(error);
             return GameTable();
           },
         ),
         StreamProvider<SelfPlayer>.value(
-          value: FirestoreService.selfStream(widget.userId),
+          value: FireDB.selfStream(widget.userId),
           catchError: (context, error) {
             print(error);
             return SelfPlayer();

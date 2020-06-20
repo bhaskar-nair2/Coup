@@ -17,12 +17,6 @@ class Player extends ChangeNotifier {
 
   Player.fromRef(DocumentReference ref) {
     this.playerId = ref.documentID;
-    this.setPlayerData();
-  }
-
-  setPlayerData() async {
-    var snap = (await FirestoreService.getPlayer(playerId) as DocumentSnapshot);
-    this.nick = snap['nick'];
   }
 
   Player.fromFirestore(DocumentSnapshot snap) {
