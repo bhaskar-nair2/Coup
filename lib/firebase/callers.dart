@@ -8,12 +8,16 @@ class FirebaseCallers {
   static final _db = Firestore.instance;
 
   static Future createTable(
-      String tablePin, String userId, String total) async {
+    String tablePin,
+    String userId,
+    String total,
+  ) async {
     try {
-      var turn = _db.collection('turns').document();
       var user = _db.collection('players').document(userId);
+      var table = _db.collection('tables').document(userId);
+      var turn = _db.collection('turns').document(userId);
 
-      var table = await _db.collection('tables').add({
+      await table.setData({
         "pin": tablePin,
         "owner": user,
         "isOpen": true,
@@ -24,7 +28,7 @@ class FirebaseCallers {
         "turn": turn
       });
 
-      await user.updateData({"table": table});
+      await user.setData({"table": table}, merge: true);
 
       IDManager.turnId = turn.documentID;
       IDManager.tableId = table.documentID;

@@ -8,19 +8,17 @@ import 'package:coup/router/router.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:coup/firebase/firedb.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key key}) : super(key: key);
 
-  final db = FirestoreService();
   final _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        FutureProvider<FirebaseUser>.value(value: _authService.user),
+        StreamProvider<FirebaseUser>.value(value: _authService.user),
       ],
       child: Scaffold(
         body: Stack(children: <Widget>[

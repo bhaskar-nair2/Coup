@@ -16,7 +16,7 @@ class TurnArea extends StatelessWidget {
         ? MultiProvider(
             providers: [
               StreamProvider<Turn>.value(
-                value: FirestoreService.turnStream(IDManager.turnId),
+                value: FireDB.turnStream(IDManager.turnId),
                 catchError: (context, error) {
                   print(error);
                   return Turn();

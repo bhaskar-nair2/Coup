@@ -102,7 +102,7 @@ class PLayerDataMaker extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
       // chnage this to a player builder stream
-      stream: FirestoreService.playerStream(player.playerId),
+      stream: FireDB.playerStream(player.playerId),
       builder: (context, AsyncSnapshot<Player> snapshot) {
         if (snapshot.hasData)
           return Row(

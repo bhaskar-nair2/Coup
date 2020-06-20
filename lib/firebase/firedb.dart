@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coup/firebase/auth.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/player.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
+import 'package:rxdart/rxdart.dart';
 
-class FirestoreService {
+class FireDB {
+  static AuthService _service = AuthService();
   static final Firestore _db = Firestore.instance;
 
   static Stream<GameTable> tableStream(String tableId) {
@@ -17,6 +20,12 @@ class FirestoreService {
   }
 
   static Stream<SelfPlayer> selfStream(String userId) {
+    // _service.authState.pipe((user){
+    //   if (user != null) {
+    //     self = 
+    //   }
+    //   else{}
+    // })
     return _db.collection('players').document(userId).snapshots().map((snap) {
       if (snap.exists)
         return SelfPlayer.fromFirestore(snap);
@@ -43,7 +52,7 @@ class FirestoreService {
     });
   }
 
-  static Future getPlayer(String playerId) {
-    return _db.collection('players').document(playerId).get();
-  }
+  // static Future getPlayer(String playerId) {
+  //   return _db.collection('players').document(playerId).get();
+  // }
 }

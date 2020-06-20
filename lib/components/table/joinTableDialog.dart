@@ -14,7 +14,7 @@ class JoinTableDialog extends StatefulWidget {
 
 class _JoinTableDialogState extends State<JoinTableDialog> {
   bool loading = false;
-  TextEditingController tableId = TextEditingController(text: '9P1274');
+  TextEditingController tableId = TextEditingController(text: '9P1344');
   //todo:remove
 
   joinTableFn() async {
@@ -28,10 +28,15 @@ class _JoinTableDialogState extends State<JoinTableDialog> {
       );
       state = true;
     } on PlatformException catch (error) {
-      Fluttertoast.showToast(msg: error.details['message']);
+      Fluttertoast.showToast(msg: error.details['message'],backgroundColor: Colors.redAccent);
       print("Join Table 1: $error");
       state = false;
-    } catch (error) {
+    } on ErrorWidget catch(error){
+      Fluttertoast.showToast(msg: error.message,backgroundColor: Colors.redAccent);
+      print("Join Table 1: $error");
+      state = false;
+    } 
+    catch (error) {
       print("Join Table 2: $error");
       state = false;
     } finally {

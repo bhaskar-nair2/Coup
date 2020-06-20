@@ -14,7 +14,7 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _auth.user.then(
+    _auth.getUser.then(
       (user) => {
         if (user != null)
           {

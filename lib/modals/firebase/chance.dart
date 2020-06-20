@@ -1,5 +1,4 @@
 import 'package:coup/modals/firebase/idmanager.dart';
-import 'package:coup/modals/firebase/self.dart';
 import 'package:flutter/foundation.dart';
 
 class Chance extends ChangeNotifier {
