@@ -6,22 +6,24 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class TurnReader {
   List<Player> playerList;
-    
+
   // setupData() async{
   //   var tableData = await FireDB.tableStream(tableId);
   // }
 
   static readTurn(Turn turn) {
-    var type = turn.action.action;
-    // PlayersList plList = PlayersList();
-    // var player = plList.getById(turn.action.player);
+    if (turn.action != null) {
+      var type = turn.action.type;
+      // PlayersList plList = PlayersList();
+      // var player = plList.getById(turn.action.player);
 
-    switch (type) {
-      case ActionName.income:
-        Fluttertoast.showToast(msg: 'Income Taken');
-        break;
-      default:
-        print('default');
+      switch (type) {
+        case ActionName.income:
+          Fluttertoast.showToast(msg: 'Income Taken');
+          break;
+        default:
+          print('default');
+      }
     }
   }
 }

@@ -22,9 +22,9 @@ class Turn extends ChangeNotifier {
 
   Turn.fromFirestore(DocumentSnapshot snap) {
     this.id = snap.documentID;
-    this.action = TurnAction(snap["action"] as Map) ?? null;
-    this.block = snap["block"] ?? null;
-    this.challenge = snap["challenge"] ?? null;
+    this.action = TurnAction(snap.data["action"] as Map) ?? null;
+    this.block = snap.data["block"] ?? null;
+    this.challenge = snap.data["challenge"] ?? null;
     this.chance.setActive((snap['active'] as DocumentReference).documentID);
     // this.pin = snap['pin'];
     TurnReader.readTurn(this);
@@ -34,10 +34,12 @@ class Turn extends ChangeNotifier {
 
 class TurnAction {
   var player;
-  ActionName action;
+  ActionName type;
 
   TurnAction(data) {
-    this.player = data['player'];
-    this.action = CardAction.actionFromStr(data['action']);
+    if (data != null) {
+      this.player = data['player'] ?? null;
+      this.type = CardAction.actionFromStr(data['action']);
+    }
   }
 }

@@ -67,7 +67,7 @@ class TableManagerDialog extends StatelessWidget {
                             Fluttertoast.showToast(
                                 msg: '$minPlayers Required to start game');
                           else
-                            FirebaseCallers.startGame(_table.tableId);
+                            FirebaseCallers.startGame(IDManager.tableId);
                         }
                       : null,
                   child:

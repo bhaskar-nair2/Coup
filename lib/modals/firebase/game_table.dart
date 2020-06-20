@@ -28,7 +28,6 @@ class GameTable extends ChangeNotifier {
     // this.inProgress = snap['inProgress'];
 
     if (this.inProgress == false) {
-      this.tableId = snap.documentID;
       this.pin = snap.data['pin'];
       IDManager.tableId = snap.documentID;
       this.turnId = (snap.data["turn"] as DocumentReference).documentID;
