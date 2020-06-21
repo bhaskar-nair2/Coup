@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:coup/router/guards.dart';
 import 'package:coup/router/router.gr.dart';
 import 'package:coup/screens/home_screen.dart';
 import 'package:coup/style.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }

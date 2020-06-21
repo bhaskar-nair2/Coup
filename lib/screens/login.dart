@@ -1,5 +1,7 @@
 import 'package:coup/firebase/auth.dart';
+import 'package:coup/firebase/presence.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,6 +21,7 @@ class LoginScreenState extends State<LoginScreen> {
         if (user != null)
           {
             IDManager.selfId = user.uid,
+            UserPresence.rtdbAndLocalFsPresence(FirebaseApp.instance),
             Navigator.pushReplacementNamed(context, '/home-screen')
           }
       },
