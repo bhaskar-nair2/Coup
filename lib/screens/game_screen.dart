@@ -7,6 +7,7 @@ import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
+import 'package:coup/modals/firebase/turn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,6 +46,13 @@ class _GameScreenState extends State<GameScreen> {
             return SelfPlayer();
           },
         ),
+        StreamProvider<Turn>.value(
+          value: FireDB.turnStream(IDManager.turnId),
+          catchError: (context, error) {
+            print(error);
+            return Turn();
+          },
+        )
       ],
       child: GameStateScreenManager(),
     );

@@ -112,6 +112,9 @@ exports.correctSetup =
     if (!before || !after)
       return;
 
+    if (after.players.length === 0)
+      tbRef.delete()
+
     // else if (before.updatePin === after.updatePin)
     //   return
 

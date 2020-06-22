@@ -20,13 +20,16 @@ class PowerCardHolder extends StatelessWidget {
       textDirection: TextDirection.ltr,
       bottom: botPos,
       start: single ? (MediaQuery.of(context).size.width - 180) / 4 : 0,
-      child: Row(
-        children: List.generate(
-          hand.cards.length,
-          (index) => PowerCard(
-            card: hand.cards[index],
-            index: index,
-            single: single,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Row(
+          children: List.generate(
+            hand.cards.length,
+            (index) => PowerCard(
+              card: hand.cards[index],
+              index: index,
+              single: single,
+            ),
           ),
         ),
       ),

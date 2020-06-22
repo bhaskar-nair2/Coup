@@ -1,6 +1,5 @@
 import 'package:coup/components/turn/avail_actions.dart';
 import 'package:coup/components/turn/global_actions.dart';
-import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/firebase/chance.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/turn.dart';
@@ -13,24 +12,13 @@ class TurnArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IDManager.turnId != null
-        ? MultiProvider(
-            providers: [
-              StreamProvider<Turn>.value(
-                value: FireDB.turnStream(IDManager.turnId),
-                catchError: (context, error) {
-                  print(error);
-                  return Turn();
-                },
-              )
-            ],
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[GlobalHolder(), ActionHolder()],
-              ),
+        ? Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[GlobalHolder(), ActionHolder()],
             ),
           )
         : SizedBox.shrink();

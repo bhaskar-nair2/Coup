@@ -32,7 +32,7 @@ class TableArea extends StatelessWidget {
             overflow: Overflow.clip,
             children: [
               Positioned(
-                bottom: (MediaQuery.of(context).size.height - tableSize) - 50,
+                bottom: (MediaQuery.of(context).size.height - tableSize) - 60,
                 left: (MediaQuery.of(context).size.width - tableSize) / 2,
                 child: SizedBox(
                   height: tableSize,
