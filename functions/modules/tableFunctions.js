@@ -1,6 +1,7 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin');
 const { user } = require('firebase-functions/lib/providers/auth');
+const { firestore } = require('firebase-admin');
 
 const db = admin.firestore();
 
@@ -61,8 +62,6 @@ exports.joinTable =
       throw new functions.https.HttpsError('invalid-argument', 'Error in data');
   })
 
-
-
 // todo: Correct this
 exports.leaveTable =
   functions.https.onCall(async (data, context) => {
@@ -113,13 +112,13 @@ exports.correctSetup =
     if (!before || !after)
       return;
 
-    else if (before.updatePin === after.updatePin)
-      return
+    // else if (before.updatePin === after.updatePin)
+    //   return
 
-    else if (after.occupied !== after.players.length) {
+    if (after.occupied !== after.players.length) {
       if (after.occupied <= 1) {
         upData.active = after.players[0]
-        tnRef.update({
+        tnRef.set({
           active: after.players[0]
         })
       }
@@ -184,43 +183,23 @@ function dealCards(playerCount) {
   return deal;
 }
 
+exports.removeOffline =
+  functions.firestore.document('status/{uid}').onUpdate(async (snap, context) => {
+    const userRef = db.collection('players').doc(context.params.uid)
+    const after = snap.after.data()
+    const status = after['status'] === 'online'
+    const userData = (await userRef.get()).data()
 
+    if (status === false) {
+      if (userData['table'] !== null) {
+        var tableRef = userData['table']
+        tableRef.update({
+          players: admin.firestore.FieldValue.arrayRemove(userRef)
+        })
+        userRef.update({
+          table: admin.firestore.FieldValue.delete()
+        })
+      }
+    }
 
-
-// exports.continueGame =
-//   functions.https.onCall((data, context) => {
-//     if (data.tableId !== null && data.userId !== null) {
-//       db.runTransaction(async () => {
-//         var table = db.collection("tables").doc(data.tableId);
-//         var user = db.collection("players").doc(data.userId);
-
-//         var tableData = (await table.get()).data()
-
-//         // table is open
-//         if (tableData.isOpen === true) {
-//           // no duplicate player
-//           var newOccupied = tableData.players.length + 1
-//           user.update({
-//             isk: 0,
-//             hand: dealCards(),
-//             chance: false,
-//             table: table
-//           })
-//           return table.update({
-//             occupied: newOccupied,
-//             isOpen: newOccupied < 6 ? true : false,
-//             players: admin.firestore.FieldValue.arrayUnion(user)
-//           })
-//         }
-//         else {
-//           throw new functions.https.HttpsError('aborted', 'Table already full');
-//         }
-//       }).then(() => {
-//         return { status: 200, data: "Added to table" }
-//       }).catch(error => {
-//         throw new functions.https.HttpsError('invalid-argument', 'Some error occoured');
-//       })
-//     }
-//     else
-//       throw new functions.https.HttpsError('invalid-argument', 'Error in data');
-//   })
+  })

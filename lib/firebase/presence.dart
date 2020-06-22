@@ -6,12 +6,15 @@ import 'package:firebase_database/firebase_database.dart';
 class UserPresence {
   static final _app = FirebaseApp.instance;
   static final FirebaseDatabase _db = FirebaseDatabase(
-      app: _app, databaseURL: 'https://coup-dc26b.firebaseio.com/');
+    app: _app,
+    databaseURL: 'https://coup-dc26b.firebaseio.com/',
+  );
 
   static rtdbAndLocalFsPresence(app) async {
     var uid = (await AuthService().getUser).uid;
     var userStatusDatabaseRef = _db.reference().child('/status/' + uid);
-    var userStatusFirestoreRef = Firestore.instance.collection('players').document(uid);
+    var userStatusFirestoreRef =
+        Firestore.instance.collection('status').document(uid);
 
     var isOfflineForDatabase = {
       "state": 'offline',
