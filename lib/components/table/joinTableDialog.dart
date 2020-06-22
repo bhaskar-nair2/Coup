@@ -14,7 +14,7 @@ class JoinTableDialog extends StatefulWidget {
 
 class _JoinTableDialogState extends State<JoinTableDialog> {
   bool loading = false;
-  TextEditingController tableId = TextEditingController(text: '9P1344');
+  TextEditingController tableId = TextEditingController(text: 'AD1663');
   //todo:remove
 
   joinTableFn() async {

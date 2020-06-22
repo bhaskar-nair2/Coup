@@ -61,6 +61,6 @@ class UserPresence {
         userStatusFirestoreRef.updateData(isOnlineForFirestore);
       });
     });
-    // [END rtdb_and_local_fs_presence]
+  
   }
 }

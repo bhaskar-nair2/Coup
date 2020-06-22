@@ -9,8 +9,6 @@ const MIN_PLAYERS = 2;
 
 exports.joinTable =
   functions.https.onCall(async (data, context) => {
-    var pin = "up" + Math.random() * 100
-
     function tableHasPLayer(id, arr) {
       if (arr.includes(id))
         return true
@@ -21,7 +19,7 @@ exports.joinTable =
     if (data.tableId !== null && data.userId !== null) {
       var table = db.collection("tables").doc(data.tableId);
       var user = db.collection("players").doc(data.userId);
-      var upData = { updatePin: pin }
+      var upData = {}
 
       var tableData = (await table.get()).data()
       var playerList = tableData.players.map(p => p)
@@ -43,7 +41,7 @@ exports.joinTable =
           table: table
         })
 
-        await table.update(upData)
+        // await table.update(upData)
 
         if (newOccupied === 1) {
           // update active in turn
@@ -70,12 +68,6 @@ exports.leaveTable =
       var user = db.collection("players").doc(data.userId);
       var tableData = (await table.get()).data()
 
-      // var player = tableData.players.find(pl => pl === user)
-
-      // if (player === undefined) {
-      //   return { status: 200, data: "Not in table" }
-      // }
-
       var newOccupied = tableData.players.length - 1
 
       table.update({
@@ -97,28 +89,22 @@ exports.leaveTable =
       throw new functions.https.HttpsError('invalid-argument', 'Error in data');
   })
 
+// ! Important
 exports.correctSetup =
   functions.firestore.document('tables/{tableId}').onUpdate(async (snap, context) => {
     const before = snap.before.data();
     const after = snap.after.data();
     var tbRef = snap.after.ref
     var tnRef = after.turn
-    var pin = "up" + Math.random() * 100
-
-    var upData = {
-      updatePin: pin
-    }
+    var upData = {}
 
     if (!before || !after)
       return;
 
-    if (after.players.length === 0)
+    else if (after.players.length === 0)
       tbRef.delete()
 
-    // else if (before.updatePin === after.updatePin)
-    //   return
-
-    if (after.occupied !== after.players.length) {
+    else if (after.occupied !== after.players.length) {
       if (after.occupied <= 1) {
         upData.active = after.players[0]
         tnRef.set({
@@ -134,8 +120,8 @@ exports.correctSetup =
       tbRef.update(upData)
       return
     }
-
-    return
+    else
+      return
   })
 
 exports.startGame =
@@ -187,8 +173,8 @@ function dealCards(playerCount) {
 }
 
 exports.removeOffline =
-  functions.firestore.document('status/{uid}').onUpdate(async (snap, context) => {
-    const userRef = db.collection('players').doc(context.params.uid)
+  functions.firestore.document('status/{userId}').onUpdate(async (snap, context) => {
+    const userRef = db.collection('players').doc(context.params.userId)
     const after = snap.after.data()
     const status = after['status'] === 'online'
     const userData = (await userRef.get()).data()
@@ -196,6 +182,7 @@ exports.removeOffline =
     if (status === false) {
       if (userData['table'] !== null) {
         var tableRef = userData['table']
+        console.log(tableRef)
         tableRef.update({
           players: admin.firestore.FieldValue.arrayRemove(userRef)
         })
@@ -204,5 +191,4 @@ exports.removeOffline =
         })
       }
     }
-
   })
