@@ -67,13 +67,14 @@ class GameStateScreenManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var table = Provider.of<GameTable>(context);
+    var turn = Provider.of<Turn>(context);
 
     return SafeArea(
       child: Scaffold(
-        body: table != null
+        body: table!=null && turn != null
             ? Stack(
                 fit: StackFit.expand,
-                children: table.state == GameState.waiting
+                children: table.state == TableState.waiting
                     ? [TableManagerDialog()]
                     : [
                         TableArea(),

@@ -4,16 +4,16 @@ import 'package:coup/modals/firebase/player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-enum GameState { waiting, loading, play, counter, block, challenge }
+enum TableState { loading, waiting, play, score }
 
 class GameTable extends ChangeNotifier {
   String tableId;
   int occupied = 0; // Exact number, index from 1
   String turnId = '';
   List<Player> players = [];
-  GameState state = GameState.loading;
   String owner;
   String pin;
+  TableState state;
   bool inProgress;
 
   GameTable();
@@ -33,10 +33,9 @@ class GameTable extends ChangeNotifier {
       this.turnId = (snap.data["turn"] as DocumentReference).documentID;
     }
   }
-
-  static GameState stateFromStr(String str) {
-    GameState state = GameState.values.firstWhere(
-        (e) => e.toString() == 'GameState.' + str.toString().toLowerCase());
+  static TableState stateFromStr(String str) {
+    TableState state = TableState.values.firstWhere(
+        (e) => e.toString() == 'TableState.' + str.toString().toLowerCase());
     return state;
   }
 }

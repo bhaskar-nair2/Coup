@@ -19,7 +19,6 @@ exports.joinTable =
     if (data.tableId !== null && data.userId !== null) {
       var table = db.collection("tables").doc(data.tableId);
       var user = db.collection("players").doc(data.userId);
-      var upData = {}
 
       var tableData = (await table.get()).data()
       var playerList = tableData.players.map(p => p)
@@ -31,6 +30,9 @@ exports.joinTable =
         tableData.inProgress === false ||
         tableHasPLayer(data.userId, playerList)
       ) {
+        var upData = {}
+
+
         // no duplicate player
         var newOccupied = tableData.players.length + 1
         upData.table = table
@@ -41,7 +43,7 @@ exports.joinTable =
           table: table
         })
 
-        // await table.update(upData)
+        await table.update(upData)
 
         if (newOccupied === 1) {
           // update active in turn
@@ -128,6 +130,7 @@ exports.startGame =
   functions.https.onCall(async (data, context) => {
     const table = db.collection('tables').doc(data.tableId)
     const tableData = (await table.get()).data()
+    const turn = db.collection('turns').doc(tableData['turn'])
     const playerList = tableData.players.map(p => p)
     const playerCount = playerList.length
     const cards = dealCards(playerCount)
@@ -138,7 +141,9 @@ exports.startGame =
         hand: cards[index],
       })
     })
-
+    turn.set({
+      active: playerList[0]
+    })
     table.update({ state: 'play', inProgress: true })
 
     return { status: 200, data: "Game Started" }
@@ -179,15 +184,16 @@ exports.removeOffline =
     const status = after['status'] === 'online'
     const userData = (await userRef.get()).data()
 
+
     if (status === false) {
+      userRef.update({
+        table: admin.firestore.FieldValue.delete()
+      })
       if (userData['table'] !== null) {
-        var tableRef = userData['table']
         console.log(tableRef)
+        const tableRef = db.collection('tables').doc(userData['turn'])
         tableRef.update({
           players: admin.firestore.FieldValue.arrayRemove(userRef)
-        })
-        userRef.update({
-          table: admin.firestore.FieldValue.delete()
         })
       }
     }

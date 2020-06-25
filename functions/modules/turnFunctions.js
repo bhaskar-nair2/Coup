@@ -7,19 +7,50 @@ const db = admin.firestore();
 // action is made
 // on action make, switch to next person
 
+// enum GameState { waiting, loading, play, counter, block, challenge }
+
 const addTurn =
   functions.https.onCall(async (data, context) => {
-    var turn = db.collection("turns").doc(data.turnId);
+    var turnRef = db.collection("turns").doc(data.turnId);
+    var type = data.type // action, challenge, block
 
-    console.log(data)
+    // If action type, then set action data and set `counter` state
+    if (type === 'action') {
+      await turnRef.update({
+        action: data["action"]
+      })
 
-    await turn.update({
-      action: data["action"]
-    })
-
-    await changeActive(data)
-
-    return { status: 200, data: "Action added to Turn" }
+      if (data['action']['blockable'] === true || data['action']['blockable'] === true) {
+        turnRef.update({
+          status: 'counter' // this means now people are invited to block
+        }) // all people will now be active
+      }
+      else {
+        await changeActive(data)
+      }
+      return { status: 200, data: "Action added to Turn" }
+    }
+    // Incase of challenge
+    else if (type === 'challenge') {
+      await turnRef.update({
+        challenge: data["challenge"]
+      })
+      turnRef.update({
+        status: 'challenge'
+      })
+    }
+    // incase of block
+    else if (type === 'block') {
+      await turnRef.update({
+        block: data["block"]
+      })
+      turnRef.update({
+        status: 'block'
+      })
+    }
+    else { 
+      throw new functions.https.HttpsError('aborted', 'Table is Closed');
+    }
   })
 
 
@@ -48,11 +79,13 @@ const changeActive =  // change active
       else
         return playersList[0 + jump]
     }
-    
+
     return await turn.update({
-      active: nextPlayer()
+      active: db.collection("players").doc(nextPlayer())
     })
   }
+
+
 
 module.exports = {
   addTurn: addTurn,

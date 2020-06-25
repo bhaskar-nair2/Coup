@@ -1,4 +1,4 @@
-import 'package:coup/firebase/actions.dart';
+import 'package:coup/firebase/commons.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/game/actionData/global_card_actions.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +9,14 @@ import 'package:provider/provider.dart';
 class CallerFunctions {
   static incomeCall(BuildContext context) async {
     Fluttertoast.showToast(msg: "Taking Income");
-    await FbTurnFunctions.addActionTurn(GlobalCardActions.income.toMap());
-    await FbTurnFunctions.updateIsk(1);
+    await FirebaseCommons.addActionTurn(GlobalCardActions.income.toMap());
+    await FirebaseCommons.updateIsk(1);
   }
 
   static aidCall(BuildContext context) async {
     Fluttertoast.showToast(msg: "Taking Aid");
-    await FbTurnFunctions.addActionTurn(GlobalCardActions.aid.toMap());
-    await FbTurnFunctions.updateIsk(2);
+    await FirebaseCommons.addActionTurn(GlobalCardActions.aid.toMap());
+    await FirebaseCommons.updateIsk(2);
   }
 
   static coupCall(BuildContext context) {
