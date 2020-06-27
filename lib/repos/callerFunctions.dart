@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:coup/components/callerDialogs/dialogs.dart';
 
 class CallerFunctions {
   static incomeCall(BuildContext context) async {
@@ -19,7 +20,9 @@ class CallerFunctions {
     await FirebaseCommons.updateIsk(2);
   }
 
-  static coupCall(BuildContext context) {
+  static coupCall(BuildContext context) async {
+    showDialog(context: context, child: CoupDialog());
+    await FirebaseCommons.updateIsk(-7);
     // final isk = Provider.of<Isk>(context, listen: false);
     // isk.decrement(7);
   }

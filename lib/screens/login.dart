@@ -21,7 +21,7 @@ class LoginScreenState extends State<LoginScreen> {
         if (user != null)
           {
             IDManager.selfId = user.uid,
-            UserPresence.rtdbAndLocalFsPresence(FirebaseApp.instance),
+            UserPresence.rtdbAndLocalFsPresence(),
             Navigator.pushReplacementNamed(context, '/home-screen')
           }
       },

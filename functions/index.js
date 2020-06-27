@@ -6,10 +6,11 @@ admin.initializeApp({
 })
 
 try {
-  exports.userFunctions = require('./modules/userFunctions');
-  exports.tableFunctions = require('./modules/tableFunctions');
-  exports.playerFunctions = require('./modules/playerFunctions');
-  exports.turnFunctions = require('./modules/turnFunctions');
+  // exports.userFunctions = require('./modules/userFunctions');
+  // exports.tableFunctions = require('./modules/tableFunctions');
+  // exports.playerFunctions = require('./modules/playerFunctions');
+  // exports.turnFunctions = require('./modules/turnFunctions');
+  // exports.adminFunctions = require('./modules/adminFunctions');
 }
 catch (error) {
   console.log(error)

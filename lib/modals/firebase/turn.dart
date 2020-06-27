@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coup/modals/firebase/chance.dart';
+import 'package:coup/modals/game/chance.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/game/action.dart';
 import 'package:coup/repos/turnReader.dart';
 import 'package:flutter/foundation.dart';
 
-enum GameState { waiting, loading, play, counter, block, challenge }
+enum GameState { pause, play, counter, block, challenge }
 
 class Turn extends ChangeNotifier {
   String id = ''; // id of turn from table
   TurnAction action;
   var block;
   var challenge;
-  GameState gameState = GameState.loading;
+  GameState gameState = GameState.pause;
   Chance chance = Chance();
   String pin;
 
@@ -28,15 +28,15 @@ class Turn extends ChangeNotifier {
     this.action = TurnAction(snap.data["action"] as Map) ?? null;
     this.block = snap.data["block"] ?? null;
     this.challenge = snap.data["challenge"] ?? null;
-    this.gameState = stateFromStr((snap.data['gameState'] as String));
+    this.gameState =
+        stateFromStr(((snap.data['gameState'] ?? 'loading') as String));
 
     TurnReader.readTurn(this);
     this.setCurrActive(snap);
-
     if (IDManager.tableId == null) IDManager.turnId = snap.documentID;
   }
 
-  setCurrActive(snap) {
+  setCurrActive(DocumentSnapshot snap) {
     switch (this.gameState) {
       case GameState.play:
         this.chance.setActive((snap['active'] as DocumentReference).documentID);

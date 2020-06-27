@@ -13,6 +13,7 @@ class Chance extends ChangeNotifier {
 
   setActive(String playerId) {
     this.activeId = playerId;
+    print("$playerId ${IDManager.selfId}");
     if (playerId == IDManager.selfId) {
       this.active = true;
     } else

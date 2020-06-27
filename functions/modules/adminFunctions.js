@@ -5,11 +5,10 @@ const admin = require('firebase-admin')
 const db = admin.firestore();
 
 exports.delAllUsers =
-  functions.https.onCall(async (data, context) => {
+  functions.https.onCall(() => {
     admin.auth().listUsers()
       .then((listUsersResult) => {
         listUsersResult.users.forEach((userRecord) => {
-          console.log('user', userRecord.uid);
           admin.auth().deleteUser(userRecord.uid)
         });
         if (listUsersResult.pageToken) {
@@ -19,7 +18,7 @@ exports.delAllUsers =
         return;
       })
       .catch((error) => {
-        console.log('Error listing users:', error);
+        console.log('Error listing users:', error.message);
       });
     return;
   });

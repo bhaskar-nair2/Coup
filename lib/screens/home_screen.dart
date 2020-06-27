@@ -3,22 +3,28 @@ import 'package:coup/components/table/createTableDialog.dart';
 import 'package:coup/components/table/joinTableDialog.dart';
 import 'package:coup/components/table/logoutBtn.dart';
 import 'package:coup/firebase/auth.dart';
+import 'package:coup/firebase/presence.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/router/router.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
 
-  final _authService = AuthService();
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<FirebaseUser>.value(value: _authService.user),
+        StreamProvider<FirebaseUser>.value(value: _auth.user),
       ],
       child: Scaffold(
         body: Stack(children: <Widget>[

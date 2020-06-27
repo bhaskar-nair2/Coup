@@ -32,7 +32,7 @@ class AuthService {
 
   anonLogin() async {
     var _authRes = await _auth.signInAnonymously();
-    await UserPresence.rtdbAndLocalFsPresence(_auth.app);
+    await UserPresence.rtdbAndLocalFsPresence();
     IDManager.selfId = _authRes.user.uid;
   }
 

@@ -10,7 +10,7 @@ class UserPresence {
     databaseURL: 'https://coup-dc26b.firebaseio.com/',
   );
 
-  static rtdbAndLocalFsPresence(app) async {
+  static rtdbAndLocalFsPresence() async {
     var uid = (await AuthService().getUser).uid;
     var userStatusDatabaseRef = _db.reference().child('/status/' + uid);
     var userStatusFirestoreRef =
@@ -47,7 +47,7 @@ class UserPresence {
         // Instead of simply returning, we'll also set Firestore's state
         // to 'offline'. This ensures that our Firestore cache is aware
         // of the switch to 'offline.'
-        userStatusFirestoreRef.updateData(isOfflineForFirestore);
+        userStatusFirestoreRef.setData(isOfflineForFirestore);
         return;
       }
 
@@ -58,9 +58,8 @@ class UserPresence {
         userStatusDatabaseRef.set(isOnlineForDatabase);
 
         // We'll also add Firestore set here for when we come online.
-        userStatusFirestoreRef.updateData(isOnlineForFirestore);
+        userStatusFirestoreRef.setData(isOnlineForFirestore);
       });
     });
-  
   }
 }

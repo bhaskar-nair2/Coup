@@ -14,6 +14,21 @@ class FirebaseCommons {
     });
   }
 
+  static setTurnState(String state) async {
+    return await _db
+        .collection('players')
+        .document(IDManager.turnId)
+        .updateData({"gameState": state});
+  }
+
+  static changeActive(String nextPlayerId) async {
+    return await _db.collection('turns').document(IDManager.turnId).updateData(
+        {"active": _db.collection('players').document(nextPlayerId)});
+  }
+
+  // killcard
+  // swap card
+
   static addActionTurn(Map data) async {
     final HttpsCallable _addTurnActionCall = CloudFunctions.instance
         .getHttpsCallable(functionName: 'turnFunctions-addTurn');

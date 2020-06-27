@@ -130,7 +130,7 @@ exports.startGame =
   functions.https.onCall(async (data, context) => {
     const table = db.collection('tables').doc(data.tableId)
     const tableData = (await table.get()).data()
-    const turn = db.collection('turns').doc(tableData['turn'])
+    const turn = db.collection('turns').doc(data.tableId) // == turnId
     const playerList = tableData.players.map(p => p)
     const playerCount = playerList.length
     const cards = dealCards(playerCount)
@@ -142,6 +142,7 @@ exports.startGame =
       })
     })
     turn.set({
+      gameState: 'play',
       active: playerList[0]
     })
     table.update({ state: 'play', inProgress: true })
@@ -179,22 +180,26 @@ function dealCards(playerCount) {
 
 exports.removeOffline =
   functions.firestore.document('status/{userId}').onUpdate(async (snap, context) => {
-    const userRef = db.collection('players').doc(context.params.userId)
-    const after = snap.after.data()
-    const status = after['status'] === 'online'
-    const userData = (await userRef.get()).data()
+    try {
+      const userRef = db.collection('players').doc(context.params.userId)
+      const after = snap.after.data()
+      const status = after['status'] === 'online'
+      const userData = (await userRef.get()).data()
 
-
-    if (status === false) {
-      userRef.update({
-        table: admin.firestore.FieldValue.delete()
-      })
-      if (userData['table'] !== null) {
-        console.log(tableRef)
-        const tableRef = db.collection('tables').doc(userData['turn'])
-        tableRef.update({
-          players: admin.firestore.FieldValue.arrayRemove(userRef)
+      if (status === false) {
+        userRef.update({
+          table: admin.firestore.FieldValue.delete()
         })
+        if (userData['table'] !== null) {
+          const tableRef = db.collection('tables').doc(userData['turn'])
+          tableRef.update({
+            players: admin.firestore.FieldValue.arrayRemove(userRef)
+          })
+        }
       }
+      return { status: 200 }
+    } catch (err) {
+      console.log(err)
+      throw new functions.https.HttpsError('aborted', err);
     }
   })

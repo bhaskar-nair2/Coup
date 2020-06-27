@@ -48,7 +48,7 @@ const addTurn =
         status: 'block'
       })
     }
-    else { 
+    else {
       throw new functions.https.HttpsError('aborted', 'Table is Closed');
     }
   })
@@ -56,6 +56,7 @@ const addTurn =
 
 const changeActive =  // change active
   async (data) => {
+    console.info(data)
     var playerId = data.playerId
     var tableId = data.tableId
     var turnId = data.turnId

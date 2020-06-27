@@ -1,6 +1,6 @@
 import 'package:coup/components/turn/avail_actions.dart';
 import 'package:coup/components/turn/global_actions.dart';
-import 'package:coup/modals/firebase/chance.dart';
+import 'package:coup/modals/game/chance.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/turn.dart';
 import 'package:flutter/material.dart';
