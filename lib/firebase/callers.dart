@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coup/modals/firebase/fbModels.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,8 @@ class FirebaseCallers {
 
     await user.update({"table": table.key.toString()});
 
+    await turn.set({"status": 'pause'});
+
     IDManager.turnId = turn.key;
     IDManager.tableId = table.key;
     return;
@@ -35,7 +38,7 @@ class FirebaseCallers {
 
   static joinTable(String userId, String tableId) async {
     final HttpsCallable _joinFnCallable = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'tableFunctions-joinTable');
+        .getHttpsCallable(functionName: 'table-joinTable');
     await _joinFnCallable.call({
       'tableId': tableId,
       'userId': userId,
@@ -43,15 +46,18 @@ class FirebaseCallers {
   }
 
   static joinTableWithId(String userId, String tablePin) async {
-    var snap =
-        await _db.reference().child('tables').equalTo({"pin": tablePin}).once();
-
-    if (snap.value.length > 0) {
-      var tableRef = snap.value[0];
-      IDManager.tableId = tableRef.documentID;
-      IDManager.turnId =
-          (tableRef.data['turn'] as DocumentReference).documentID;
-      return await joinTable(userId, tableRef.documentID);
+    var snap = await _db
+        .reference()
+        .child('tables/')
+        .orderByChild('pin')
+        .equalTo(tablePin)
+        .once();
+    if (snap.value != null && snap.value.length > 0) {
+      var table = (snap.value as Map).values.toList().first;
+      var key = (snap.value as Map).keys.toList().first;
+      IDManager.tableId = key;
+      IDManager.turnId = table["turn"];
+      return await joinTable(userId, key);
     } else {
       throw ErrorWidget.withDetails(message: 'No such Table');
     }
@@ -59,13 +65,13 @@ class FirebaseCallers {
 
   static startGame(tableId) async {
     final HttpsCallable startGameFunction = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'tableFunctions-startGame');
+        .getHttpsCallable(functionName: 'table-startGame');
     await startGameFunction.call({"tableId": tableId});
   }
 
   static leaveTable(String userId, String tableId) async {
     final HttpsCallable leaveTableFunction = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'tableFunctions-leaveTable');
+        .getHttpsCallable(functionName: 'table-leaveTable');
     try {
       await leaveTableFunction.call(<String, dynamic>{
         'tableId': tableId,
@@ -78,4 +84,4 @@ class FirebaseCallers {
 }
 
 // final HttpsCallable leaveTableFunction = CloudFunctions.instance
-// .getHttpsCallable(functionName: 'tableFunctions-leaveTable');
+// .getHttpsCallable(functionName: 'table-leaveTable');
