@@ -23,23 +23,21 @@ class Turn extends ChangeNotifier {
     IDManager.turnId = turnId;
   }
 
-  Turn.fromFirestore(DocumentSnapshot snap) {
-    this.id = snap.documentID;
-    this.action = TurnAction(snap.data["action"] as Map) ?? null;
-    this.block = snap.data["block"] ?? null;
-    this.challenge = snap.data["challenge"] ?? null;
-    this.gameState =
-        stateFromStr(((snap.data['gameState'] ?? 'loading') as String));
+  Turn.fromFirestore(Map data) {
+    this.action = TurnAction(data["action"] as Map) ?? null;
+    this.block = data["block"] ?? null;
+    this.challenge = data["challenge"] ?? null;
+    this.gameState = stateFromStr(((data['gameState'] ?? 'loading') as String));
 
     TurnReader.readTurn(this);
-    this.setCurrActive(snap);
-    if (IDManager.tableId == null) IDManager.turnId = snap.documentID;
+    this.setCurrActive(data);
+    // if (IDManager.tableId == null) IDManager.turnId = snap.documentID;
   }
 
-  setCurrActive(DocumentSnapshot snap) {
+  setCurrActive(Map data) {
     switch (this.gameState) {
       case GameState.play:
-        this.chance.setActive((snap['active'] as DocumentReference).documentID);
+        this.chance.setActive(data['active'] as String);
         break;
 
       default:

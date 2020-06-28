@@ -1,4 +1,3 @@
-import 'package:coup/firebase/firedb.dart';
 import 'package:coup/modals/firebase/player.dart';
 import 'package:coup/modals/firebase/turn.dart';
 import 'package:coup/modals/game/action.dart';
