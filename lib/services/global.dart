@@ -11,10 +11,10 @@ class Global {
 
   // Data Models
   static final Map models = {
-    SelfPlayer: (data) => SelfPlayer.fromFirestore(data),
-    GameTable: (data) => GameTable.fromFirestore(data),
-    Turn: (data) => Turn.fromFirestore(data),
-    Player: (data) => Player.fromFirestore(data)
+    SelfPlayer: (data) => SelfPlayer.fromRdb(data),
+    GameTable: (data) => GameTable.fromRdb(data),
+    Turn: (data) => Turn.fromRdb(data),
+    Player: (data) => Player.fromRdb(data)
   };
 
   // Firestore References for Writes

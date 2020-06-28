@@ -10,7 +10,7 @@ class FireDB {
   static Stream<GameTable> tableStream(String tableId) {
     return _db.reference().child('tables/' + tableId).onValue.map((event) {
       if (event.snapshot.value != null)
-        return GameTable.fromFirestore(event.snapshot.value);
+        return GameTable.fromRdb(event.snapshot.value);
       else
         return null;
     });
@@ -19,7 +19,7 @@ class FireDB {
   static Stream<SelfPlayer> selfStream(String userId) {
     return _db.reference().child('players/' + userId).onValue.map((event) {
       if (event.snapshot.value != null)
-        return SelfPlayer.fromFirestore(event.snapshot.value);
+        return SelfPlayer.fromRdb(event.snapshot.value);
       else
         return null;
     });
@@ -28,7 +28,7 @@ class FireDB {
   static Stream<Turn> turnStream(String turnId) {
     return _db.reference().child('turns/' + turnId).onValue.map((event) {
       if (event.snapshot.value != null)
-        return Turn.fromFirestore(event.snapshot.value);
+        return Turn.fromRdb(event.snapshot.value);
       else
         return Turn();
     });
@@ -37,7 +37,7 @@ class FireDB {
   static Stream<Player> playerStream(String playerId) {
     return _db.reference().child('players/' + playerId).onValue.map((event) {
       if (event.snapshot.value != null)
-        return Player.fromFirestore(event.snapshot.value);
+        return Player.fromRdb(event.snapshot.value);
       else
         return null;
     });

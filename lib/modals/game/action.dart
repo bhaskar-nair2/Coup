@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:coup/modals/game/actionData/global_card_actions.dart';
+import 'package:coup/data/global_card_actions.dart';
 import 'package:coup/modals/game/role.dart';
 
 enum ActionName {
@@ -24,7 +24,7 @@ enum ActionName {
   treaty
 }
 
-enum ActionType { utility, action, ability, passive }
+enum ActionType { global, action, ability, passive }
 
 extension ActionNameExt on ActionName {
   CardAction getAssociatedAction() {
@@ -70,9 +70,13 @@ class CardAction {
     return action;
   }
 
-  static String actionToStr(ActionName act) {
-    var val = act.toString().split('.')[1];
+  String actionToStr() {
+    var val = this.action.toString().split('.')[1];
     return val;
+  }
+
+  String typeToStr() {
+    return this.type.toString().split('.')[1];
   }
 
   CardAction(
@@ -156,10 +160,10 @@ class CardAction {
 
   Map<String, dynamic> toMap() {
     return {
-      'action': actionToStr(action),
-      'name': name,
+      'action': actionToStr(),
       'blockable': blockable,
       'challengeable': challengeable,
+      'type': typeToStr()
     };
   }
 

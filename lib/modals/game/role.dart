@@ -1,5 +1,5 @@
 import 'package:coup/modals/game/action.dart';
-import 'package:coup/modals/game/actionData/role_card_actions.dart';
+import 'package:coup/data/role_card_actions.dart';
 import 'package:coup/style.dart';
 import 'package:flutter/material.dart';
 

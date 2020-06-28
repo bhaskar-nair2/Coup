@@ -15,7 +15,7 @@ class GameTable extends ChangeNotifier {
 
   GameTable();
 
-  GameTable.fromFirestore(Map data) {
+  GameTable.fromRdb(Map data) {
     List<String> _players =
         List.castFrom((data['players'] as Map).keys.toList());
     this.players = _players;

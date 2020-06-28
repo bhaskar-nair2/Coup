@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/modals/game/chance.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/game/action.dart';
@@ -23,7 +22,7 @@ class Turn extends ChangeNotifier {
     IDManager.turnId = turnId;
   }
 
-  Turn.fromFirestore(Map data) {
+  Turn.fromRdb(Map data) {
     this.action = TurnAction(data["action"] as Map) ?? null;
     this.block = data["block"] ?? null;
     this.challenge = data["challenge"] ?? null;
@@ -31,7 +30,6 @@ class Turn extends ChangeNotifier {
 
     TurnReader.readTurn(this);
     this.setCurrActive(data);
-    // if (IDManager.tableId == null) IDManager.turnId = snap.documentID;
   }
 
   setCurrActive(Map data) {

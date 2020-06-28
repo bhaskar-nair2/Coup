@@ -1,3 +1,4 @@
+import 'package:coup/firebase/commons.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/game/action.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class ActionCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => action.active == true
-          ? action.caller(context) ?? print(action)
+          ? FirebaseCommons.addTurn(action.toMap()) ?? print(action)
           : () => {},
       child: Card(
         color: action.active == true ? Colors.blue : Colors.grey,

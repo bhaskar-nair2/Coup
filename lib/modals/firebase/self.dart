@@ -9,7 +9,7 @@ class SelfPlayer extends ChangeNotifier {
 
   SelfPlayer();
 
-  SelfPlayer.fromFirestore(Map data) {
+  SelfPlayer.fromRdb(Map data) {
     List<String> handList = List.castFrom(data['hand'] as List ?? []);
     this.isk = Isk(data['isk']);
     this.hand = Hand.fromList(handList);

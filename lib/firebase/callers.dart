@@ -3,6 +3,8 @@ import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
+// Table based callers
+
 class FirebaseCallers {
   static final _db = FirebaseDatabase.instance;
 

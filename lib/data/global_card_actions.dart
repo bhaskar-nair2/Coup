@@ -13,6 +13,7 @@ class GlobalCardActions extends CardAction {
     description: "Take 1 ISK as Income",
     blockable: false,
     challengeable: false,
+    type: ActionType.global,
     caller: (context) => CallerFunctions.incomeCall(context),
     activator: (context) => ActivationFunctions.incomeActivation(context),
   );
@@ -23,8 +24,9 @@ class GlobalCardActions extends CardAction {
     description: "Take 2 ISK as foreign aid",
     blockable: true,
     challengeable: false,
+    type: ActionType.global,
     caller: (context) => CallerFunctions.aidCall(context),
-     activator: (context) => ActivationFunctions.aidActivation(context),
+    activator: (context) => ActivationFunctions.aidActivation(context),
   );
 
   static final CardAction coup = CardAction(
@@ -33,7 +35,8 @@ class GlobalCardActions extends CardAction {
     description: "Pay 7 ISK to kill one card of any Player",
     blockable: false,
     challengeable: false,
+    type: ActionType.global,
     caller: (context) => CallerFunctions.coupCall(context),
-     activator: (context) => ActivationFunctions.coupActivation(context),
+    activator: (context) => ActivationFunctions.coupActivation(context),
   );
 }

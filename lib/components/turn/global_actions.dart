@@ -1,5 +1,5 @@
 import 'package:coup/components/turn/action_card.dart';
-import 'package:coup/modals/game/actionData/global_card_actions.dart';
+import 'package:coup/data/global_card_actions.dart';
 import 'package:flutter/material.dart';
 
 class GlobalActions extends StatelessWidget {

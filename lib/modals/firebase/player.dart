@@ -11,7 +11,7 @@ class Player extends ChangeNotifier {
 
   Player();
 
-  Player.fromFirestore(Map data) {
+  Player.fromRdb(Map data) {
     this.name = data["name"];
     this.nick = data["nick"];
     this.cards = data["hand"]?.length ?? 0;

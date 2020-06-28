@@ -1,22 +1,23 @@
 import 'package:coup/firebase/commons.dart';
 import 'package:coup/modals/firebase/game_table.dart';
-import 'package:coup/modals/game/actionData/global_card_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:coup/components/callerDialogs/dialogs.dart';
 
+// Consumer Functions
+
 class CallerFunctions {
   static incomeCall(BuildContext context) async {
     Fluttertoast.showToast(msg: "Taking Income");
-    await FirebaseCommons.addActionTurn(GlobalCardActions.income.toMap());
+    // await FirebaseCommons.addActionTurn(GlobalCardActions.income.toMap());
     await FirebaseCommons.updateIsk(1);
   }
 
   static aidCall(BuildContext context) async {
     Fluttertoast.showToast(msg: "Taking Aid");
-    await FirebaseCommons.addActionTurn(GlobalCardActions.aid.toMap());
+    // await FirebaseCommons.addActionTurn(GlobalCardActions.aid.toMap());
     await FirebaseCommons.updateIsk(2);
   }
 

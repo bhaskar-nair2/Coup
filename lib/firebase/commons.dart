@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -30,14 +29,19 @@ class FirebaseCommons {
   // killcard
   // swap card
 
-  static addActionTurn(Map data) async {
-    var turnRef = _db.reference().child('turn/' + IDManager.turnId);
+  static addTurn(Map data) async {
+    var turnRef = _db.reference().child('turns/' + IDManager.turnId);
+
+    bool end = !data['blockable'] || !data['challengeable'];
+
+    var state = end ? 'play' : 'counter';
 
     return await turnRef.update({
       "action": {
-        ...data,
-        "player": IDManager.selfId,
-      }
+        "name": data['action'],
+        "end": end,
+      },
+      "gameState": state,
     });
   }
 
