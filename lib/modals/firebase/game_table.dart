@@ -10,7 +10,7 @@ class GameTable extends ChangeNotifier {
   String tableId;
   int occupied = 0; // Exact number, index from 1
   String turnId = '';
-  List<Player> players = [];
+  List<String> players = [];
   String owner;
   String pin;
   TableState state;
@@ -18,19 +18,17 @@ class GameTable extends ChangeNotifier {
 
   GameTable();
 
-  GameTable.fromFirestore(DocumentSnapshot snap) {
-    List<Player> _players = (snap.data['players'] as List ?? [])
-        .map((p) => Player.fromRef(p))
-        .toList();
+  GameTable.fromFirestore(Map data) {
+    List<String> _players =
+        List.castFrom((data['players'] as Map).keys.toList());
     this.players = _players;
-    this.owner = (snap.data['owner'] as DocumentReference).documentID;
-    this.state = stateFromStr((snap.data['state'] as String));
-    this.inProgress = snap['inProgress'];
+    this.owner = data['owner'];
+    this.state = stateFromStr((data['state'] as String));
+    this.inProgress = data['inProgress'];
 
     if (this.inProgress == false) {
-      this.pin = snap.data['pin'];
-      IDManager.tableId = snap.documentID;
-      this.turnId = (snap.data["turn"] as DocumentReference).documentID;
+      this.pin = data['pin'];
+      this.turnId = data["turn"];
     }
   }
   static TableState stateFromStr(String str) {

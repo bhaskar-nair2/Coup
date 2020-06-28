@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/firebase/callers.dart';
-import 'package:coup/firebase/firedb.dart';
+import 'package:coup/services/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/player.dart';
@@ -94,27 +93,28 @@ class TableManagerDialog extends StatelessWidget {
 }
 
 class PLayerDataMaker extends StatelessWidget {
-  const PLayerDataMaker(this.player, {Key key}) : super(key: key);
+  const PLayerDataMaker(this.playerId, {Key key}) : super(key: key);
 
-  final Player player;
+  final String playerId;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       // chnage this to a player builder stream
-      stream: FireDB.playerStream(player.playerId),
+      stream: FireDB.playerStream(playerId),
       builder: (context, AsyncSnapshot<Player> snapshot) {
-        if (snapshot.hasData)
+        if (snapshot.hasData) {
+          Player player = snapshot.data;
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               IconButton(
-                icon: IDManager.selfId != player.playerId
+                icon: IDManager.selfId != playerId
                     ? Icon(Icons.cancel)
-                    : Icon(Icons.verified_user),
-                onPressed: IDManager.selfId != player.playerId
+                    : Icon(Icons.verified_user, color: Colors.green),
+                onPressed: IDManager.selfId != playerId
                     ? () {
-                        print(player.playerId);
+                        print(playerId);
                         print(IDManager.selfId);
                       }
                     : null,
@@ -123,13 +123,13 @@ class PLayerDataMaker extends StatelessWidget {
               ),
               SizedBox(
                 child: Text(
-                  "${snapshot.data.name}",
-                  style: TextStyle(fontSize: 18),
+                  "${player.nick}",
+                  style: TextStyle(fontSize: 14),
                 ),
               )
             ],
           );
-        else
+        } else
           return Text("Loading..");
       },
     );
