@@ -35,59 +35,31 @@ const joinTable =
     }
   })
 
-// todo: Correct this
-const leaveTable = // move to device
-  functions.https.onCall(async (data, context) => {
-    if (data.tableId !== null && data.userId !== null) {
-      var table = db.ref("tables/" + data.tableId);
-      var user = db.ref("players/" + data.userId);
-
-      table.child('players' + data.userId).remove()
-
-      user.update({
-        isk: null,
-        hand: null,
-        table: null
-      })
-
-      return { status: 200, data: "Removed from table" }
-    }
-    else
-      throw new functions.https.HttpsError('invalid-argument', 'Error in data');
-  })
-
 const correctSetup =
-  functions.firestore.document('tables/{tableId}').onUpdate(async (snap, context) => {
-    const before = snap.before.data();
-    const after = snap.after.data();
+  functions.database.ref('tables/{tableId}').onUpdate(async (snap, context) => {
+    const before = snap.before.val();
+    const after = snap.after.val();
     var tbRef = snap.after.ref
-    var tnRef = after.turn
-    var upData = {}
+    var tnRef = db.ref('turns/' + after["turn"]) 
 
     if (!before || !after)
       return;
-
-    else if (after.players.length === 0)
-      tbRef.delete()
-
-    else if (after.occupied !== after.players.length) {
-      if (after.occupied <= 1) {
-        upData.active = after.players[0]
+    // Remove empty Tbale
+    else if (after.players === null || Object.keys(after.players).length === 0)
+      tbRef.remove()
+    else {
+      if (Object.keys(after.players).length <= 1) {
         tnRef.set({
-          active: after.players[0]
+          active: Object.keys(after.players)[0]
         })
       }
-      if (after.occupied <= MIN_PLAYERS) {
-        upData.state = 'waiting'
-        upData.inProgress = false
+
+      if (Object.keys(after.players).length < MIN_PLAYERS) {
+        tbRef.update({
+          state: 'waiting'
+        })
       }
-      upData.occupied = after.players.length
-      upData.isOpen = after.players.length < 6 ? true : false
-      tbRef.update(upData)
-      return
     }
-    else
-      return
   })
 
 const startGame =
@@ -96,7 +68,7 @@ const startGame =
     const turn = db.ref('turns/' + data.turnId)
 
     const tableData = (await table.once("value")).val()
-    const playerList = Object.keys(tableData.players)
+    const playerList = Object.keys(tableData.players).sort()
     const playerCount = playerList.length
     const cards = dealCards(playerCount)
 
@@ -175,5 +147,6 @@ const removeOffline =
 
 module.exports = {
   joinTable,
-  startGame
+  startGame,
+  correctSetup
 }
