@@ -26,7 +26,7 @@ const joinTable =
       if (res.val() === null) {
         await table.child(`/players/${player.key}`)
           .update({ played: 0 })
-        // await player.update({ table: table.key })
+        await player.update({ table: table.key })
       }
       return { status: 200, data: "Added player to Table" }
     }
@@ -36,25 +36,17 @@ const joinTable =
   })
 
 // todo: Correct this
-const leaveTable =
+const leaveTable = // move to device
   functions.https.onCall(async (data, context) => {
     if (data.tableId !== null && data.userId !== null) {
-      var table = db.collection("tables").doc(data.tableId);
-      var user = db.collection("players").doc(data.userId);
-      var tableData = (await table.get()).data()
+      var table = db.ref("tables/" + data.tableId);
+      var user = db.ref("players/" + data.userId);
 
-      var newOccupied = tableData.players.length - 1
-
-      table.update({
-        occupied: newOccupied,
-        isOpen: newOccupied < 6 ? true : false,
-        players: admin.firestore.FieldValue.arrayRemove(user)
-      })
+      table.child('players' + data.userId).remove()
 
       user.update({
         isk: null,
         hand: null,
-        chance: false,
         table: null
       })
 
@@ -163,15 +155,15 @@ const removeOffline =
       const userData = (await userRef.get()).data()
 
       if (status === false) {
-        userRef.update({
-          table: admin.firestore.FieldValue.delete()
-        })
         if (userData['table'] !== null) {
-          const tableRef = db.collection('tables').doc(userData['turn'])
+          const tableRef = db.collection('tables').doc(userData['table'])
           tableRef.update({
             players: admin.firestore.FieldValue.arrayRemove(userRef)
           })
         }
+        userRef.update({
+          table: admin.firestore.FieldValue.delete()
+        })
       }
       return { status: 200 }
     } catch (err) {
