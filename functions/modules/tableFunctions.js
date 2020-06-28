@@ -64,7 +64,6 @@ const leaveTable =
       throw new functions.https.HttpsError('invalid-argument', 'Error in data');
   })
 
-// ! Important
 const correctSetup =
   functions.firestore.document('tables/{tableId}').onUpdate(async (snap, context) => {
     const before = snap.before.data();
@@ -101,24 +100,28 @@ const correctSetup =
 
 const startGame =
   functions.https.onCall(async (data, context) => {
-    const table = db.collection('tables').doc(data.tableId)
-    const tableData = (await table.get()).data()
-    const turn = db.collection('turns').doc(data.tableId) // == turnId
-    const playerList = tableData.players.map(p => p)
+    const table = db.ref('tables/' + data.tableId)
+    const turn = db.ref('turns/' + data.turnId)
+
+    const tableData = (await table.once("value")).val()
+    const playerList = Object.keys(tableData.players)
     const playerCount = playerList.length
     const cards = dealCards(playerCount)
 
-    playerList.forEach((player, index) => {
+    playerList.forEach((playerId, index) => {
+      var player = db.ref('players/' + playerId)
       player.update({
         isk: 0,
         hand: cards[index],
       })
     })
+
     turn.set({
       gameState: 'play',
       active: playerList[0]
     })
-    table.update({ state: 'play', inProgress: true })
+
+    table.update({ state: 'play' })
 
     return { status: 200, data: "Game Started" }
   })
@@ -179,5 +182,6 @@ const removeOffline =
 
 
 module.exports = {
-  joinTable
+  joinTable,
+  startGame
 }
