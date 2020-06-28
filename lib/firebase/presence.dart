@@ -13,8 +13,6 @@ class UserPresence {
   static rtdbAndLocalFsPresence() async {
     var uid = (await AuthService().getUser).uid;
     var userStatusDatabaseRef = _db.reference().child('/status/' + uid);
-    var userStatusFirestoreRef =
-        Firestore.instance.collection('status').document(uid);
 
     var isOfflineForDatabase = {
       "state": 'offline',
@@ -26,18 +24,6 @@ class UserPresence {
       "last_changed": ServerValue.timestamp,
     };
 
-    // Firestore uses a different server timestamp value, so we'll
-    // create two more constants for Firestore state.
-    var isOfflineForFirestore = {
-      "state": 'offline',
-      "last_changed": FieldValue.serverTimestamp(),
-    };
-
-    var isOnlineForFirestore = {
-      "state": 'online',
-      "last_changed": FieldValue.serverTimestamp(),
-    };
-
     _db
         .reference()
         .child('.info/connected')
@@ -47,7 +33,6 @@ class UserPresence {
         // Instead of simply returning, we'll also set Firestore's state
         // to 'offline'. This ensures that our Firestore cache is aware
         // of the switch to 'offline.'
-        userStatusFirestoreRef.setData(isOfflineForFirestore);
         return;
       }
 
@@ -56,9 +41,6 @@ class UserPresence {
           .update(isOfflineForDatabase)
           .then((snap) {
         userStatusDatabaseRef.set(isOnlineForDatabase);
-
-        // We'll also add Firestore set here for when we come online.
-        userStatusFirestoreRef.setData(isOnlineForFirestore);
       });
     });
   }
