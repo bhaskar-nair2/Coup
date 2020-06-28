@@ -1,43 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class FirebaseCallers {
-  static final _db = Firestore.instance;
+  static final _db = FirebaseDatabase.instance;
 
   static Future createTable(
     String tablePin,
     String userId,
     String total,
   ) async {
-    try {
-      var user = _db.collection('players').document(userId);
-      var table = _db.collection('tables').document(userId);
-      var turn = _db.collection('turns').document(userId);
+    var user = _db.reference().child('players/$userId');
+    var table = _db.reference().child('tables').push();
+    var turn = _db.reference().child('turns').push();
 
-      await table.setData({
-        "pin": tablePin,
-        "owner": user,
-        "isOpen": true,
-        "inProgress": false,
-        "limit": int.parse(total),
-        "players": [],
-        "state": 'waiting',
-        "turn": turn
-      });
+    await table.set({
+      "pin": tablePin.toString(),
+      "owner": user.key.toString(),
+      "isOpen": true,
+      "inProgress": false,
+      "limit": int.parse(total),
+      "state": 'waiting',
+      "turn": turn.key.toString()
+    });
 
-      await user.setData({"table": table}, merge: true);
+    await user.update({"table": table.key.toString()});
 
-      IDManager.turnId = turn.documentID;
-      IDManager.tableId = table.documentID;
-    } catch (error) {
-      print("createTable: $error");
-      Fluttertoast.showToast(
-          msg: "Error Creating Table $error", textColor: Colors.red);
-      return '';
-    }
+    IDManager.turnId = turn.key;
+    IDManager.tableId = table.key;
+    return;
   }
 
   static joinTable(String userId, String tableId) async {
@@ -50,14 +43,11 @@ class FirebaseCallers {
   }
 
   static joinTableWithId(String userId, String tablePin) async {
-    var snap = await _db
-        .collection('tables')
-        .where('pin', isEqualTo: tablePin)
-        .limit(1)
-        .getDocuments();
+    var snap =
+        await _db.reference().child('tables').equalTo({"pin": tablePin}).once();
 
-    if (snap.documents.length > 0) {
-      var tableRef = snap.documents[0];
+    if (snap.value.length > 0) {
+      var tableRef = snap.value[0];
       IDManager.tableId = tableRef.documentID;
       IDManager.turnId =
           (tableRef.data['turn'] as DocumentReference).documentID;
@@ -82,12 +72,7 @@ class FirebaseCallers {
         'userId': userId,
       });
     } catch (error) {
-      Fluttertoast.showToast(
-        msg: "Error leaving Table $error",
-        gravity: ToastGravity.BOTTOM,
-        textColor: Colors.red,
-        fontSize: 12.0,
-      );
+      print("Start Game Error: $error");
     }
   }
 }

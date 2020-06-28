@@ -1,8 +1,11 @@
 import 'dart:math';
 import 'package:auto_route/auto_route.dart';
+import 'package:coup/components/base/base_load_btn.dart';
 import 'package:coup/firebase/callers.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CreateTableDialog extends StatefulWidget {
   const CreateTableDialog({Key key}) : super(key: key);
@@ -30,11 +33,22 @@ class _CreateTableDialogState extends State<CreateTableDialog> {
         IDManager.tableId,
       );
       state = true;
+      ExtendedNavigator.rootNavigator.pop(state);
+      Fluttertoast.showToast(msg: "Created a New Table");
+    } on PlatformException catch (error) {
+      state = false;
+      Fluttertoast.showToast(
+        msg: "Error Creating Table: ${error.message}",
+        textColor: Colors.red,
+      );
     } catch (error) {
       state = false;
+      Fluttertoast.showToast(
+        msg: "Error Creating Table $error",
+        textColor: Colors.red,
+      );
     } finally {
       toggleLoading();
-      ExtendedNavigator.rootNavigator.pop(state);
     }
   }
 
@@ -104,18 +118,11 @@ class _CreateTableDialogState extends State<CreateTableDialog> {
             SizedBox(
               height: 40,
             ),
-            Container(
-              width: 200,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: FlatButton(
-                onPressed: createTableFn,
-                child: Text("Create Table"),
-              ),
-            )
+            BaseLoadBtn(
+              action: createTableFn,
+              text: "Create Table",
+              isLoading: loading,
+            ),
           ],
         ),
       ),
