@@ -1,69 +1,42 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin');
-const { user } = require('firebase-functions/lib/providers/auth');
-const { firestore } = require('firebase-admin');
 
-const db = admin.firestore();
+const db = admin.database();
 
 const MIN_PLAYERS = 2;
+const MAX_PLAYERS = 6;
 
-exports.joinTable =
+const joinTable =
   functions.https.onCall(async (data, context) => {
-    function tableHasPLayer(id, arr) {
-      if (arr.includes(id))
-        return true
-      else
-        return false
-    }
+    var table = db.ref('/tables/' + data.tableId)
+    var player = db.ref('/players/' + data.userId)
 
-    if (data.tableId !== null && data.userId !== null) {
-      var table = db.collection("tables").doc(data.tableId);
-      var user = db.collection("players").doc(data.userId);
+    var tableData = (await table.once('value')).val()
+    players = tableData.players || {}
+    if (
+      Object.keys(players).length < Math.min(MAX_PLAYERS, tableData.limit) &&
+      tableData.state === 'waiting'
+    ) {
+      var res = await table
+        .child('/players')
+        .orderByKey()
+        .equalTo(player.key)
+        .once("value");
 
-      var tableData = (await table.get()).data()
-      var playerList = tableData.players.map(p => p)
-
-      // table is open
-      // round is not in progress
-      if (
-        tableData.isOpen === true ||
-        tableData.inProgress === false ||
-        tableHasPLayer(data.userId, playerList)
-      ) {
-        var upData = {}
-
-
-        // no duplicate player
-        var newOccupied = tableData.players.length + 1
-        upData.table = table
-        upData.occupied = newOccupied
-        upData.players = admin.firestore.FieldValue.arrayUnion(user)
-
-        await user.update({
-          table: table
-        })
-
-        await table.update(upData)
-
-        if (newOccupied === 1) {
-          // update active in turn
-          tableData.turn.set({
-            active: user
-          }, { merge: true });
-        }
-
+      if (res.val() === null) {
+        await table.child(`/players/${player.key}`)
+          .update({ played: 0 })
+        // await player.update({ table: table.key })
       }
-      else {
-        throw new functions.https.HttpsError('aborted', 'Table is Closed');
-      }
-      return { status: 200, data: "Added to table" }
+      return { status: 200, data: "Added player to Table" }
     }
-    else
-      throw new functions.https.HttpsError('invalid-argument', 'Error in data');
+    else {
+      throw new functions.https.HttpsError('aborted', 'Table is not accepting new Players');
+    }
   })
 
 // todo: Correct this
-exports.leaveTable =
+const leaveTable =
   functions.https.onCall(async (data, context) => {
     if (data.tableId !== null && data.userId !== null) {
       var table = db.collection("tables").doc(data.tableId);
@@ -92,7 +65,7 @@ exports.leaveTable =
   })
 
 // ! Important
-exports.correctSetup =
+const correctSetup =
   functions.firestore.document('tables/{tableId}').onUpdate(async (snap, context) => {
     const before = snap.before.data();
     const after = snap.after.data();
@@ -126,7 +99,7 @@ exports.correctSetup =
       return
   })
 
-exports.startGame =
+const startGame =
   functions.https.onCall(async (data, context) => {
     const table = db.collection('tables').doc(data.tableId)
     const tableData = (await table.get()).data()
@@ -178,7 +151,7 @@ function dealCards(playerCount) {
   return deal;
 }
 
-exports.removeOffline =
+const removeOffline =
   functions.firestore.document('status/{userId}').onUpdate(async (snap, context) => {
     try {
       const userRef = db.collection('players').doc(context.params.userId)
@@ -203,3 +176,8 @@ exports.removeOffline =
       throw new functions.https.HttpsError('aborted', err);
     }
   })
+
+
+module.exports = {
+  joinTable
+}
