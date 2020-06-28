@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coup/modals/firebase/fbModels.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +6,8 @@ import 'package:flutter/material.dart';
 class FirebaseCallers {
   static final _db = FirebaseDatabase.instance;
 
-  static Future createTable(
-    String tablePin,
-    String userId,
-    String total,
-  ) async {
-    var user = _db.reference().child('players/$userId');
+  static Future createTable(String tablePin, String total) async {
+    var user = _db.reference().child('players/${IDManager.selfId}');
     var table = _db.reference().child('tables').push();
     var turn = _db.reference().child('turns').push();
 
@@ -36,16 +30,16 @@ class FirebaseCallers {
     return;
   }
 
-  static joinTable(String userId, String tableId) async {
+  static joinTable() async {
     final HttpsCallable _joinFnCallable = CloudFunctions.instance
         .getHttpsCallable(functionName: 'table-joinTable');
     await _joinFnCallable.call({
-      'tableId': tableId,
-      'userId': userId,
+      'tableId': IDManager.tableId,
+      'userId': IDManager.selfId,
     });
   }
 
-  static joinTableWithId(String userId, String tablePin) async {
+  static joinTableWithId(String tablePin) async {
     var snap = await _db
         .reference()
         .child('tables/')
@@ -57,31 +51,23 @@ class FirebaseCallers {
       var key = (snap.value as Map).keys.toList().first;
       IDManager.tableId = key;
       IDManager.turnId = table["turn"];
-      return await joinTable(userId, key);
+      return await joinTable();
     } else {
       throw ErrorWidget.withDetails(message: 'No such Table');
     }
   }
 
-  static startGame(tableId) async {
+  static startGame() async {
     final HttpsCallable startGameFunction = CloudFunctions.instance
         .getHttpsCallable(functionName: 'table-startGame');
-    await startGameFunction.call({"tableId": tableId});
+    await startGameFunction
+        .call({"tableId": IDManager.tableId, "turnId": IDManager.turnId});
   }
 
-  static leaveTable(String userId, String tableId) async {
-    final HttpsCallable leaveTableFunction = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'table-leaveTable');
-    try {
-      await leaveTableFunction.call(<String, dynamic>{
-        'tableId': tableId,
-        'userId': userId,
-      });
-    } catch (error) {
-      print("Start Game Error: $error");
-    }
+  static leaveTable() async {
+    var tableREf = _db.reference().child('tables/' + IDManager.tableId);
+    var userREf = _db.reference().child('players/' + IDManager.selfId);
+    await userREf.update({"isk": null, "hand": null, "table": null});
+    await tableREf.child('players/' + IDManager.selfId).remove();
   }
 }
-
-// final HttpsCallable leaveTableFunction = CloudFunctions.instance
-// .getHttpsCallable(functionName: 'table-leaveTable');
