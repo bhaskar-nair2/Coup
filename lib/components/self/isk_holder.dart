@@ -22,7 +22,7 @@ class IskHolder extends StatelessWidget {
         textColor: Colors.green,
         fontSize: 12.0,
       );
-      await FirebaseCallers.leaveTable(IDManager.selfId, IDManager.tableId);
+      await FirebaseCallers.leaveTable();
       Navigator.of(context).pushReplacementNamed('/home-screen');
     }
 

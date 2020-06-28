@@ -3,7 +3,6 @@ import 'package:coup/components/table/createTableDialog.dart';
 import 'package:coup/components/table/joinTableDialog.dart';
 import 'package:coup/components/table/logoutBtn.dart';
 import 'package:coup/firebase/auth.dart';
-import 'package:coup/firebase/presence.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/router/router.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';

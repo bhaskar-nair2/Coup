@@ -1,6 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coup/modals/firebase/idmanager.dart';
-import 'package:coup/modals/firebase/player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
@@ -24,12 +21,8 @@ class GameTable extends ChangeNotifier {
     this.players = _players;
     this.owner = data['owner'];
     this.state = stateFromStr((data['state'] as String));
-    this.inProgress = data['inProgress'];
-
-    if (this.inProgress == false) {
-      this.pin = data['pin'];
-      this.turnId = data["turn"];
-    }
+    this.pin = data['pin'];
+    this.turnId = data["turn"];
   }
   static TableState stateFromStr(String str) {
     TableState state = TableState.values.firstWhere(

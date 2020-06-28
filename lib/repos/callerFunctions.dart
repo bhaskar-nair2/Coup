@@ -43,7 +43,7 @@ class CallerFunctions {
               ...table.players.map((player) => FlatButton(
                   onPressed: () => {},
                   child: Text(
-                    player.nick,
+                    player,
                     style: TextStyle(color: Colors.white),
                   ))),
             ],
