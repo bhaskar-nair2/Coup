@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:coup/components/base/base_load_btn.dart';
 import 'package:coup/firebase/callers.dart';
-import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,7 +24,8 @@ class _JoinTableDialogState extends State<JoinTableDialog> {
       Fluttertoast.showToast(msg: "Joining Table");
       await FirebaseCallers.joinTableWithId(tableId.text);
       state = true;
-      ExtendedNavigator.rootNavigator.pop(state);
+      // ExtendedNavigator.rootNavigator.pop(state);
+      return state;
     } on PlatformException catch (error) {
       Fluttertoast.showToast(
         msg: error.details['message'],
@@ -49,9 +49,10 @@ class _JoinTableDialogState extends State<JoinTableDialog> {
   }
 
   toggleLoading() {
-    setState(() {
-      loading = !loading;
-    });
+    if (this.mounted)
+      setState(() {
+        loading = !loading;
+      });
   }
 
   @override

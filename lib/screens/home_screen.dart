@@ -4,7 +4,9 @@ import 'package:coup/components/table/joinTableDialog.dart';
 import 'package:coup/components/table/logoutBtn.dart';
 import 'package:coup/firebase/auth.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
+import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/router/router.gr.dart';
+import 'package:coup/services/firedb.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return MultiProvider(
       providers: [
         StreamProvider<FirebaseUser>.value(value: _auth.user),
+        StreamProvider<SelfPlayer>.value(
+            value: FireDB.selfStream(IDManager.selfId))
       ],
       child: Scaffold(
         body: Stack(children: <Widget>[
@@ -53,6 +57,17 @@ class OptionButtons extends StatefulWidget {
 class _OptionButtonsState extends State<OptionButtons> {
   @override
   Widget build(BuildContext context) {
+    var player = Provider.of<SelfPlayer>(context);
+
+    if (player?.tableId != null) {
+      IDManager.tableId = player.tableId;
+      Navigator.of(context).pushReplacementNamed('/game-screen',
+          arguments: GameScreenArguments(
+            tableId: IDManager.tableId,
+            userId: IDManager.selfId,
+          ));
+    }
+
     return Positioned.directional(
       textDirection: TextDirection.ltr,
       bottom: 20,

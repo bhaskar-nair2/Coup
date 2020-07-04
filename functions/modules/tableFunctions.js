@@ -40,21 +40,26 @@ const correctSetup =
     const before = snap.before.val();
     const after = snap.after.val();
     var tbRef = snap.after.ref
-    var tnRef = db.ref('turns/' + after["turn"]) 
+    var tnRef = db.ref('turns/' + after["turn"])
+    var players = Object.keys(after.players || [])
+    var befPlayers = Object.keys(before.players || [])
 
     if (!before || !after)
       return;
-    // Remove empty Tbale
-    else if (after.players === null || Object.keys(after.players).length === 0)
-      tbRef.remove()
+
+    else if (befPlayers.length === players.length)
+      return;
+    // Remove empty Table
+    // else if (players.length === 0)
+    //   tbRef.remove()
     else {
-      if (Object.keys(after.players).length <= 1) {
+      if (players.length <= 1) {
         tnRef.set({
-          active: Object.keys(after.players)[0]
+          active: players[0]
         })
       }
 
-      if (Object.keys(after.players).length < MIN_PLAYERS) {
+      if (players.length < MIN_PLAYERS) {
         tbRef.update({
           state: 'waiting'
         })

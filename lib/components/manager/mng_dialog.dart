@@ -55,7 +55,6 @@ class _TableManagerDialogState extends State<TableManagerDialog> {
         Fluttertoast.showToast(
           msg: "Unable to Start Game",
           gravity: ToastGravity.BOTTOM,
-          textColor: Colors.red,
           fontSize: 12.0,
         );
       } finally {
@@ -144,14 +143,15 @@ class PLayerDataMaker extends StatelessWidget {
       builder: (context, AsyncSnapshot<Player> snapshot) {
         if (snapshot.hasData) {
           Player player = snapshot.data;
+          bool isOwner = IDManager.selfId == playerId;
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               IconButton(
-                icon: IDManager.selfId != playerId
-                    ? Icon(Icons.cancel)
-                    : Icon(Icons.verified_user, color: Colors.green),
-                onPressed: IDManager.selfId != playerId
+                icon: isOwner
+                    ? Icon(Icons.verified_user, color: Colors.green)
+                    : Icon(Icons.cancel),
+                onPressed: isOwner
                     ? () {
                         print(playerId);
                         print(IDManager.selfId);

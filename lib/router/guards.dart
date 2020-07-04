@@ -8,7 +8,8 @@ class AuthGuard extends RouteGuard {
   Future<bool> canNavigate(ExtendedNavigatorState navigator, String routeName,
       Object arguments) async {
     FirebaseUser user = await _auth.getUser;
-    print('Guard: ${user.uid}');
+    print('Guard: ');
+    print('${user.uid}');
     return user != null;
   }
 }

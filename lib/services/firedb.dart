@@ -30,7 +30,7 @@ class FireDB {
       if (event.snapshot.value != null)
         return Turn.fromRdb(event.snapshot.value);
       else
-        return Turn();
+        return null;
     });
   }
 

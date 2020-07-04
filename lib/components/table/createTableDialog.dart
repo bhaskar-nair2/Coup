@@ -26,8 +26,9 @@ class _CreateTableDialogState extends State<CreateTableDialog> {
       await FirebaseCallers.createTable(tablePin, totalPlayersCtl.text);
       await FirebaseCallers.joinTable();
       state = true;
-      ExtendedNavigator.rootNavigator.pop(state);
       Fluttertoast.showToast(msg: "Created a New Table");
+      // ExtendedNavigator.rootNavigator.pop(state);
+      return state;
     } on PlatformException catch (error) {
       state = false;
       Fluttertoast.showToast(
@@ -41,7 +42,7 @@ class _CreateTableDialogState extends State<CreateTableDialog> {
         textColor: Colors.red,
       );
     } finally {
-      toggleLoading();
+      if (this.mounted) toggleLoading();
     }
   }
 

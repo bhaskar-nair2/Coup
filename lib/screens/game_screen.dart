@@ -2,7 +2,6 @@ import 'package:coup/components/manager/mng_dialog.dart';
 import 'package:coup/components/self/self_area.dart';
 import 'package:coup/components/table/table_area.dart';
 import 'package:coup/components/turn/turn_area.dart';
-import 'package:coup/firebase/callers.dart';
 import 'package:coup/services/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
@@ -24,7 +23,8 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   @override
   void dispose() {
-    FirebaseCallers.leaveTable();
+    // IDK why this removes the player from the game
+    // FirebaseCallers.leaveTable();
     super.dispose();
   }
 
