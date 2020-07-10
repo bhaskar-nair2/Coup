@@ -1,29 +1,25 @@
-import 'package:coup/services/types.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:coup/modals/firebase/idmanager.dart';
+import 'package:coup/modals/firebase/self.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class UserData<T> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final String collection;
+class SelfService {
+  final FirebaseDatabase _db = FirebaseDatabase.instance;
+  DatabaseReference _ref;
 
-  UserData({this.collection});
-
-  Stream<T> get documentStream {
-    return _auth.onAuthStateChanged.switchMap((user) {
-      Document<T> doc = Document<T>(path: '$collection/${user.uid}');
-      return doc.streamData();
-    }); //.shareReplay(maxSize: 1).doOnData((d) => print('777 $d'));// as Stream<T>;
+  SelfService() {
+    _ref = _db.reference().child('players/' + IDManager.selfId);
   }
 
-  Future<T> getDocument() async {
-    FirebaseUser user = await _auth.currentUser();
-    Document doc = Document<T>(path: '$collection/${user.uid}');
-    return doc.getData();
+  Stream<SelfPlayer> streamData() {
+    return _ref.onValue
+        .map((event) => SelfPlayer.fromRdb(event.snapshot.value));
+  }
+
+  Future<SelfPlayer> getDocument() async {
+    return _ref.once().then((v) => SelfPlayer.fromRdb(v.value));
   }
 
   Future<void> upsert(Map data) async {
-    FirebaseUser user = await _auth.currentUser();
-    Document<T> ref = Document(path: '$collection/${user.uid}');
-    return ref.upsert(data);
+    return _ref.update(Map<String, dynamic>.from(data));
   }
 }

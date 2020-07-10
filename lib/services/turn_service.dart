@@ -10,11 +10,11 @@ class TurnService {
     _ref = _db.reference().child('turns/' + IDManager.turnId);
   }
 
-  Stream<Turn> get documentStream {
+  Stream<Turn> streamData() {
     return _ref.onValue.map((event) => Turn.fromRdb(event.snapshot.value));
   }
 
-  Future getDocument() async {
+  Future<Turn> getDocument() async {
     return _ref.once().then((v) => Turn.fromRdb(v.value));
   }
 

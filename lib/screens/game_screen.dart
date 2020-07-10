@@ -3,12 +3,12 @@ import 'package:coup/components/self/self_area.dart';
 import 'package:coup/components/table/table_area.dart';
 import 'package:coup/components/turn/turn_area.dart';
 import 'package:coup/modals/firebase/game_table.dart';
-import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
 import 'package:coup/services/global.dart';
+import 'package:coup/services/self_service.dart';
 import 'package:coup/services/table_service.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:coup/services/turn_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,8 +40,8 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<SelfPlayer>.value(
-          value: Global.selfRef.documentStream,
+        StreamProvider<SelfPlayer>(
+          create: (_) => SelfService().streamData(),
           catchError: (context, error) {
             print(error);
             return SelfPlayer();
@@ -50,8 +50,8 @@ class _GameScreenState extends State<GameScreen> {
         StreamProvider<GameTable>(
           create: (_) => TableService().streamData(),
         ),
-        StreamProvider<Turn>.value(
-          value: Global.turnRef.documentStream,
+        StreamProvider<Turn>(
+          create: (_) => TurnService().streamData(),
           catchError: (context, error) {
             print(error);
             return Turn();

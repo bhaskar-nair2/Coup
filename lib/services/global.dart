@@ -17,11 +17,4 @@ class Global {
     Turn: (data) => Turn.fromRdb(data),
     Player: (data) => Player.fromRdb(data)
   };
-
-  // Firestore References for Writes
-  static final UserData<SelfPlayer> selfRef =
-      UserData<SelfPlayer>(collection: 'players');
-  static final TableService tableref = TableService();
-  static final TurnService turnRef = TurnService();
-  // static final
 }
