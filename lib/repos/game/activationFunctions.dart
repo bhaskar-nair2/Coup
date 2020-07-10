@@ -1,24 +1,23 @@
-import 'package:coup/modals/firebase/self.dart';
+import 'package:coup/modals/firebase/fbModels.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ActivationFunctions {
   static bool incomeActivation(BuildContext context) {
-    // if (chance.active == true)
-    //   cb(true);
-    // else
-    //   cb(false);
-    // // TODO: Remove
-    return true;
+    var _turn = Provider.of<Turn>(context, listen: false);
+
+    if (_turn?.chance?.active == true ?? false)
+      return true;
+    else
+      return false;
   }
 
   static bool aidActivation(BuildContext context) {
-    // if (chance.active == true)
-    //   cb(true);
-    // else
-    //   cb(false);
-    // // TODO: Remove
-    return true;
+    var _turn = Provider.of<Turn>(context, listen: false);
+    if (_turn?.chance?.active == true ?? false)
+      return true;
+    else
+      return false;
   }
 
   static bool coupActivation(BuildContext context) {

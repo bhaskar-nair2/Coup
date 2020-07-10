@@ -1,5 +1,5 @@
 import 'package:coup/components/base/base_load_btn.dart';
-import 'package:coup/firebase/callers.dart';
+import 'package:coup/repos/firebase/gameSetup.dart';
 import 'package:coup/services/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/idmanager.dart';

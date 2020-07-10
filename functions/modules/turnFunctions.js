@@ -13,32 +13,41 @@ const changeActive =  // change active
   functions.https.onCall(async (data) => {
     var playerId = data.playerId
 
-    var table = db.collection("tables").doc(data.tableId);
-    var turn = db.collection("turns").doc(data.turnId);
+    var table = db.ref("tables/" + data.tableId);
+    var turnId = (await table.child('turn').once('value')).val()
+    var turn = db.ref("turns/" + turnId)
+    var playersList = (await table.child('players').orderByKey().once('value')).val()
 
-    var tableData = (await table.get()).data()
+    console.log(playersList)
+    var curPlIndex = 0
+    var playerKeys = []
 
-    var playersList = tableData.players
-
-    if (playersList.length > 0) {
-      var curPlIndex =
-        playersList.findIndex(pl => pl.id === playerId) // from db
+    if (playersList !== null) {
+      playerKeys = Object.keys(playersList)
+      curPlIndex = playerKeys.findIndex(pl => pl === playerId)
     }
 
     function nextPlayer() {
-      if (curPlIndex + 1 + jump < playersList.length)
-        return playersList[curPlIndex + 1 + jump]
+      if (curPlIndex + 1 < playerKeys.length)
+        return playerKeys[curPlIndex + 1]
       else
-        return playersList[0 + jump]
+        return playerKeys[0]
     }
 
-    return await turn.update({
-      active: db.collection("players").doc(nextPlayer())
+    console.log(curPlIndex + 1, playerKeys.length, nextPlayer())
+
+    await turn.set({
+      active: nextPlayer(),
+      gameState: 'play',
+      hash: 'newTurn'
+    })
+
+    return await table.update({
+      "turn": turn.key
     })
   })
 
 
 module.exports = {
-  addTurn: addTurn,
   changeActive: changeActive
 }

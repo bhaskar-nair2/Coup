@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:coup/components/table/createTableDialog.dart';
 import 'package:coup/components/table/joinTableDialog.dart';
-import 'package:coup/components/table/logoutBtn.dart';
-import 'package:coup/firebase/auth.dart';
+import 'package:coup/components/self/logoutBtn.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
+import 'package:coup/repos/firebase/auth.dart';
 import 'package:coup/router/router.gr.dart';
 import 'package:coup/services/firedb.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,4 +1,4 @@
-import 'package:coup/firebase/auth.dart';
+import 'package:coup/repos/firebase/auth.dart';
 import 'package:flutter/material.dart';
 
 class LogoutBtn extends StatelessWidget {

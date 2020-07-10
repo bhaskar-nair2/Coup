@@ -27,6 +27,7 @@ class _TimerHolderState extends State<TimerHolder>
 
   @override
   void dispose() {
+    controller.dispose();
     super.dispose();
   }
 

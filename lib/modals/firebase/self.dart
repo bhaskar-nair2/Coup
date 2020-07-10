@@ -1,3 +1,4 @@
+import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/game/hand.dart';
 import 'package:coup/modals/game/isk.dart';
 import 'package:flutter/foundation.dart';
@@ -10,9 +11,12 @@ class SelfPlayer extends ChangeNotifier {
   SelfPlayer();
 
   SelfPlayer.fromRdb(Map data) {
-    List<String> handList = List.castFrom(data['hand'] as List ?? []);
-    this.isk = Isk(data['isk']);
-    this.hand = Hand.fromList(handList);
-    this.tableId = data['table'];
+    if (data != null) {
+      List<String> handList = List.castFrom(data['hand'] as List ?? []);
+      this.isk = Isk(data['isk']);
+      this.hand = Hand.fromList(handList);
+      this.tableId = data['table'];
+      IDManager.tableId = data['table'];
+    }
   }
 }

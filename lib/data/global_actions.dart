@@ -1,6 +1,6 @@
 import 'package:coup/modals/game/action.dart';
-import 'package:coup/repos/activationFunctions.dart';
-import 'package:coup/repos/callerFunctions.dart';
+import 'package:coup/repos/game/activationFunctions.dart';
+import 'package:coup/repos/game/actionFunctions.dart';
 
 class GlobalCardActions extends CardAction {
   GlobalCardActions(ActionName action) : super(action);

@@ -50,7 +50,7 @@ class FirebaseCallers {
         .once();
     if (snap.value != null && snap.value.length > 0) {
       var table = (snap.value as Map).values.toList().first;
-      var key = (snap.value as Map).keys.toList().first;
+      var key = (snap.value as Map ?? {}).keys.toList().first;
       IDManager.tableId = key;
       IDManager.turnId = table["turn"];
       return await joinTable();

@@ -1,6 +1,6 @@
-import 'package:coup/firebase/commons.dart';
-import 'package:coup/modals/firebase/self.dart';
+import 'package:coup/modals/firebase/fbModels.dart';
 import 'package:coup/modals/game/action.dart';
+import 'package:coup/repos/firebase/commons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +12,7 @@ class ActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // used to rebuild widget for update
-    var _self = Provider.of<SelfPlayer>(context);
+    var turn = Provider.of<Turn>(context);
 
     if (action.activator != null) {
       action.active = action.activator(context);

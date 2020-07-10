@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:coup/data/global_card_actions.dart';
+import 'package:coup/data/global_actions.dart';
 import 'package:coup/modals/game/role.dart';
 
 enum ActionName {

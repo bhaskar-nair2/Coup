@@ -1,5 +1,6 @@
 import 'package:coup/modals/firebase/fbModels.dart';
 import 'package:coup/services/table_service.dart';
+import 'package:coup/services/turn_service.dart';
 import 'package:coup/services/types.dart';
 
 class Global {
@@ -20,6 +21,7 @@ class Global {
   // Firestore References for Writes
   static final UserData<SelfPlayer> selfRef =
       UserData<SelfPlayer>(collection: 'players');
-  static final TableService tableref = TableService();
+  static final TableService<GameTable> tableref = TableService<GameTable>();
+  static final TurnService<Turn> turnRef = TurnService<Turn>();
   // static final
 }

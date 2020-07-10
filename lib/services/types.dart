@@ -1,28 +1,28 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coup/services/global.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Document<T> extends ChangeNotifier {
-  final Firestore _db = Firestore.instance;
+  final FirebaseDatabase _db = FirebaseDatabase.instance;
   final String path;
-  DocumentReference ref;
+  DatabaseReference ref;
 
   Document({this.path}) {
-    ref = _db.document(path);
+    ref = _db.reference().child(path);
   }
 
   Future<T> getData() {
-    return ref.get().then((v) => Global.models[T](v.data) as T);
+    return ref.once().then((v) => Global.models[T](v.value) as T);
   }
 
   Stream<T> streamData() {
-    return ref.snapshots().map((v) => Global.models[T](v.data) as T);
+    return ref.onValue.map((v) => Global.models[T](v.snapshot.value) as T);
   }
 
   Future<void> upsert(Map data) {
-    return ref.setData(Map<String, dynamic>.from(data), merge: true);
+    return ref.update(Map<String, dynamic>.from(data));
   }
 }
 

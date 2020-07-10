@@ -10,7 +10,7 @@ try {
   exports.user = require('./modules/userFunctions');
   exports.table = require('./modules/tableFunctions');
   // exports.playerFunctions = require('./modules/playerFunctions');
-  // exports.turnFunctions = require('./modules/turnFunctions');
+  exports.turn = require('./modules/turnFunctions');
   // exports.adminFunctions = require('./modules/adminFunctions');
 }
 catch (error) {

@@ -1,5 +1,5 @@
 import 'package:coup/modals/game/action.dart';
-import 'package:coup/repos/callerFunctions.dart';
+import 'package:coup/repos/game/actionFunctions.dart';
 
 class RoleCardActions {
   static final type = ActionType.action;
@@ -34,7 +34,6 @@ class RoleCardActions {
     blockable: false,
     challengeable: true,
     caller: (context) => CallerFunctions.exchangeCall(context),
-
   );
 
   static final CardAction steal = CardAction(

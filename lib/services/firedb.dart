@@ -3,6 +3,7 @@ import 'package:coup/modals/firebase/player.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:coup/repos/firebase/turnConsumer.dart';
 
 class FireDB {
   static final FirebaseDatabase _db = FirebaseDatabase.instance;
@@ -27,9 +28,11 @@ class FireDB {
 
   static Stream<Turn> turnStream(String turnId) {
     return _db.reference().child('turns/' + turnId).onValue.map((event) {
-      if (event.snapshot.value != null)
-        return Turn.fromRdb(event.snapshot.value);
-      else
+      if (event.snapshot.value != null) {
+        var _turn = Turn.fromRdb(event.snapshot.value);
+        TurnConsumer.readTurn(_turn);
+        return _turn;
+      } else
         return null;
     });
   }

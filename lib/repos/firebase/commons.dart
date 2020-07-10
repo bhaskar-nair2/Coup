@@ -6,12 +6,13 @@ class FirebaseCommons {
   static final _db = FirebaseDatabase.instance;
 
   static updateIsk(num incValue) async {
-    // return await _db
-    //     .collection('players')
-    //     .document(IDManager.selfId)
-    //     .updateData(<String, dynamic>{
-    //   "isk": FieldValue.increment(incValue),
-    // });
+    _db
+        .reference()
+        .child('players/' + IDManager.selfId + '/isk')
+        .runTransaction((MutableData mutableData) async {
+      mutableData.value = (mutableData.value ?? 0) + incValue;
+      return mutableData;
+    });
   }
 
   static setTurnState(String state) async {
@@ -21,9 +22,12 @@ class FirebaseCommons {
     //     .updateData({"gameState": state});
   }
 
-  static changeActive(String nextPlayerId) async {
-    // return await _db.collection('turns').document(IDManager.turnId).updateData(
-    //     {"active": _db.collection('players').document(nextPlayerId)});
+  static changeTurn() async {
+    final HttpsCallable _changeActive = CloudFunctions.instance
+        .getHttpsCallable(functionName: 'turn-changeActive');
+
+    return await _changeActive
+        .call({"tableId": IDManager.tableId, "playerId": IDManager.selfId});
   }
 
   // killcard
@@ -40,7 +44,10 @@ class FirebaseCommons {
       "action": {
         "name": data['action'],
         "end": end,
+        "player": IDManager.selfId,
+        "effectedP": data['effected'] ?? null
       },
+      "hash": data.hashCode,
       "gameState": state,
     });
   }

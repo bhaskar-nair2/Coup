@@ -52,7 +52,7 @@ class GlobalHolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _turn = Provider.of<Turn>(context);
-    var _chance = _turn?.chance ?? Chance();
+    var _chance = _turn?.chance ?? Chance(active: false);
 
     return Align(
       alignment: Alignment.centerRight,

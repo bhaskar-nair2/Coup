@@ -1,23 +1,32 @@
+import 'dart:async';
+
+import 'package:coup/modals/firebase/fbModels.dart';
+import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/services/global.dart';
 import 'package:coup/services/types.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TableService<T> {
   final String collection = 'tables';
+  final FirebaseDatabase _db = FirebaseDatabase.instance;
 
-  TableService();
+  GameTable _table;
 
-  Stream<T> get documentStream {
-    return Global.selfRef.documentStream.switchMap((self) {
-      if (self != null) {
-        Document<T> doc = Document<T>(path: '$collection/${self.tableId}');
-        return doc.streamData();
-      } else {
-        return null;
+  TableService() {
+    var ref = _db.reference().child('tables/' + IDManager.tableId);
+    ref.onValue.map((event) {
+      if (event.snapshot.value != null) {
+        _table = GameTable.fromRdb(event.snapshot.value);
+        _controller.sink.add(_table);
       }
     });
   }
+
+  final _controller = StreamController<GameTable>();
+
+  Stream<GameTable> get stream => _controller.stream;
 
   Future<T> getDocument() async {
     SelfPlayer player = await Global.selfRef.getDocument();

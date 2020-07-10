@@ -1,10 +1,10 @@
-import 'package:coup/firebase/commons.dart';
+import 'package:coup/components/actionDialogs/dialogs.dart';
 import 'package:coup/modals/firebase/game_table.dart';
+import 'package:coup/repos/firebase/commons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:coup/components/callerDialogs/dialogs.dart';
 
 // Consumer Functions
 

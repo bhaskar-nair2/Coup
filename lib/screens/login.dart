@@ -1,7 +1,6 @@
-import 'package:coup/firebase/auth.dart';
-import 'package:coup/firebase/presence.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:coup/repos/firebase/auth.dart';
+import 'package:coup/repos/firebase/presence.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
