@@ -5,6 +5,7 @@ import 'package:coup/modals/firebase/turn.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:coup/repos/firebase/turnConsumer.dart';
 
+@Deprecated("Dont use these functions")
 class FireDB {
   static final FirebaseDatabase _db = FirebaseDatabase.instance;
 

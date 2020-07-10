@@ -6,12 +6,12 @@ import 'package:flutter/foundation.dart';
 
 enum GameState { pause, play, counter, block, challenge }
 
-class Turn extends ChangeNotifier {
+class Turn {
   String id = ''; // id of turn from table
   TurnAction action;
   var block;
   var challenge;
-  GameState gameState = GameState.pause;
+  GameState gameState;
   String pin;
   String activeId;
   String hash;
@@ -30,19 +30,13 @@ class Turn extends ChangeNotifier {
   }
 
   Turn.fromRdb(Map data) {
-    try {
-      this.activeId = data['active'];
-      this.action = TurnAction(data["action"] as Map) ?? null;
-      this.block = TurnBlock(data["block"] ?? null);
-      this.challenge = TurnChallenge(data["challenge"] ?? null);
-      this.gameState =
-          stateFromStr(((data['gameState'] ?? 'loading') as String));
-      this.hash = data['hash'].toString() ?? null;
-      TurnConsumer.readTurn(this);
-    } catch (error) {
-      print(error);
-      throw error;
-    }
+    this.activeId = data['active'];
+    this.action = TurnAction(data["action"] as Map);
+    this.block = TurnBlock(data["block"] as Map);
+    this.challenge = TurnChallenge(data["challenge"] as Map);
+    this.gameState = stateFromStr(((data['gameState'] ?? 'pause') as String));
+    this.hash = data['hash'].toString();
+    TurnConsumer.readTurn(this);
   }
 
   static GameState stateFromStr(String str) {

@@ -2,7 +2,6 @@ import 'package:coup/components/manager/mng_dialog.dart';
 import 'package:coup/components/self/self_area.dart';
 import 'package:coup/components/table/table_area.dart';
 import 'package:coup/components/turn/turn_area.dart';
-import 'package:coup/services/firedb.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/self.dart';
@@ -48,8 +47,8 @@ class _GameScreenState extends State<GameScreen> {
             return SelfPlayer();
           },
         ),
-        StreamProvider<GameTable>.value(
-          value: TableService().stream,
+        StreamProvider<GameTable>(
+          create: (_) => TableService().streamData(),
         ),
         StreamProvider<Turn>.value(
           value: Global.turnRef.documentStream,
@@ -71,29 +70,21 @@ class GameStateScreenManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseDatabase _db = FirebaseDatabase.instance;
-    var tableREf = _db.reference().child('tables/' + IDManager.tableId);
+    var table = Provider.of<GameTable>(context);
 
     return SafeArea(
       child: Scaffold(
-        body: StreamBuilder<GameTable>(
-            stream: tableREf.onValue
-                .map((event) => GameTable.fromRdb(event.snapshot.value)),
-            builder: (context, snapshot) {
-              if (snapshot.hasData)
-                return Stack(
+          body: table != null
+              ? Stack(
                   fit: StackFit.expand,
-                  children: snapshot.data.state == TableState.play
+                  children: table.state == TableState.play
                       ? [TableArea(), SelfArea(), TurnArea()]
                       : [TableManagerDialog()],
-                );
-              else
-                return Container(
+                )
+              : Container(
                   child:
                       Center(child: CircularProgressIndicator(strokeWidth: 3)),
-                );
-            }),
-      ),
+                )),
     );
   }
 }

@@ -1,33 +1,24 @@
 import 'package:coup/modals/firebase/fbModels.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
-import 'package:coup/services/global.dart';
-import 'package:coup/services/types.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class TurnService<T> {
-  final String collection = 'turns';
+class TurnService {
+  final FirebaseDatabase _db = FirebaseDatabase.instance;
+  DatabaseReference _ref;
 
-  TurnService();
-
-  Stream<T> get documentStream {
-    Document<T> doc = Document<T>(path: '$collection/${IDManager.turnId}');
-    return doc.streamData();
+  TurnService() {
+    _ref = _db.reference().child('turns/' + IDManager.turnId);
   }
 
-  Future<T> getDocument() async {
-    GameTable table = await Global.tableref.getDocument();
+  Stream<Turn> get documentStream {
+    return _ref.onValue.map((event) => Turn.fromRdb(event.snapshot.value));
+  }
 
-    if (table != null) {
-      Document doc = Document<T>(path: '$collection/${table.turnId}');
-      return doc.getData();
-    } else {
-      return null;
-    }
+  Future getDocument() async {
+    return _ref.once().then((v) => Turn.fromRdb(v.value));
   }
 
   Future<void> upsert(Map data) async {
-    GameTable table = await Global.tableref.getDocument();
-    Document<T> ref = Document(path: '$collection/${table.turnId}');
-    return ref.upsert(data);
+    return _ref.update(Map<String, dynamic>.from(data));
   }
 }

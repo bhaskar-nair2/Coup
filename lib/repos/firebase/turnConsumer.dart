@@ -15,7 +15,7 @@ class TurnConsumer {
     else
       hash = turn.hash;
 
-    if (turn.action != null) {
+    if (turn.action.type != null) {
       var type = turn.action.type;
       var player = turn.action.player;
 
@@ -38,7 +38,7 @@ class TurnConsumer {
           // set state
           break;
         default:
-          print('default');
+          print('TurnConsumer:default');
       }
     }
   }

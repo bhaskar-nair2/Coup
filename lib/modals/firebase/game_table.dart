@@ -1,10 +1,8 @@
 import 'package:coup/modals/firebase/idmanager.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 enum TableState { loading, waiting, play, score }
 
-class GameTable extends ChangeNotifier {
+class GameTable {
   String tableId;
   int occupied = 0; // Exact number, index from 1
   String turnId;
@@ -28,6 +26,7 @@ class GameTable extends ChangeNotifier {
       }
     }
   }
+
   static TableState stateFromStr(String str) {
     TableState state = TableState.values.firstWhere(
         (e) => e.toString() == 'TableState.' + str.toString().toLowerCase());
