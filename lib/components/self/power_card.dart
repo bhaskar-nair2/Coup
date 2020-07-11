@@ -1,5 +1,6 @@
+import 'package:coup/data/role/role_enum.dart';
 import 'package:coup/modals/firebase/self.dart';
-import 'package:coup/modals/game/action.dart';
+import 'package:coup/modals/game/actions.dart';
 import 'package:coup/modals/game/hand.dart';
 import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';

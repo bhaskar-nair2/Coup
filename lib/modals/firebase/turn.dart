@@ -1,8 +1,8 @@
+import 'package:coup/data/actions/action_enums.dart';
 import 'package:coup/modals/game/chance.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
-import 'package:coup/modals/game/action.dart';
+import 'package:coup/modals/game/actions.dart';
 import 'package:coup/repos/firebase/turnConsumer.dart';
-import 'package:flutter/foundation.dart';
 
 enum GameState { pause, play, counter, block, challenge }
 

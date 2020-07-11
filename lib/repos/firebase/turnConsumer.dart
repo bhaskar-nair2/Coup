@@ -1,7 +1,7 @@
+import 'package:coup/data/actions/action_enums.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/player.dart';
 import 'package:coup/modals/firebase/turn.dart';
-import 'package:coup/modals/game/action.dart';
 import 'package:coup/repos/firebase/commons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

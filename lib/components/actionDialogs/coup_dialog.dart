@@ -1,7 +1,6 @@
-import 'package:coup/components/turn/roleTile.dart';
+import 'package:coup/data/role/role_enum.dart';
 import 'package:coup/modals/firebase/fbModels.dart';
 import 'package:coup/modals/game/hand.dart';
-import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,15 +37,9 @@ class CoupDialog extends StatelessWidget {
                   children: <Widget>[
                     ...roles.map((role) {
                       return FlatButton(
-                          onPressed: () => {
-                                print('Coup him')
-                              },
+                          onPressed: () => {print('Coup him')},
                           child: SizedBox.fromSize(
                             size: Size(100, 120),
-                            child: RoleTile(
-                              role,
-                              withActions: true,
-                            ),
                           ));
                     }).toList()
                   ],

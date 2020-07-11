@@ -1,6 +1,5 @@
-import 'package:coup/components/turn/roleTile.dart';
+import 'package:coup/data/role/role_enum.dart';
 import 'package:coup/modals/game/hand.dart';
-import 'package:coup/modals/game/role.dart';
 import 'package:flutter/material.dart';
 
 class ExchangeDialog extends StatelessWidget {
@@ -38,13 +37,7 @@ class ExchangeDialog extends StatelessWidget {
                                 hand.exchange(1, role),
                                 Navigator.of(context).pop()
                               },
-                          child: SizedBox.fromSize(
-                            size: Size(100, 120),
-                            child: RoleTile(
-                              role,
-                              withActions: true,
-                            ),
-                          ));
+                          child: SizedBox.fromSize(size: Size(100, 120)));
                     }).toList()
                   ],
                 )

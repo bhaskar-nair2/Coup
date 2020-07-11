@@ -1,4 +1,4 @@
-import 'package:coup/modals/game/action.dart';
+import 'package:coup/modals/game/actions.dart';
 import 'package:flutter/foundation.dart';
 
 class Player extends ChangeNotifier {

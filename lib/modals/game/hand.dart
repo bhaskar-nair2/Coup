@@ -1,4 +1,4 @@
-import 'package:coup/modals/game/action.dart';
+import 'package:coup/data/role/role_enum.dart';
 import 'package:coup/modals/game/role.dart';
 import 'package:flutter/foundation.dart';
 
@@ -7,9 +7,6 @@ class Hand extends ChangeNotifier {
   List<CardRole> _cards = [];
 
   List<CardRole> get cards => _cards;
-  List<CardAction> get actions =>
-      this.cards.expand((element) => element.actions).toList()
-        ..removeWhere((v) => v == null);
 
   Hand();
 
@@ -24,11 +21,12 @@ class Hand extends ChangeNotifier {
 
   static List<CardRole> strToRole(List<String> cards) {
     List<CardRole> cardRoles = List.generate(cards.length, (index) {
-      return CardRole(RoleName.values.firstWhere(
-        (e) =>
-            e.toString() == 'RoleName.' + cards[index].toString().toLowerCase(),
-        orElse: () => null,
-      ));
+      var rlName = RoleName.values.firstWhere(
+          (e) =>
+              e.toString() ==
+              'RoleName.' + cards[index].toString().toLowerCase(),
+          orElse: () => null);
+      return rlName.getAssociatedRole();
     });
     return cardRoles;
   }
@@ -50,7 +48,7 @@ class Hand extends ChangeNotifier {
 
   exchange(int index, RoleName newRole) {
     this.cards.removeAt(index);
-    this.cards.add(CardRole(newRole));
+    this.cards.add(newRole.getAssociatedRole());
     refreshHand();
   }
 }

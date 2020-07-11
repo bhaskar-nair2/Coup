@@ -1,11 +1,11 @@
-import 'package:coup/components/turn/action_card.dart';
-import 'package:coup/data/global_actions.dart';
+import 'package:coup/components/turn/__basic_card.dart';
+import 'package:coup/data/actions/basic_actions.dart';
 import 'package:flutter/material.dart';
 
-class GlobalActions extends StatelessWidget {
-  const GlobalActions({Key key}) : super(key: key);
+class GlobalActionsHolder extends StatelessWidget {
+  const GlobalActionsHolder({Key key}) : super(key: key);
 
-  static final actionList = GlobalCardActions.list;
+  static final actionList = BasicActions.list;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class GlobalActions extends StatelessWidget {
             return SizedBox(
               width: 100,
               height: 80,
-              child: ActionCard(actionList[index]),
+              child: BasicActionsCard(), //actionList[index]
             );
           })),
     );

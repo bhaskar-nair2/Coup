@@ -1,5 +1,5 @@
+import 'package:coup/components/turn/_global_actions_holder.dart';
 import 'package:coup/components/turn/avail_actions.dart';
-import 'package:coup/components/turn/global_actions.dart';
 import 'package:coup/modals/game/chance.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/turn.dart';
@@ -60,7 +60,7 @@ class GlobalHolder extends StatelessWidget {
         duration: Duration(milliseconds: 500),
         width: MediaQuery.of(context).size.width,
         height: _chance.active ? 80 : 0,
-        child: GlobalActions(),
+        child: GlobalActionsHolder(),
         decoration: BoxDecoration(
           color: Colors.black26,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(10)),
