@@ -1,18 +1,15 @@
-import 'package:coup/data/role/role_enum.dart';
 import 'package:coup/modals/firebase/fbModels.dart';
-import 'package:coup/modals/game/hand.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CoupDialog extends StatelessWidget {
-  const CoupDialog({Key key, this.roles, this.hand}) : super(key: key);
+  const CoupDialog(this.extContext, {Key key}) : super(key: key);
 
-  final List<RoleName> roles;
-  final Hand hand;
+  final BuildContext extContext;
 
   @override
   Widget build(BuildContext context) {
-    var table = Provider.of<GameTable>(context);
+    var table = Provider.of<GameTable>(extContext);
 
     return Dialog(
         backgroundColor: Color(0xff092147),
@@ -35,11 +32,12 @@ class CoupDialog extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    ...roles.map((role) {
+                    ...table.players.map((player) {
                       return FlatButton(
-                          onPressed: () => {print('Coup him')},
+                          onPressed: () => Navigator.pop(context, player),
                           child: SizedBox.fromSize(
                             size: Size(100, 120),
+                            child: Text(player.toString()),
                           ));
                     }).toList()
                   ],

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:coup/data/actions/action_enums.dart';
 import 'package:coup/data/role/role_enum.dart';
+import 'package:coup/modals/firebase/player.dart';
 import 'package:flutter/foundation.dart';
 
 class CardAction {
@@ -13,10 +14,13 @@ class CardAction {
   bool blockable = false;
   List<ActionName> blocker;
   bool challengeable = false;
+  ActionType type;
 
   bool active = false; // Prolly suits more in abilities and passives
   Function caller;
   Function activator;
+
+  bool effectsPlayer;
 
   CardAction();
 
@@ -29,17 +33,19 @@ class CardAction {
     this.blocker,
     this.challengeable,
     this.caller,
+    @required this.type,
+    this.effectsPlayer = false,
     this.activator,
-  }) : assert(blockable == true && blocker != null);
+  }) : assert((blockable == true && blocker != null) || true);
 
   setActive(bool value) {
     this.active = value;
   }
 
-  static ActionName actionFromStr(String str) {
+  static CardAction actionFromStr(String str) {
     ActionName action = ActionName.values.firstWhere(
         (e) => e.toString() == 'ActionName.' + str.toString().toLowerCase());
-    return action;
+    return action.getAssociatedAction();
   }
 
   String actionToStr() {

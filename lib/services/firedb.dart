@@ -3,7 +3,7 @@ import 'package:coup/modals/firebase/player.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:coup/repos/firebase/turnConsumer.dart';
+import 'package:coup/repos/firebase/turn_consumer.dart';
 
 @Deprecated("Dont use these functions")
 class FireDB {

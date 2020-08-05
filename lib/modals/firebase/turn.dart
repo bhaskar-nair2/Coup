@@ -1,10 +1,9 @@
-import 'package:coup/data/actions/action_enums.dart';
 import 'package:coup/modals/game/chance.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/game/actions.dart';
-import 'package:coup/repos/firebase/turnConsumer.dart';
+import 'package:coup/repos/firebase/turn_consumer.dart';
 
-enum GameState { pause, play, counter, block, challenge }
+enum GameState { pause, play, counter, block, challenge, kill }
 
 class Turn {
   String id = ''; // id of turn from table
@@ -19,24 +18,32 @@ class Turn {
   Turn();
 
   Chance get chance {
-    switch (this.gameState) {
+    return Chance(active: this.activeId == IDManager.selfId);
+    switch (gameState) {
       case GameState.play:
-        return Chance(active: this.activeId == IDManager.selfId); // 1 active
+        return Chance(active: this.activeId == IDManager.selfId);
       case GameState.counter:
-        return Chance(active: true); // All active
+        return Chance(active: true);
+      case GameState.block:
+      case GameState.challenge:
+        return Chance(active: this.activeId == IDManager.selfId);
+      case GameState.kill:
+        return Chance(active: this.activeId == action.effectedPlayer);
       default:
         return Chance(active: false);
     }
   }
 
   Turn.fromRdb(Map data) {
-    this.activeId = data['active'];
-    this.action = TurnAction(data["action"] as Map);
-    this.block = TurnBlock(data["block"] as Map);
-    this.challenge = TurnChallenge(data["challenge"] as Map);
-    this.gameState = stateFromStr(((data['gameState'] ?? 'pause') as String));
-    this.hash = data['hash'].toString();
-    TurnConsumer.readTurn(this);
+    if (data != null) {
+      this.activeId = data['active'];
+      this.action = TurnAction(data["action"] as Map);
+      this.block = TurnBlock(data["block"] as Map);
+      this.challenge = TurnChallenge(data["challenge"] as Map);
+      this.gameState = stateFromStr(((data['gameState'] ?? 'pause') as String));
+      this.hash = data['hash'].toString();
+      TurnConsumer.readTurn(this);
+    }
   }
 
   static GameState stateFromStr(String str) {
@@ -47,13 +54,15 @@ class Turn {
 }
 
 class TurnAction {
-  var player;
-  ActionName type;
+  String player;
+  CardAction type;
+  String effectedPlayer;
 
   TurnAction(data) {
     if (data != null) {
       this.player = data['player'] ?? null; // TODO:
       this.type = CardAction.actionFromStr(data['name']);
+      this.effectedPlayer = data["effectedP"] ?? null;
     }
   }
 }

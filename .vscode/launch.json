@@ -10,13 +10,13 @@
       "type": "dart"
     },
     {
-      "name": "Redmi 5A",
+      "name": "5A",
       "request": "launch",
       "type": "dart",
       "deviceId": "bf4a07f77d15"
     },
     {
-      "name": "Redmi Note 8 Pro",
+      "name": "Note 8 Pro",
       "request": "launch",
       "type": "dart",
       "deviceId": "6l9p5hojijjno7so"

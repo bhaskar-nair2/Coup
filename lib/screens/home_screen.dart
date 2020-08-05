@@ -7,6 +7,7 @@ import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/repos/firebase/auth.dart';
 import 'package:coup/router/router.gr.dart';
 import 'package:coup/services/firedb.dart';
+import 'package:coup/services/self_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return MultiProvider(
       providers: [
         StreamProvider<FirebaseUser>.value(value: _auth.user),
-        StreamProvider<SelfPlayer>.value(
-            value: FireDB.selfStream(IDManager.selfId))
+        StreamProvider<SelfPlayer>(
+            create: (_) => SelfService().streamData(),
+            catchError: (context, error) {
+              print(error);
+              return SelfPlayer();
+            })
       ],
       child: Scaffold(
         body: Stack(children: <Widget>[

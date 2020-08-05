@@ -5,7 +5,6 @@ import 'package:coup/components/turn/turn_area.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
-import 'package:coup/services/global.dart';
 import 'package:coup/services/self_service.dart';
 import 'package:coup/services/table_service.dart';
 import 'package:coup/services/turn_service.dart';
@@ -49,6 +48,10 @@ class _GameScreenState extends State<GameScreen> {
         ),
         StreamProvider<GameTable>(
           create: (_) => TableService().streamData(),
+          // catchError: (context, error) {
+          //   print(error);
+          //   return GameTable();
+          // },
         ),
         StreamProvider<Turn>(
           create: (_) => TurnService().streamData(),

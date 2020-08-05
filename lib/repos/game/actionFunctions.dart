@@ -22,8 +22,14 @@ class CallerFunctions {
   }
 
   static coupCall(BuildContext context) async {
-    showDialog(context: context, child: CoupDialog());
+    // showDialog(context: context, child: CoupDialog());
     await FirebaseCommons.updateIsk(-7);
+    // final isk = Provider.of<Isk>(context, listen: false);
+    // isk.decrement(7);
+  }
+
+  static challengeCall(BuildContext context) async {
+    Fluttertoast.showToast(msg: "{} Challenged {} for a duel");
     // final isk = Provider.of<Isk>(context, listen: false);
     // isk.decrement(7);
   }

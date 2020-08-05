@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:coup/components/base/base_load_btn.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
-import 'package:coup/repos/firebase/gameSetup.dart';
+import 'package:coup/repos/firebase/game_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';

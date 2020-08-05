@@ -14,6 +14,7 @@ class GameTable {
 
   GameTable.fromRdb(Map data) {
     if (data != null) {
+      // get the list of players ans convert it to the reference object
       List<String> _players =
           List.castFrom((data['players'] as Map ?? {}).keys.toList());
       this.players = _players;

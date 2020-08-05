@@ -22,6 +22,7 @@ extension RoleExtention on RoleName {
     }
   }
 
+  // ignore: missing_return
   Color get color {
     switch (this) {
       case RoleName.duke:
@@ -37,6 +38,7 @@ extension RoleExtention on RoleName {
     }
   }
 
+  // ignore: missing_return
   AssetImage get cardImage {
     switch (this) {
       case RoleName.duke:

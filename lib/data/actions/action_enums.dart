@@ -2,14 +2,16 @@ import 'package:coup/data/actions/role_abilities.dart';
 import 'package:coup/data/actions/role_actions.dart';
 import 'package:coup/data/actions/role_passives.dart';
 import 'package:coup/modals/game/actions.dart';
-
 import 'basic_actions.dart';
+
+enum ActionType { action, ability, passive, challenge }
 
 enum ActionName {
   // basics
   income,
   aid,
   coup,
+  challenge,
   // action
   tax,
   assassinate,
@@ -37,6 +39,8 @@ extension ActionNameExt on ActionName {
         return BasicActions.aid;
       case ActionName.coup:
         return BasicActions.coup;
+      case ActionName.challenge:
+        return BasicActions.challenge;
       // actions
       case ActionName.tax:
         return RoleActions.tax;

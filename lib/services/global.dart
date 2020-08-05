@@ -1,7 +1,4 @@
 import 'package:coup/modals/firebase/fbModels.dart';
-import 'package:coup/services/self_service.dart';
-import 'package:coup/services/table_service.dart';
-import 'package:coup/services/turn_service.dart';
 
 class Global {
   // App Data

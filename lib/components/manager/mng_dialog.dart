@@ -1,9 +1,9 @@
 import 'package:coup/components/base/base_load_btn.dart';
-import 'package:coup/repos/firebase/gameSetup.dart';
-import 'package:coup/services/firedb.dart';
+import 'package:coup/repos/firebase/game_setup.dart';
 import 'package:coup/modals/firebase/game_table.dart';
 import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/firebase/player.dart';
+import 'package:coup/services/player_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -139,7 +139,7 @@ class PLayerDataMaker extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
       // chnage this to a player builder stream
-      stream: FireDB.playerStream(playerId),
+      stream: PlayerService(playerId).streamData(),
       builder: (context, AsyncSnapshot<Player> snapshot) {
         if (snapshot.hasData) {
           Player player = snapshot.data;

@@ -9,6 +9,43 @@ const db = admin.database();
 
 // enum GameState { waiting, loading, play, counter, block, challenge }
 
+const turnConsumer =
+  functions.database.ref('turns/{turnId}').onWrite(async (change, context) => {
+    // Validators
+    if (change.before.exists()) {
+      return null;
+    }
+    // Exit when the data is deleted.
+    if (!change.after.exists()) {
+      return null;
+    }
+    const turn = change.after.val();
+    if (turn.hash === 'newTurn') {
+      return null
+    }
+
+    // business logic
+    if (turn.action !== null) {
+      // Do things with action
+      console.info('action')
+    }
+
+    if (turn.block !== null) {
+      // Do things with block
+      console.info('block')
+    }
+
+    if (turn.passive !== null) {
+      // Do things with passive
+    }
+
+    if (turn.challenge !== null) {
+      // Do things with challenge
+    }
+
+    return null
+  })
+
 const changeActive =  // change active
   functions.https.onCall(async (data) => {
     var playerId = data.playerId
@@ -49,5 +86,5 @@ const changeActive =  // change active
 
 
 module.exports = {
-  changeActive: changeActive
+  changeActive: changeActive,
 }
