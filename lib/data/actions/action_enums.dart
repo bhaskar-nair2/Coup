@@ -4,14 +4,13 @@ import 'package:coup/data/actions/role_passives.dart';
 import 'package:coup/modals/game/actions.dart';
 import 'basic_actions.dart';
 
-enum ActionType { action, ability, passive, challenge }
+enum ActionType { action, ability, passive, challenge, pass }
 
 enum ActionName {
   // basics
   income,
   aid,
   coup,
-  challenge,
   // action
   tax,
   assassinate,
@@ -26,6 +25,9 @@ enum ActionName {
   vengence,
   inheritance,
   treaty,
+  // Utils
+  challenge,
+  pass
 }
 
 extension ActionNameExt on ActionName {
@@ -39,8 +41,6 @@ extension ActionNameExt on ActionName {
         return BasicActions.aid;
       case ActionName.coup:
         return BasicActions.coup;
-      case ActionName.challenge:
-        return BasicActions.challenge;
       // actions
       case ActionName.tax:
         return RoleActions.tax;
@@ -66,6 +66,11 @@ extension ActionNameExt on ActionName {
         return RolePassives.inheritance;
       case ActionName.treaty:
         return RolePassives.treaty;
+      // Utils
+      case ActionName.challenge:
+        return BasicActions.challenge;
+      case ActionName.pass:
+        return BasicActions.pass;
     }
   }
 }

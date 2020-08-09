@@ -1,12 +1,32 @@
 import 'package:coup/components/turn/__action_card.dart';
 import 'package:coup/data/actions/action_enums.dart';
 import 'package:coup/data/actions/basic_actions.dart';
-import 'package:coup/data/actions/role_abilities.dart';
 import 'package:coup/data/actions/role_actions.dart';
 import 'package:coup/modals/firebase/self.dart';
 import 'package:coup/modals/firebase/turn.dart';
+import 'package:coup/modals/game/hand.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+class ButtonSet {
+  static List<Widget> getCurrentButtons(context) {
+    var _self = Provider.of<SelfPlayer>(context);
+    var _turn = Provider.of<Turn>(context);
+
+    GameState state = _turn?.gameState;
+    var chance = _turn?.chance;
+    Hand hand = _self?.hand;
+
+    if (state == GameState.play && chance.active == true)
+      return [BasicBtnsHolder(), ActionHolder()];
+    else if (state == GameState.counter && chance.active == false)
+      return [AbilityHolder()];
+    else if (state == GameState.block && chance.active == true)
+      return [AbilityHolder(challengeOnly: true)]; // passive holder
+    else
+      return [];
+  }
+}
 
 class BasicBtnsHolder extends StatelessWidget {
   const BasicBtnsHolder({
@@ -92,24 +112,26 @@ class ActionHolder extends StatelessWidget {
 }
 
 class AbilityHolder extends StatelessWidget {
-  const AbilityHolder({Key key, this.passive}) : super(key: key);
+  const AbilityHolder({Key key, this.passive, this.challengeOnly = false})
+      : super(key: key);
 
   final bool passive;
+  final bool challengeOnly;
 
   @override
   Widget build(BuildContext context) {
     var player = Provider.of<SelfPlayer>(context);
     var turn = Provider.of<Turn>(context);
 
-    var actionList = turn.action.type.blocker;
-    bool challengeable = turn.action.type.challengeable;
+    List<ActionName> actionList = [];
 
-    if (challengeable) actionList.add(ActionName.challenge);
+    if (challengeOnly == false) actionList.addAll(turn.action.type.blocker);
+    bool challengeable = turn.action.type.challengeable || false;
+
+    if (challengeable || challengeOnly) actionList.add(ActionName.challenge);
 
     var hand = player.hand;
     var legalActions = hand.cards.map((e) => e?.ability?.action).toList();
-
-    if (challengeable) legalActions.add(ActionName.challenge);
 
     return Align(
       alignment: Alignment.centerRight,

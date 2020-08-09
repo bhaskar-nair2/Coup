@@ -80,7 +80,6 @@ class FirebaseCommons {
             "name": data["action"],
             "end": end,
             "player": IDManager.selfId,
-            "effectedP": effected.toString(),
             "legal": legal
           },
           "hash": cardAction.hashCode.toString(),
@@ -93,9 +92,12 @@ class FirebaseCommons {
             "name": data["action"],
             "end": end,
             "player": IDManager.selfId,
-            "effectedP": effected.toString(),
-            "legal": legal
           },
+          "hash": cardAction.hashCode.toString(),
+          "gameState": 'challenge',
+        });
+      case ActionType.pass:
+        return await _turnRef.update({
           "hash": cardAction.hashCode.toString(),
           "gameState": 'challenge',
         });

@@ -21,7 +21,12 @@ class ActionCard extends StatelessWidget {
             await showDialog(context: context, child: CoupDialog(context));
         if (effected == null) return;
       }
-      FirebaseCommons.addTurn(context, action, effected: effected);
+      FirebaseCommons.addTurn(
+        context,
+        action,
+        effected: effected,
+        legal: legal,
+      );
     }
 
     // used to rebuild widget for update

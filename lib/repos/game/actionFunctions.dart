@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 // Consumer Functions
 
+@deprecated
 class CallerFunctions {
   static incomeCall(BuildContext context) async {
     Fluttertoast.showToast(msg: "Taking Income");

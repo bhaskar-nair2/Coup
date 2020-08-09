@@ -24,27 +24,94 @@ const turnConsumer =
       return null
     }
 
+    var cardActions, cardPassive;
+    var pipeline = turn.pipeline;
+    var action = turn.action;
+
+    /*
+    dataIn = {
+      action,
+      hash,
+      pipeine: {name:"ActioName", state:""} for every turn
+      active(cur player):'',
+      effectedPlayer: 'id'
+    }
+
+    pipelineStates=[pause, play, counter, block, challenge, kill, end]
+
+    */
     // business logic
-    if (turn.action !== null) {
-      // Do things with action
-      console.info('action')
-    }
+    switch (pipeline.name) {
+      case 'income':
+        // update isk()
+        // change active() /// will reset state
+        break;
 
-    if (turn.block !== null) {
-      // Do things with block
-      console.info('block')
-    }
+      case 'aid':
+        // set state('counter')
+        switch (pipeline.state) {
+          case 'block':
+            break;
+          case 'challenge':
+            break;
+          case 'end':
+        }
+        break;
 
-    if (turn.passive !== null) {
-      // Do things with passive
-    }
+      case 'coup':
+        // set state('kill')
+        switch (pipeline.state) {
+          case 'end':
+          // update killCard(playerId,index?)
+        }
+        break;
 
-    if (turn.challenge !== null) {
-      // Do things with challenge
+      case 'tax':
+        // set state('counter')
+        switch (pipeline.state) {
+          case 'challenge':
+            // challengeFn()
+            break;
+          case 'end':
+        }
+        break;
+
+      case 'assassinate':
+        switch (pipeline.state) {
+          case 'block':
+            break;
+          case 'challenge':
+            break;
+          case 'end':
+        }
+        break;
+
+      case 'exchange':
+        switch (pipeline.state) {
+          case 'challenge':
+            break;
+          case 'end':
+        }
+        break;
+
+      case 'steal':
+        break;
+
+      default:
+        break;
     }
 
     return null
   })
+
+function challengeReader() {
+  // case 'challenge':
+  //   if (action.legal)
+  //   killCard(player-1,index?)
+  //   else 
+  //   killCard(player-2,index?)
+  //   break;
+}
 
 const changeActive =  // change active
   functions.https.onCall(async (data) => {

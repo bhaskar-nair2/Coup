@@ -18,17 +18,6 @@ class TurnArea extends StatelessWidget {
     var chance = _turn?.chance;
     Hand hand = _self?.hand;
 
-    List<Widget> getComps(state, chance) {
-      if (state == GameState.play && chance.active == true)
-        return [BasicBtnsHolder(), ActionHolder()];
-      else if (state == GameState.counter && chance.active == false)
-        return [AbilityHolder()];
-      else if (hand?.state == PlayState.one)
-        return []; // passive holder
-      else
-        return [];
-    }
-
     return IDManager.turnId != null
         ? AnimatedContainer(
             duration: Duration(milliseconds: 500),
@@ -37,7 +26,7 @@ class TurnArea extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: getComps(state, chance)),
+                children: ButtonSet.getCurrentButtons(context)),
           )
         : SizedBox.shrink();
   }

@@ -2,7 +2,6 @@ import 'package:coup/data/actions/action_enums.dart';
 import 'package:coup/modals/game/actions.dart';
 import 'package:coup/repos/game/actionFunctions.dart';
 import 'package:coup/repos/game/activationFunctions.dart';
-import 'package:flutter/material.dart';
 
 class BasicActions extends CardAction {
   static List<CardAction> get list => [income, aid, coup];
@@ -48,6 +47,16 @@ class BasicActions extends CardAction {
     name: "Challenge",
     description: "Challenge the player for a Duel",
     type: ActionType.challenge,
+    blockable: false,
+    challengeable: false,
+    caller: (context) => CallerFunctions.challengeCall(context),
+    activator: (context) => ActivationFunctions.coupActivation(context),
+  );
+  static final CardAction pass = CardAction.construct(
+    action: ActionName.pass,
+    name: "Pass",
+    description: "Pass",
+    type: ActionType.pass,
     blockable: false,
     challengeable: false,
     caller: (context) => CallerFunctions.challengeCall(context),

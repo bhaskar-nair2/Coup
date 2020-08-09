@@ -3,7 +3,7 @@ import 'package:coup/modals/firebase/idmanager.dart';
 import 'package:coup/modals/game/actions.dart';
 import 'package:coup/repos/firebase/turn_consumer.dart';
 
-enum GameState { pause, play, counter, block, challenge, kill }
+enum GameState { pause, play, counter, block, challenge, kill, end }
 
 class Turn {
   String id = ''; // id of turn from table

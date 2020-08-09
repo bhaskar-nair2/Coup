@@ -18,6 +18,9 @@ class TurnConsumer {
     } else
       hash = turn.hash;
 
+    // if (turn.block != null) {
+    // } else
+
     if (turn.action.type != null) {
       var type = turn.action.type.action;
       var player = turn.action.player;
@@ -40,7 +43,11 @@ class TurnConsumer {
           case ActionName.coup:
           case ActionName.tax:
           case ActionName.assassinate:
-          case ActionName.income:
+          case ActionName.steal:
+          case ActionName.exchange:
+            break;
+          default:
+            print(type);
         }
       else
         switch (type) {
